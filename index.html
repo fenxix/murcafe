@@ -104,6 +104,17 @@ svg{display:block}
 .ov .it button:disabled{opacity:.4}
 @media (max-width:820px){#stam{width:90px}.r2{font-size:16px}.r2 svg{width:22px;height:22px}#tix i{width:38px;height:38px;border-radius:9px}#tix svg{width:24px;height:24px}#hr{font-size:16px;gap:8px}#bPause{width:40px;height:40px;font-size:16px;border-radius:10px}#hold{width:46px;height:46px}#prompt{font-size:15px}}
 @media (max-height:500px) and (orientation:landscape){.ov{gap:6px;padding:6px}.ov h1{font-size:30px}.ov h2{font-size:20px}.ov p{font-size:13px}.ov button,.bb{font-size:15px;padding:9px 16px;min-width:150px;border-radius:12px}.mc{gap:7px}#menu{gap:4vw}#opts{gap:4px 14px}#lv{gap:6px}.ov #lv button{min-width:90px;padding:6px;font-size:13px}#mg{grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:6px}.it{padding:6px 8px;font-size:12px}.it b{font-size:14px}#sw i{width:34px;height:34px}#cs{height:min(170px,50vh)}}
+#ed{position:fixed;inset:0;z-index:12;display:none;pointer-events:none}
+#ed button{pointer-events:auto;font:800 14px system-ui;padding:10px 14px;border:0;border-radius:12px;background:#ff8fb1;color:#fff;box-shadow:0 3px 0 #d6668a}
+#ed button.alt{background:#fff;color:#6b3f24;border:2px solid #d9b182;box-shadow:0 3px 0 #d9b182}
+#ed button:disabled{opacity:.4}
+#eb{position:absolute;left:max(14px,env(safe-area-inset-left,0px));top:calc(env(safe-area-inset-top,0px) + 10px);display:flex;gap:8px;align-items:center}
+#eb .r2{background:#fff;border:3px solid #d9b182;border-radius:16px;padding:6px 14px;font-weight:800}
+#ep{position:absolute;right:0;top:0;bottom:0;width:min(300px,38vw);background:rgba(255,255,255,.96);border-left:3px solid #d9b182;padding:calc(env(safe-area-inset-top,0px) + 8px) 10px 10px;box-sizing:border-box;overflow:auto;pointer-events:auto;display:flex;flex-direction:column;gap:8px;touch-action:pan-y;font-weight:700}
+#et{display:flex;gap:6px}#et button{flex:1;padding:8px 4px!important}
+#ec{display:flex;flex-direction:column;gap:6px}#ec button{text-align:left}#ec h4{margin:6px 0 0;font-size:14px}
+.sws{display:flex;flex-wrap:wrap;gap:6px}.sws i{width:30px;height:30px;border-radius:50%;box-shadow:0 0 0 2px #d9b182;pointer-events:auto}
+#es{position:absolute;left:max(14px,env(safe-area-inset-left,0px));bottom:calc(env(safe-area-inset-bottom,0px) + 14px);display:none;gap:8px;align-items:center;background:#fff;border:3px solid #d9b182;border-radius:16px;padding:8px 12px;font-weight:800;pointer-events:auto}
 </style>
 </head>
 <body>
@@ -129,6 +140,7 @@ svg{display:block}
 <button class="ar" id="aL"></button><button class="ar" id="aR"></button>
 <div id="tp"><div id="ti"><b id="tn"></b><span id="td"></span></div><div id="tbn"></div></div></div>
 <div class="ov" id="pMg"><h2 id="mgt"></h2><div class="sg" id="mgtab"></div><p id="mgm"></p><div id="mg"></div><button class="alt" id="bMgX">Готово</button></div>
+<div id="ed"><div id="eb"><button class="alt" id="eX">Готово</button><button id="eH">Зал</button><button class="alt" id="eK">Кухня</button><div class="r2"><span class="ic" id="eic"></span><b id="eg">0</b></div></div><div id="ep"><div id="et"></div><div id="ec"></div></div><div id="es"><b id="en"></b><button class="alt" id="eRot">Повернуть</button><button class="alt" id="eDel">Убрать</button></div></div>
 <div class="ov" id="rot"><h2>Поверни телефон</h2><p>Мур-Кафе играется только горизонтально</p></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
@@ -192,7 +204,8 @@ for(let i = 0; i < 16; i++){
 }
 
 // мебель и коллайдеры
-const cols = [];
+const cols = [], ED = [], DYNE = [];
+function reg(k, g, bx, bz, cs, i){ cs.forEach(o => { o.x0 = o.x; o.z0 = o.z; }); const e = {k, g, bx, bz, x:bx, z:bz, cs, i}; ED.push(e); return e; }
 for(let x = -6; x <= -.4; x += 1) cols.push({x, z:-5.2, r:1});
 function table(x, z){
   cyl(.9, .9, .12, 0xfff1e0, x, 1, z); cyl(.1, .1, 1, 0xb98560, x, .5, z); cyl(.5, .55, .1, 0xb98560, x, .05, z);
@@ -205,14 +218,16 @@ function table(x, z){
   cols.push({x, z, r:.95, t:1});
 }
 const TABLES = [[-3.5, 1], [1.5, 2], [5, -2], [-3.5, -2.3], [1.5, -2.6]], TG = [];
-TABLES.forEach((q, i) => { const n0 = scene.children.length, c0 = cols.length; table(q[0], q[1]); const g = new THREE.Group(); scene.children.slice(n0).forEach(m => g.add(m)); scene.add(g); TG.push(g); cols.slice(c0).forEach(o => o.tl = i); });
+TABLES.forEach((q, i) => { const n0 = scene.children.length, c0 = cols.length; table(q[0], q[1]); const g = new THREE.Group(); scene.children.slice(n0).forEach(m => g.add(m)); scene.add(g); TG.push(g); cols.slice(c0).forEach(o => o.tl = i); reg('table', g, q[0], q[1], cols.slice(c0), i); });
 box(.2, 2.6, 1.7, 0x8b5a3c, -8.02, 1.3, 4.3); box(.12, 2.3, 1.3, 0xd9a877, -7.94, 1.15, 4.3);
 function plant(x, z){
-  cyl(.4, .3, .6, 0xc2724f, x, .3, z);
-  [[0,.2],[-.25,0],[.25,.05]].forEach(o => sph(.38, 0x6fbf73, x + o[0], 1.05 + o[1], z));
-  cols.push({x, z, r:.6});
+  const g = new THREE.Group(); scene.add(g);
+  cyl(.4, .3, .6, 0xc2724f, x, .3, z, g);
+  [[0,.2],[-.25,0],[.25,.05]].forEach(o => sph(.38, 0x6fbf73, x + o[0], 1.05 + o[1], z, g));
+  const c = {x, z, r:.6}; cols.push(c); reg('plant', g, x, z, [c]);
 }
 plant(7, -5); plant(-7, 4.5); plant(7, 4.8);
+{ const g = new THREE.Group(); scene.add(g); g.add(rug); g.add(rug2); reg('rug', g, 0, .3, []); }
 
 
 // ---------- настройки сети (впиши свои ключи Supabase) ----------
@@ -292,7 +307,7 @@ Object.keys(STN).forEach(n => box(1.9, 1.1, 1.2, 0xb8c4d0, STN[n].x, .55, SZ));
 box(.9, .9, .7, 0x5a5a6a, 10.2, 1.55, SZ); box(.6, .12, .6, 0xe05a5a, 10.2, 2.06, SZ); cyl(.14, .1, .25, 0xffffff, 10.9, 1.22, SZ + .3);
 box(1.5, .9, .9, 0xd8d8e0, 12.4, 1.55, SZ); box(1.1, .55, .05, 0x2a2a3a, 12.4, 1.5, SZ + .48); sph(.07, 0xe05a5a, 11.8, 1.9, SZ + .48); sph(.07, 0xe05a5a, 13, 1.9, SZ + .48);
 cyl(.55, .5, .6, 0x8a8a99, 14.2, 1.4, SZ); cyl(.6, .6, .06, 0x6a6a7a, 14.2, 1.72, SZ);
-box(2.2, 1, 1.4, 0xb98560, 11.4, .5, 1.2); box(2.4, .12, 1.6, 0xf0d3ab, 11.4, 1.06, 1.2); cols.push({x:11.4, z:1.2, r:1.2});
+{ const g = new THREE.Group(); scene.add(g); box(2.2, 1, 1.4, 0xb98560, 11.4, .5, 1.2, g); box(2.4, .12, 1.6, 0xf0d3ab, 11.4, 1.06, 1.2, g); const c = {x:11.4, z:1.2, r:1.2}; cols.push(c); reg('isl', g, 11.4, 1.2, [c]); }
 box(3.6, 1.5, .1, 0x5b4636, 12.4, 3, -5.92); box(3.4, 1.3, .05, 0x2f3a35, 12.4, 3, -5.86);
 const slots = [0, 1, 2, 3].map(i => { const m = spr(.7, 3); m.position.set(11.1 + i*.75, 3, -5.78); scene.add(m); return m; });
 Object.keys(STN).forEach(n => {
@@ -380,7 +395,7 @@ function applyAct(who, a){
   }
   push();
 }
-const snap = () => ({q:(W.crew || []).map(x => [x.r, x.f]), H:[CF().th, CF().kt, CF().lv], Y:W.lv, T:W.time, O:W.over, V:W.served, L:W.lost, c:W.coins, t:W.st, e:W.held, d:W.dirt.map(q => ({i:q.i, x:+q.x.toFixed(2), z:+q.z.toFixed(2), k:q.k})), cl:(W.cln || []).map(q => ({x:+q.x.toFixed(2), z:+q.z.toFixed(2), f:+q.f.toFixed(2), m:q.m, w:q.w})), u:W.cust.map(c => ({i:c.i, x:+c.x.toFixed(2), z:+c.z.toFixed(2), s:c.s, m:c.m, p:+c.p.toFixed(2), k:c.k, h:c.h, r:c.r, f:c.f}))});
+const snap = () => ({q:(W.crew || []).map(x => [x.r, x.f]), H:[CF().th, CF().kt, CF().lv, JSON.stringify(CF().cc || {}), JSON.stringify(CF().lay || {})], Y:W.lv, T:W.time, O:W.over, V:W.served, L:W.lost, c:W.coins, t:W.st, e:W.held, d:W.dirt.map(q => ({i:q.i, x:+q.x.toFixed(2), z:+q.z.toFixed(2), k:q.k})), cl:(W.cln || []).map(q => ({x:+q.x.toFixed(2), z:+q.z.toFixed(2), f:+q.f.toFixed(2), m:q.m, w:q.w})), u:W.cust.map(c => ({i:c.i, x:+c.x.toFixed(2), z:+c.z.toFixed(2), s:c.s, m:c.m, p:+c.p.toFixed(2), k:c.k, h:c.h, r:c.r, f:c.f}))});
 function push(){ if(role == 'h' && ch && peer) ch.send({type:'broadcast', event:'w', payload:snap()}); }
 function act(a){ if(role == 'h') applyAct('h', a); else if(ch) ch.send({type:'broadcast', event:'a', payload:a}); }
 
@@ -425,7 +440,7 @@ function pose(c, st, walk, t, dt, ph){
 function resize(){
   R.setSize(innerWidth, innerHeight, false); cam.aspect = innerWidth/innerHeight;
   const d = Math.max(21, 25/(.828*cam.aspect));
-  cam.position.set(3.5, d*.78, d*.62); cam.lookAt(3.5, .8, -.3); cam.updateProjectionMatrix();
+  cam.position.set(3.5, d*.78, d*.62); cam.lookAt(3.5, .8, -.3); cam.updateProjectionMatrix(); if(window.EC) edCam();
 }
 addEventListener('resize', resize); resize();
 
@@ -604,17 +619,20 @@ const tint = (a, c) => a.forEach(m => m.color.setHex(c));
 function paintWood(a, b){ const g = wood.image.getContext('2d'); for(let i = 0; i < 8; i++){ g.fillStyle = i%2 ? a : b; g.fillRect(0, i*32, 256, 32); g.fillStyle = 'rgba(120,70,30,.25)'; g.fillRect(0, i*32, 256, 2); } wood.needsUpdate = true; }
 function paintKit(a, b){ const g = kt.image.getContext('2d'); for(let i = 0; i < 4; i++) for(let j = 0; j < 4; j++){ g.fillStyle = (i + j)%2 ? a : b; g.fillRect(i*32, j*32, 32, 32); } kt.needsUpdate = true; }
 let CL = 0, tabN = 3, hk = '';
-function theme(th, k, lv){
+function theme(th, k, lv, cc){
   const a = TC[th] || TC[0], b = TK[k] || TK[0];
   tint(TM.w0, a.w[0]); tint(TM.w1, a.w[1]); tint(TM.ch, a.ch); tint(TM.r1, a.ru[0]); tint(TM.r2, a.ru[1]); tint(TM.cu, a.cu); paintWood(a.fl[0], a.fl[1]);
   tint(TM.k0, b.w[0]); tint(TM.k1, b.w[1]); tint(TM.ks, b.st); paintKit(b.fl[0], b.fl[1]);
+  cc = cc || {}; const O = (key, f) => { if(cc[key] != null) f(cc[key]); };
+  O('w', c => { tint(TM.w0, c); tint(TM.w1, mul(c, .95)); }); O('fl', c => paintWood(hex(c), hex(mul(c, .93)))); O('ch', c => tint(TM.ch, c)); O('cu', c => tint(TM.cu, c)); O('ru', c => { tint(TM.r1, c); tint(TM.r2, lit(c)); });
+  O('kw', c => { tint(TM.k0, c); tint(TM.k1, mul(c, .96)); }); O('kf', c => paintKit(hex(c), hex(mul(c, .9)))); O('ks', c => tint(TM.ks, c));
   tabN = lv >= 5 ? 5 : lv >= 3 ? 4 : 3; TG.forEach((g, i) => g.visible = i < tabN); CL = lv - 1;
 }
 const CF = () => S.g.cafes[S.g.cur] || S.g.cafes[0];
 const cafeAt = i => S.g.cafes.find(c => c.lot == i);
 const onSlot = q => q.sc == 2 || q.sc == S.g.day%2;
-function applyCafe(){ const c = CF(); theme(c.th, c.kt, c.lv); W.crew = c.staff.filter(onSlot); }
-function guestSync(p){ W.dirt = p.d || []; W.cln = p.cl || []; W.crew = (p.q || []).map(x => ({r:x[0], f:x[1]})); const h = (p.H || []).join(); if(h != hk && p.H){ hk = h; theme(p.H[0], p.H[1], p.H[2]); } }
+function applyCafe(){ const c = CF(); applyC(c); W.crew = c.staff.filter(onSlot); }
+function guestSync(p){ W.dirt = p.d || []; W.cln = p.cl || []; W.crew = (p.q || []).map(x => ({r:x[0], f:x[1]})); const h = (p.H || []).join(); if(h != hk && p.H){ hk = h; theme(p.H[0], p.H[1], p.H[2], JSON.parse(p.H[3] || '{}')); applyLay(JSON.parse(p.H[4] || '{}')); } }
 function payDay(){
   const g = S.g, c = CF(); let w = 0; const gone = []; g.gold += W.coins;
   c.staff = c.staff.filter(q => {
@@ -689,6 +707,40 @@ function syncDirt(){
   });
   for(const id in dm) if(!ids[id]){ scene.remove(dm[id]); delete dm[id]; }
 }
+// ---------- каталог, готовые кафе, расстановка ----------
+var EC = null;
+const mul = (h, f) => new THREE.Color(h).multiplyScalar(f).getHex(), lit = h => new THREE.Color(h).lerp(new THREE.Color(0xffffff), .5).getHex(), cx = (c, k, d) => c.cc && c.cc[k] != null ? c.cc[k] : d;
+const DL = [[-3.5, 1], [1.5, 2], [5, -2], [-3.5, -2.3], [1.5, -2.6], [7, -5], [-7, 4.5], [7, 4.8], [0, .3], [11.4, 1.2]];
+const CAT = {
+ plant:['Растение', 20, g => { cyl(.4, .3, .6, 0xc2724f, 0, .3, 0, g); sph(.38, 0x6fbf73, 0, 1.05, 0, g); sph(.3, 0x8fd18a, .22, 1.3, .05, g); }, .6],
+ lamp:['Торшер', 30, g => { cyl(.3, .3, .08, 0x6a6a7a, 0, .04, 0, g); cyl(.04, .04, 2, 0xb98560, 0, 1, 0, g); add(new THREE.CylinderGeometry(.3, .45, .5, 12), ME(0xffe3a8, 0xffd98a), 0, 2.2, 0, g); }, .4],
+ sofa:['Диван', 80, g => { box(2.2, .5, .9, 0xe8a0b0, 0, .35, 0, g); box(2.2, .8, .25, 0xd68ba0, 0, .8, -.4, g); [-1, 1].forEach(s => box(.25, .65, .9, 0xd68ba0, s*1.05, .55, 0, g)); }, 1.2],
+ pouf:['Пуф', 15, g => cyl(.45, .5, .45, 0xffb3c6, 0, .23, 0, g), .5],
+ shelf:['Стеллаж', 50, g => { box(1.8, 2.2, .5, 0x8b5a3c, 0, 1.1, 0, g); [.5, 1.1, 1.7].forEach((y, i) => box(1.6, .5, .4, [0xff9fb8, 0x9ad4ff, 0xffd98a][i], 0, y + .05, .05, g)); }, 1],
+ tank:['Аквариум', 90, g => { box(1.6, .8, .7, 0xb98560, 0, .4, 0, g); box(1.4, .9, .5, 0xbfe6ff, 0, 1.25, 0, g).material.emissive.set(0x6fa8d6); sph(.1, 0xff9f40, .2, 1.2, 0, g); }, 1],
+ tree:['Кошачий домик', 70, g => { cyl(.7, .8, .15, 0xc9a27a, 0, .08, 0, g); cyl(.2, .2, 1.8, 0xd9b182, 0, 1, 0, g); box(1, .2, 1, 0xf5b8c4, 0, 1.9, 0, g); box(.8, .6, .8, 0xe8a0b0, 0, .6, 0, g); }, .9],
+ crate:['Ящики', 25, g => { box(.9, .7, .9, 0xc9a27a, 0, .35, 0, g); box(.8, .6, .8, 0xb98560, .3, 1, .1, g); }, .8],
+ fridge:['Холодильник', 100, g => { box(1.1, 2.2, .9, 0xe3ebef, 0, 1.1, 0, g); box(.06, .7, .06, 0x8a8a99, .4, 1.4, .5, g); }, .9]};
+const PRE = [
+ {n:'Мур-Кафе', th:0, kt:0, cc:{}, lv:1, lay:{}},
+ {n:'Мятный сад', th:1, kt:1, cc:{rf:0x4f9a7e}, lv:1, lay:{e:[[-4.5, 1.2], [-.5, 2.4], [4.5, 1.5], [-3.5, -2.6], [2, -2.8]], n:[['plant', -7, -1.5], ['plant', 7.2, 1], ['plant', -1.5, -4.6], ['lamp', 6.5, -4.8], ['pouf', 3.2, -.3], ['plant', 14, 3]]}},
+ {n:'Лавандовый лофт', th:2, kt:2, cc:{fl:0xd9cfe3}, lv:1, lay:{e:[[-5, -2], [-1.5, -2.2], [2, -2.4], [-4, 1.8], [2.5, 1.8], [7, -5], [-7, -2], [7.2, 4.8], [2.5, .2]], n:[['sofa', 5, -5.2], ['shelf', -7.2, 1.2, 1], ['lamp', 7, .5], ['fridge', 9.6, -4.3], ['crate', 14, 2.2]]}},
+ {n:'Какао-бар', th:3, kt:0, cc:{}, lv:1, lay:{e:[[-4.2, 0], [0, 1.8], [4.4, -.6], [-4, -3], [.2, -2.7]], n:[['tree', 6.5, 3.5], ['tank', -7, -2.2, 1], ['plant', -1, .2], ['crate', 14, 2.4]]}},
+ {n:'Розовая мечта', th:0, kt:3, cc:{w:0xffd1e0, fl:0xf6dcd2, ch:0xf48fb1, cu:0xf06292, rf:0xe57394, ru:0xf8bbd0}, lv:1, lay:{e:[[-4.5, 2], [.8, .4], [4.6, 2], [-3.5, -2.4], [2.2, -2.7], [7, -5], [-7, 4.5], [7, -1.5]], n:[['sofa', 5.4, -5], ['tank', -7, -4, 1], ['lamp', -7, 1], ['pouf', -1.4, -.6], ['pouf', -.3, -1], ['plant', 14, -3]]}}];
+function setPos(e, x, z, h){
+  const dx = x - e.bx, dz = z - e.bz; e.x = x; e.z = z; e.hid = h ? 1 : 0; e.g.position.set(dx, 0, dz);
+  e.g.visible = !e.hid && !(e.k == 'table' && e.i >= tabN); e.cs.forEach(o => { o.x = e.hid ? 999 : o.x0 + dx; o.z = o.z0 + dz; });
+  if(e.k == 'table') TABLES[e.i] = [x, z];
+}
+function mkDyn(q){
+  const d = CAT[q[0]]; if(!d) return; const g = new THREE.Group(); scene.add(g); d[2](g); g.rotation.y = (q[3]|0)*Math.PI/2;
+  const c = {x:0, z:0, x0:0, z0:0, r:d[3], dy:1}; cols.push(c); const e = {k:q[0], g, bx:0, bz:0, x:0, z:0, cs:[c], dy:1, r:q[3]|0}; DYNE.push(e); setPos(e, q[1], q[2], 0); return e;
+}
+function applyLay(lay){
+  lay = lay || {}; DYNE.forEach(e => scene.remove(e.g)); DYNE.length = 0; for(let i = cols.length; i--;) if(cols[i].dy) cols.splice(i, 1);
+  ED.forEach((e, i) => { const p = (lay.e || [])[i] || DL[i]; setPos(e, p[0], p[1], p[2]); }); (lay.n || []).forEach(mkDyn);
+}
+function applyC(c){ theme(c.th, c.kt, c.lv, c.cc); applyLay(c.lay); }
 // город
 const TZ = -80, LOTX = [0, 15, 30, 45, 60], PRICE = [0, 400, 900, 1600, 2800], UPC = [150, 350, 700, 1300];
 const town = new THREE.Group(); town.position.z = TZ; town.visible = false; scene.add(town);
@@ -714,15 +766,16 @@ const lg = LOTX.map(x => { const g = new THREE.Group(); g.position.x = x; town.a
 const signT = (txt, bg, fg) => new THREE.MeshBasicMaterial({map:canvasTex(512, 128, g => { g.fillStyle = bg; g.fillRect(0, 0, 512, 128); g.fillStyle = fg; g.font = 'bold 64px system-ui,sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(txt, 256, 68); })});
 const sgn = (g, w, h, mat, x, y, z) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), mat); m.position.set(x, y, z); g.add(m); };
 function drawLot(i){
-  const g = lg[i], c = cafeAt(i); while(g.children.length) g.remove(g.children[0]);
+  const g = lg[i], real = cafeAt(i), c = real || PRE[i]; while(g.children.length) g.remove(g.children[0]);
   const t = c ? TC[c.th] : null, fl = c ? 1 + (c.lv > 2) + (c.lv > 4) : 1, H = c ? fl*3 : 2.6;
-  box(7, H, 5.6, c ? t.w[0] : 0xd9d4cc, 0, H/2, -.4, g);
-  const rg = new THREE.ConeGeometry(5.6, 1.8, 4); rg.rotateY(Math.PI/4); const rf = add(rg, M(c ? t.r : 0x9aa3b5), 0, H + .9, -.4, g); rf.scale.z = .82;
+  box(7, H, 5.6, cx(c, 'w', t.w[0]), 0, H/2, -.4, g);
+  const rg = new THREE.ConeGeometry(5.6, 1.8, 4); rg.rotateY(Math.PI/4); const rf = add(rg, M(cx(c, 'rf', t.r)), 0, H + .9, -.4, g); rf.scale.z = .82;
   if(c){
     box(1.2, 1.7, .12, 0x8a5a3c, 0, .85, 2.46, g);
-    for(let k = 0; k < 7; k++) box(1, .15, 1.1, k%2 ? 0xffffff : t.cu, -3 + k, 1.95, 2.95, g);
+    for(let k = 0; k < 7; k++) box(1, .15, 1.1, k%2 ? 0xffffff : cx(c, 'cu', t.cu), -3 + k, 1.95, 2.95, g);
     for(let f = 0; f < fl; f++) [-2.2, 2.2].concat(f ? [0] : []).forEach(x => box(1.1, 1, .1, 0xbfe6ff, x, 1.2 + f*3, 2.45, g).material.emissive.set(0x6fa8d6));
     sgn(g, 3.2, .7, signT(c.n.toUpperCase(), '#6b3f24', '#ffe9d6'), 0, 2.5, 2.47);
+    if(!real){ box(.12, 1.7, .12, 0x8a5a3c, 3.7, .85, 3.9, g); sgn(g, 2, .5, signT('ПРОДАЁТСЯ', '#e0678a', '#ffffff'), 3.7, 2.05, 3.97); sgn(g, 1.4, .6, signT(String(PRICE[i]), '#ffffff', '#6b3f24'), 3.7, 1.45, 3.97); }
     box(.7, 1.4, .7, 0xb98560, 2.4, H + 1.2, -1, g); cyl(.25, .2, .4, 0xc2724f, -3.4, .2, 3.2, g); sph(.35, 0x6fbf73, -3.4, .7, 3.2, g);
   } else {
     box(1.2, 1.7, .12, 0x6a6a7a, 0, .85, 2.46, g); box(1.1, 1, .1, 0xb8c4d0, -2.2, 1.2, 2.45, g); box(1.1, 1, .1, 0xb8c4d0, 2.2, 1.2, 2.45, g);
@@ -740,14 +793,14 @@ function openTown(){
 function closeTown(){ tmode = false; $('town').style.display = 'none'; town.visible = false; scene.background.setHex(0xffe9d6); cam.far = 100; cam.updateProjectionMatrix(); resize(); }
 function townInfo(){
   const c = cafeAt(ti), g = S.g, el = $('tbn'); $('tg').textContent = g.gold; el.innerHTML = '';
-  $('tn').textContent = c ? c.n : 'Участок ' + (ti + 1) + ' продаётся';
+  $('tn').textContent = c ? c.n : PRE[ti].n + ': продаётся';
   $('td').textContent = c ? 'Уровень ' + c.lv + ' из 5. Столов: ' + (c.lv >= 5 ? 5 : c.lv >= 3 ? 4 : 3) + '. Места для персонала: ' + c.staff.length + ' из ' + cap(c) : 'Цена: ' + PRICE[ti] + ' монет. Здесь будет твоё новое кафе';
   const B = (t, f, alt, dis) => { const b = document.createElement('button'); b.textContent = t; if(alt) b.className = 'alt'; b.disabled = !!dis; b.onclick = f; el.appendChild(b); };
   if(c){
     B('Играть здесь', () => { S.g.cur = g.cafes.indexOf(c); save(); closeTown(); ch = null; role = 'h'; start(); });
     B(c.lv < 5 ? 'Улучшить: ' + UPC[c.lv - 1] : 'Максимум', () => { g.gold -= UPC[c.lv - 1]; c.lv++; save(); snd(880, .15); drawLot(ti); townInfo(); }, 1, c.lv >= 5 || g.gold < UPC[c.lv - 1]);
-    B('Оформление', () => openMg(c, 0), 1); B('Персонал', () => openMg(c, 2), 1);
-  } else B('Купить: ' + PRICE[ti], () => { g.gold -= PRICE[ti]; g.cafes.push({lot:ti, lv:1, th:0, kt:0, n:'Мур-Кафе ' + (g.cafes.length + 1), staff:[]}); save(); snd(880, .15); drawLot(ti); townInfo(); }, 0, g.gold < PRICE[ti]);
+    B('Оформление', () => openEd(c), 1); B('Персонал', () => openMg(c, 2), 1);
+  } else { B('Посмотреть внутри', () => openEd(Object.assign(JSON.parse(JSON.stringify(PRE[ti])), {v:1, lot:ti, lv:1, staff:[]})), 1); B('Купить: ' + PRICE[ti], () => { g.gold -= PRICE[ti]; const P = JSON.parse(JSON.stringify(PRE[ti])); if(!g.oc.includes(P.th)) g.oc.push(P.th); if(!g.ok.includes(P.kt)) g.ok.push(P.kt); g.cafes.push(Object.assign(P, {lot:ti, lv:1, staff:[]})); save(); snd(880, .15); drawLot(ti); townInfo(); }, 0, g.gold < PRICE[ti]); }
 }
 $('aL').onclick = () => { ti = Math.max(0, ti - 1); snd(500, .05); townInfo(); };
 $('aR').onclick = () => { ti = Math.min(LOTX.length - 1, ti + 1); snd(500, .05); townInfo(); };
@@ -795,6 +848,55 @@ function mgDraw(){
         ['Предложить: ' + o.w, () => offer(k), 0, MC.staff.length >= cap(MC)]]); });
   }
 }
+// ---------- редактор: оформление прямо на карте ----------
+let erm = 0, et = 0, esel = null, edrag = null;
+const PC = [0xf7dcc6, 0xffd1e0, 0xfff1c9, 0xd6efe4, 0xc9e4ff, 0xdfd3f5, 0xe8a0b0, 0x8fc9b0, 0xb9a3e3, 0xc2724f, 0x8a5a3c, 0x6a6a7a, 0xffffff, 0x2f3a35], HK = ['w', 'fl', 'ch', 'cu', 'ru', 'rf'], KK = ['kw', 'kf', 'ks'];
+const rc = new THREE.Raycaster(), pl = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), mv2 = new THREE.Vector2(), hit = new THREE.Vector3();
+const selR = new THREE.Mesh(new THREE.RingGeometry(.8, .95, 32), new THREE.MeshBasicMaterial({color:0xff4f8b})); selR.rotation.x = -Math.PI/2; selR.position.y = .06; selR.visible = false; scene.add(selR);
+$('eic').innerHTML = svg('coin', '#f2b632');
+const fpt = e => { mv2.set(e.clientX/innerWidth*2 - 1, 1 - e.clientY/innerHeight*2); rc.setFromCamera(mv2, cam); return rc.ray.intersectPlane(pl, hit); };
+function edCam(){ const k = erm, a = cam.aspect, d = Math.max(k ? 13 : 15, (k ? 17 : 24)/(.828*a)), x = (k ? 11.5 : 0) + (EC && EC.v ? 0 : .828*d*a*.17); cam.position.set(x, d*.78, d*.62); cam.lookAt(x, .8, -.3); cam.updateProjectionMatrix(); }
+function saveLay(){ if(!EC || EC.v) return; EC.lay = {e:ED.map(o => [o.x, o.z, o.hid|0]), n:DYNE.map(o => [o.k, o.x, o.z, o.r|0])}; save(); }
+function pick(b){
+  esel = b; selR.visible = !!b; $('es').style.display = b ? 'flex' : 'none'; if(!b) return;
+  selR.position.set(b.x, .06, b.z); selR.scale.setScalar(b.k == 'table' ? 2.2 : b.k == 'rug' ? 2.8 : 1.3);
+  $('en').textContent = b.dy ? CAT[b.k][0] : {table:'Стол', plant:'Растение', rug:'Ковёр', isl:'Кухонный стол'}[b.k];
+  $('eRot').style.display = b.dy ? '' : 'none'; $('eDel').disabled = b.k == 'table'; $('eDel').textContent = b.dy ? 'Продать +' + (CAT[b.k][1] >> 1) : 'Убрать';
+}
+function openEd(c){
+  hideHint(); EC = c; erm = 0; et = 0; tmode = false; $('town').style.display = 'none'; town.visible = false; scene.background.setHex(0xffe9d6);
+  if(c.v) applyC(c); else { S.g.cur = S.g.cafes.indexOf(c); applyCafe(); }
+  $('ed').style.display = 'block'; $('ep').style.display = c.v ? 'none' : 'flex'; pick(null); edCam(); edDraw();
+}
+function edDraw(){
+  const g = S.g, c = EC; $('eg').textContent = g.gold; $('eH').className = erm ? 'alt' : ''; $('eK').className = erm ? '' : 'alt';
+  const T = $('et'); T.innerHTML = ''; ['Мебель', 'Цвета', 'Стили'].forEach((n, i) => T.appendChild(mk([n, () => { et = i; edDraw(); }, i != et])));
+  const el = $('ec'); el.innerHTML = ''; const H = t => { const h = document.createElement('h4'); h.textContent = t; el.appendChild(h); };
+  if(et == 0){
+    H(erm ? 'Кухня' : 'Зал'); for(const k in CAT){ const d = CAT[k]; el.appendChild(mk([d[0] + ': ' + d[1], () => { g.gold -= d[1]; pick(mkDyn([k, erm ? 11.5 : 0, erm ? -2 : -.8, 0])); saveLay(); snd(700, .08); edDraw(); }, 1, g.gold < d[1]])); }
+    if(ED.some(o => o.hid)) el.appendChild(mk(['Вернуть убранное', () => { ED.forEach(o => o.hid && setPos(o, o.x, o.z, 0)); saveLay(); edDraw(); }, 1]));
+  } else if(et == 1){
+    (erm ? [['Стены', 'kw'], ['Плитка', 'kf'], ['Столы кухни', 'ks']] : [['Стены', 'w'], ['Пол', 'fl'], ['Стулья', 'ch'], ['Шторы и навес', 'cu'], ['Ковёр', 'ru'], ['Крыша', 'rf']]).forEach(([n, k]) => {
+      H(n); const d = document.createElement('div'); d.className = 'sws';
+      PC.forEach(col => { const i = document.createElement('i'); i.style.background = hex(col); i.onclick = () => { c.cc = c.cc || {}; c.cc[k] = col; theme(c.th, c.kt, c.lv, c.cc); saveLay(); }; d.appendChild(i); }); el.appendChild(d); });
+  } else [['Стиль зала', TC, g.oc, 'th', HK], ['Стиль кухни', TK, g.ok, 'kt', KK]].forEach(([h, T, own, key, ks]) => { H(h);
+    T.forEach((t, i) => { const has = own.includes(i); el.appendChild(mk([t.n + (c[key] == i ? ' ✓' : has ? '' : ': ' + t.p), () => { if(!has){ g.gold -= t.p; own.push(i); } c[key] = i; c.cc = c.cc || {}; ks.forEach(q => delete c.cc[q]); theme(c.th, c.kt, c.lv, c.cc); saveLay(); edDraw(); }, c[key] != i, !has && g.gold < t.p])); }); });
+}
+$('eH').onclick = () => { erm = 0; pick(null); edCam(); edDraw(); }; $('eK').onclick = () => { erm = 1; pick(null); edCam(); edDraw(); };
+$('eRot').onclick = () => { if(esel && esel.dy){ esel.r = (esel.r + 1)%4; esel.g.rotation.y = esel.r*Math.PI/2; saveLay(); } };
+$('eDel').onclick = () => { const o = esel; if(!o) return; if(o.dy){ S.g.gold += CAT[o.k][1] >> 1; scene.remove(o.g); cols.splice(cols.indexOf(o.cs[0]), 1); DYNE.splice(DYNE.indexOf(o), 1); } else setPos(o, o.x, o.z, 1); pick(null); saveLay(); edDraw(); };
+$('eX').onclick = () => { const c = EC; if(c.v) applyCafe(); else { saveLay(); drawLot(c.lot); } EC = null; pick(null); $('ed').style.display = 'none'; openTown(); ti = c.lot; tcx = LOTX[ti]; townInfo(); };
+addEventListener('pointerdown', e => {
+  if(!EC || EC.v || e.target.closest('#ep,#eb,#es')) return; const p = fpt(e); if(!p) return; let b = null, bd = 1e9;
+  ED.concat(DYNE).forEach(o => { if(!o.g.visible || (o.x >= 8) != !!erm) return; const d = Math.hypot(o.x - p.x, o.z - p.z), r = o.k == 'table' ? 1.9 : o.k == 'rug' ? 2.4 : Math.max(o.cs[0] ? o.cs[0].r : 0, .8) + .3; if(d < r && d < bd){ bd = d; b = o; } });
+  pick(b); if(b) edrag = {o:b, dx:b.x - p.x, dz:b.z - p.z};
+});
+addEventListener('pointermove', e => {
+  if(!edrag || !EC) return; const p = fpt(e); if(!p) return; const o = edrag.o, k = o.x >= 8, sn = v => Math.round(v*4)/4;
+  const x = Math.max(k ? 8.9 : -7.3, Math.min(k ? 14.5 : 7.5, sn(p.x + edrag.dx))), z = Math.max(-5.2, Math.min(5.2, sn(p.z + edrag.dz)));
+  setPos(o, x, z, 0); selR.position.set(x, .06, z); edrag.m = 1;
+});
+addEventListener('pointerup', () => { if(edrag && edrag.m) saveLay(); edrag = null; });
 applyCafe();
 if(S.ot){ S.ot = 0; save(); openTown(); }
 
