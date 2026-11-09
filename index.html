@@ -74,6 +74,30 @@ svg{display:block}
 #pot i{position:absolute;left:50%;top:10%;width:12px;height:42%;margin-left:-6px;background:#d9b182;border-radius:6px;transform-origin:50% 100%}
 #fs{display:flex;flex-direction:column;gap:8px}
 #lv{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.ov #lv button{min-width:130px;padding:12px;font-size:17px;line-height:1.3}.ov #lv button.lk{opacity:.35}
+
+.ic svg{width:28px;height:28px;display:inline-block;vertical-align:middle}
+#fs svg{width:46px;height:46px}
+#town{position:fixed;inset:0;z-index:12;display:none;pointer-events:none}
+#town button{pointer-events:auto}
+#tt{position:absolute;left:max(14px,env(safe-area-inset-left,0px));right:max(14px,env(safe-area-inset-right,0px));top:calc(env(safe-area-inset-top,0px) + 10px);display:flex;justify-content:space-between;align-items:center}
+#tt .bb{min-width:0;padding:12px 20px;font-size:16px;border-radius:14px}
+#tt .r2{background:#fff;border:3px solid #d9b182;border-radius:16px;padding:6px 14px;font-weight:800}
+.ar{position:absolute;top:42%;width:68px;height:68px;border-radius:50%;border:4px solid #d9b182;background:rgba(255,255,255,.9);padding:0;box-shadow:0 4px 0 #d9b182}
+.ar svg{width:34px;height:34px;margin:auto}.ar:active{transform:translateY(3px);box-shadow:none}
+#aL{left:max(18px,env(safe-area-inset-left,0px))}#aR{right:max(18px,env(safe-area-inset-right,0px))}
+#tp{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 14px);width:min(780px,calc(100% - 28px));box-sizing:border-box;background:#fff;border:3px solid #d9b182;border-radius:22px;padding:12px 16px;display:flex;gap:12px;align-items:center;justify-content:space-between;pointer-events:auto}
+#ti{display:flex;flex-direction:column;gap:4px;font-weight:700;text-align:left;font-size:14px}#ti b{font-size:20px}
+#tbn{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+#tbn button{font:800 15px system-ui;padding:12px 16px;border:0;border-radius:14px;background:#ff8fb1;color:#fff;box-shadow:0 3px 0 #d6668a}
+#tbn button.alt{background:#fff;color:#6b3f24;border:2px solid #d9b182;box-shadow:0 3px 0 #d9b182}
+#tbn button:disabled{opacity:.4}
+#pMg{justify-content:flex-start;padding-top:calc(env(safe-area-inset-top,0px) + 12px)}
+#mg{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;width:min(780px,96vw);text-align:left}
+.it{background:#fff;border:2px solid #d9b182;border-radius:16px;padding:10px 12px;display:flex;flex-direction:column;gap:6px;font-weight:700;font-size:14px}
+.it b{font-size:17px}.it .sw{display:flex;gap:4px}.it .sw i{width:22px;height:22px;border-radius:50%;box-shadow:0 0 0 2px #d9b182}
+.ov .it button{min-width:0;padding:9px 12px;font-size:14px;border-radius:12px;box-shadow:0 3px 0 #d6668a;flex:1}
+.ov .it button.alt{background:#fff;color:#6b3f24;border:2px solid #d9b182;box-shadow:0 3px 0 #d9b182}
+.ov .it button:disabled{opacity:.4}
 </style>
 </head>
 <body>
@@ -84,17 +108,21 @@ svg{display:block}
 <div class="tag" id="hint">Джойстик слева. Большая кнопка справа: взять заказ, готовить, подать. Молния — бег, стрелки — скольжение<br>ПК: WASD или стрелки, E — действие, Q — выбросить блюдо, Shift — бег, Пробел — скольжение, Esc — пауза</div>
 <div id="prompt"><span id="pic"></span><span id="ptx"></span></div>
 <div id="joy"><i></i></div>
-<button class="btn" id="bRun"><span id="ir"></span>бег</button><button class="btn" id="bSlide"><span id="is"></span>скольжение</button><button class="btn" id="bDrop"><span style="font-size:30px">🗑</span>выбросить</button><button class="btn" id="bAct"><span id="ia"></span><b id="al">ДЕЙСТВИЕ</b></button>
+<button class="btn" id="bRun"><span id="ir"></span>бег</button><button class="btn" id="bSlide"><span id="is"></span>скольжение</button><button class="btn" id="bDrop"><span id="itr"></span>выбросить</button><button class="btn" id="bAct"><span id="ia"></span><b id="al">ДЕЙСТВИЕ</b></button>
 <div id="cook"><div id="ch"><b id="ct"></b><div id="cp"><i></i></div></div><div id="cs"></div><button class="bb alt" id="bCx">Назад</button></div>
-<div class="ov on" id="menu"><div class="mc"><h1>Мур-Кафе</h1><p>Кошачье кафе на двоих. Выбери цвет кота:</p><div id="sw"></div><input id="nm" maxlength="12" placeholder="Твоё имя"></div>
+<div class="ov on" id="menu"><div class="mc"><h1>Мур-Кафе</h1><p>Кошачье кафе на двоих. Выбери цвет кота:</p><div id="sw"></div><input id="nm" maxlength="12" placeholder="Твоё имя"><button class="alt" id="bTown">Город и кафе</button></div>
 <div class="mc"><button id="bSolo">Играть одному</button><button data-go="pRoom">Играть вместе</button><button class="alt" id="bLvl" data-go="pLvl">Уровень 1</button><button class="alt" data-go="pTop">Рейтинг</button><button class="alt" data-go="pSet">Настройки</button><button class="alt" data-go="pHelp">Как играть</button></div></div>
 <div class="ov" id="pRoom"><h2>Играть вместе</h2><button id="bNew">Создать комнату</button><div class="row"><input id="code" maxlength="4" placeholder="КОД" autocapitalize="characters"><button id="bJoin">Войти</button></div><p id="msg"></p><button class="alt" data-go="menu">Назад</button></div>
 <div class="ov" id="pSet"><h2>Настройки</h2><div id="opts"></div><button data-go="back">Готово</button></div>
-<div class="ov" id="pHelp"><h2>Как играть</h2><p>1. Гость сел за стол: подойди и нажми розовую кнопку, чтобы взять заказ.<br>2. Иди на кухню к нужной станции: откроется стол. Наливай молоко, режь торт, мешай суп пальцем.<br>3. Забери готовое блюдо и подай нужному гостю.<br>4. Мигающий гость скоро уйдёт, поторопись. На каждом уровне набери цель по монетам до конца времени.</p><button data-go="back">Понятно</button></div>
+<div class="ov" id="pHelp"><h2>Как играть</h2><p>1. Гость сел за стол: подойди и нажми розовую кнопку, чтобы взять заказ.<br>2. Иди на кухню к нужной станции: откроется стол. Наливай молоко, режь торт, мешай суп пальцем.<br>3. Забери готовое блюдо и подай нужному гостю.<br>4. Мигающий гость скоро уйдёт, поторопись. На каждом уровне набери цель по монетам до конца времени.<br>5. Монеты за смену копятся в казне. В городе покупай новые кафе, улучшай их, меняй оформление и нанимай котов.</p><button data-go="back">Понятно</button></div>
 <div class="ov" id="pLvl"><h2>Выбери уровень</h2><div id="lv"></div><button class="alt" data-go="menu">Назад</button></div>
 <div class="ov" id="pTop"><h2>Рейтинг</h2><p id="top"></p><button class="alt" data-go="menu">Назад</button></div>
 <div class="ov" id="pPause"><h2>Пауза</h2><button id="bRes">Продолжить</button><button class="alt" data-go="pSet">Настройки</button><button class="alt" data-go="pHelp">Как играть</button><button class="alt" id="bQuit">В меню</button></div>
-<div class="ov" id="pEnd"><h2>Смена окончена</h2><div id="stars"></div><p id="sum"></p><button id="bNext">Следующий уровень</button><button class="alt" id="bAgain">Ещё раз</button><button class="alt" id="bMenu">В меню</button></div>
+<div class="ov" id="pEnd"><h2>Смена окончена</h2><div id="stars"></div><p id="sum"></p><button id="bNext">Следующий уровень</button><button class="alt" id="bAgain">Ещё раз</button><button class="alt" id="bTownE">Город</button><button class="alt" id="bMenu">В меню</button></div>
+<div id="town"><div id="tt"><button class="bb alt" id="bTB">Назад</button><div class="r2"><span id="tic" class="ic"></span><b id="tg">0</b></div></div>
+<button class="ar" id="aL"></button><button class="ar" id="aR"></button>
+<div id="tp"><div id="ti"><b id="tn"></b><span id="td"></span></div><div id="tbn"></div></div></div>
+<div class="ov" id="pMg"><h2 id="mgt"></h2><div class="sg" id="mgtab"></div><p id="mgm"></p><div id="mg"></div><button class="alt" id="bMgX">Готово</button></div>
 <div class="ov" id="rot"><h2>Поверни телефон</h2><p>Мур-Кафе играется только горизонтально</p></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
@@ -170,7 +198,8 @@ function table(x, z){
   });
   cols.push({x, z, r:.95, t:1});
 }
-const TABLES = [[-3.5, 1], [1.5, 2], [5, -2]]; TABLES.forEach(q => table(q[0], q[1]));
+const TABLES = [[-3.5, 1], [1.5, 2], [5, -2], [-3.5, -2.3], [1.5, -2.6]], TG = [];
+TABLES.forEach((q, i) => { const n0 = scene.children.length, c0 = cols.length; table(q[0], q[1]); const g = new THREE.Group(); scene.children.slice(n0).forEach(m => g.add(m)); scene.add(g); TG.push(g); cols.slice(c0).forEach(o => o.tl = i); });
 box(.2, 2.6, 1.7, 0x8b5a3c, -8.02, 1.3, 4.3); box(.12, 2.3, 1.3, 0xd9a877, -7.94, 1.15, 4.3);
 function plant(x, z){
   cyl(.4, .3, .6, 0xc2724f, x, .3, z);
@@ -196,9 +225,11 @@ const LV = [
   {t:120, goal:140, gap:6, pat:60, max:5, items:['coffee', 'cake', 'soup']},
   {t:120, goal:180, gap:5, pat:55, max:5, items:['coffee', 'cake', 'soup']},
   {t:150, goal:250, gap:4.5, pat:50, max:6, items:['coffee', 'cake', 'soup']}];
-const S = {vol:.4, vib:1, btn:1, hq:0, diff:1, hints:1, name:'', best:0, seen:0, lvl:0, stars:[]};
+const S = {vol:.4, vib:1, btn:1, hq:0, diff:1, hints:1, name:'', best:0, seen:0, lvl:0, stars:[], g:null, ot:0};
 try{ Object.assign(S, JSON.parse(localStorage.getItem('murcafe') || '{}')); }catch(e){}
 const save = () => { try{ localStorage.setItem('murcafe', JSON.stringify(S)); }catch(e){} };
+const DG = () => ({gold:0, day:0, cur:0, oc:[0], ok:[0], cafes:[{lot:0, lv:1, th:0, kt:0, n:'Мур-Кафе', staff:[]}]});
+if(!S.g || !S.g.cafes) S.g = DG();
 let paused = false, cooking = null, shown = 0, lastCoins = 0, cur = 'menu', prev = 'menu', AC;
 function snd(f, d = .1, type = 'sine', v = 1){ if(!S.vol) return; try{ AC = AC || new (window.AudioContext || window.webkitAudioContext)(); const o = AC.createOscillator(), g = AC.createGain(), n = AC.currentTime; o.type = type; o.frequency.value = f; g.gain.setValueAtTime(.2*S.vol*v, n); g.gain.exponentialRampToValueAtTime(.001, n + d); o.connect(g); g.connect(AC.destination); o.start(n); o.stop(n + d); }catch(e){} }
 const vib = n => { if(S.vib && navigator.vibrate) navigator.vibrate(n); };
@@ -298,7 +329,7 @@ function syncCust(dt, t){
 // ---------- мир (хозяин считает, гость получает) ----------
 const W = {coins:0, cust:[], st:{coffee:[0, 0], cake:[0, 0], soup:[0, 0]}, held:{h:null, g:null}, time:LV[S.lvl].t, lv:S.lvl, served:0, lost:0, combo:0, over:0};
 const SEATS = [];
-TABLES.forEach(q => [-1, 1].forEach(s => SEATS.push({x:q[0] + s*1.4, z:q[1], f:-s*Math.PI/2, o:0})));
+function buildSeats(n){ SEATS.length = 0; TABLES.slice(0, n).forEach(q => [-1, 1].forEach(s => SEATS.push({x:q[0] + s*1.4, z:q[1], f:-s*Math.PI/2, o:0}))); } buildSeats(3);
 let role = 'h', cid = 0, spawnT = 1, ch = null, peer = false, rem = null;
 const pick = a => a[Math.random()*a.length|0];
 function spawn(){
@@ -310,19 +341,22 @@ function hostTick(dt){
   if(W.over) return;
   W.time -= dt; if(W.time <= 0){ W.time = 0; W.over = 1; push(); return; }
   spawnT -= dt;
-  if(spawnT <= 0 && W.cust.length < LV[W.lv].max){ spawn(); spawnT = LV[W.lv].gap*(.8 + Math.random()*.4)*S.diff; }
+  if(spawnT <= 0 && W.cust.length < Math.min(SEATS.length, LV[W.lv].max + CL)){ spawn(); spawnT = LV[W.lv].gap*(.8 + Math.random()*.4)*S.diff; }
   W.cust.forEach(c => {
     const go = sp => {
       const q = c.path[0], dx = q[0] - c.x, dz = q[1] - c.z, d = Math.hypot(dx, dz);
       if(d < sp*dt){ c.x = q[0]; c.z = q[1]; c.path.shift(); } else { c.x += dx/d*sp*dt; c.z += dz/d*sp*dt; }
     };
     if(c.s == 0){ if(c.path.length) go(2.4); else c.s = 1; }
-    else if(c.s == 1 || c.s == 2){ c.p = Math.max(0, c.p - dt/LV[W.lv].pat); if(c.p <= 0){ c.s = 4; c.seat.o = 0; c.path = [[c.seat.x, 4.3], [-7.9, 4.3]]; W.lost++; W.combo = 0; } }
+    else if(c.s == 1 || c.s == 2){ c.p = Math.max(0, c.p - dt/(LV[W.lv].pat*(1 + CL*.05))); if(c.p <= 0){ c.s = 4; c.seat.o = 0; c.path = [[c.seat.x, 4.3], [-7.9, 4.3]]; W.lost++; W.combo = 0; } }
     else if(c.s == 3){ c.t -= dt; if(c.t <= 0){ c.s = 4; c.seat.o = 0; c.path = [[c.seat.x, 4.3], [-7.9, 4.3]]; } }
     else if(c.s == 4){ if(c.path.length) go(2.4); else c.del = 1; }
   });
   W.cust = W.cust.filter(c => !c.del);
-  for(const n in W.st){ const s = W.st[n]; if(s[0] == 1){ s[1] += dt/3; if(s[1] >= 1){ s[0] = 2; s[1] = 0; } } }
+  const cr = W.crew || [];
+  if(cr.some(q => q.r == 'wait')) W.cust.forEach(c => { if(c.s == 1){ c.w = (c.w || 0) + dt; if(c.w > 2.5) c.s = 2; } });
+  cr.forEach(q => { const s = W.st[q.r]; if(s && s[0] == 0 && W.cust.some(c => c.s == 2 && c.m == q.r)){ s[0] = 1; s[1] = 0; } });
+  for(const n in W.st){ const s = W.st[n]; if(s[0] == 1){ s[1] += dt/3*(1 + CL*.12); if(s[1] >= 1){ s[0] = 2; s[1] = 0; } } }
 }
 function applyAct(who, a){
   const h = W.held;
@@ -330,14 +364,14 @@ function applyAct(who, a){
   else if(a.k == 'c'){
     const c = W.cust.find(q => q.i == a.id); if(!c) return;
     if(c.s == 1) c.s = 2;
-    else if(c.s == 2 && h[who] == c.m){ h[who] = null; c.s = 3; c.t = 4.5; W.combo++; W.served++; W.coins += 10 + Math.round(c.p*8) + Math.min(W.combo, 5)*2; }
+    else if(c.s == 2 && h[who] == c.m){ h[who] = null; c.s = 3; c.t = 4.5; W.combo++; W.served++; W.coins += Math.round((10 + Math.round(c.p*8) + Math.min(W.combo, 5)*2)*(1 + CL*.08)); }
   } else if(a.k == 's'){
     const s = W.st[a.n]; if(!s) return;
     if(s[0] == 2 && !h[who]){ h[who] = a.n; s[0] = 0; s[1] = 0; } else if(s[0] == 0){ s[0] = 1; s[1] = 0; W.coins += (a.q|0)*2; }
   }
   push();
 }
-const snap = () => ({Y:W.lv, T:W.time, O:W.over, V:W.served, L:W.lost, c:W.coins, t:W.st, e:W.held, u:W.cust.map(c => ({i:c.i, x:+c.x.toFixed(2), z:+c.z.toFixed(2), s:c.s, m:c.m, p:+c.p.toFixed(2), k:c.k, h:c.h, r:c.r, f:c.f}))});
+const snap = () => ({q:(W.crew || []).map(x => [x.r, x.f]), H:[CF().th, CF().kt, CF().lv], Y:W.lv, T:W.time, O:W.over, V:W.served, L:W.lost, c:W.coins, t:W.st, e:W.held, u:W.cust.map(c => ({i:c.i, x:+c.x.toFixed(2), z:+c.z.toFixed(2), s:c.s, m:c.m, p:+c.p.toFixed(2), k:c.k, h:c.h, r:c.r, f:c.f}))});
 function push(){ if(role == 'h' && ch && peer) ch.send({type:'broadcast', event:'w', payload:snap()}); }
 function act(a){ if(role == 'h') applyAct('h', a); else if(ch) ch.send({type:'broadcast', event:'a', payload:a}); }
 
@@ -396,7 +430,7 @@ const ban = t => { $('ban').textContent = t; };
 FUR.forEach((c, i) => { const d = document.createElement('i'); d.style.background = hex(c); d.onclick = () => { ci = i; [...$('sw').children].forEach((x, j) => x.classList.toggle('on', j == i)); }; $('sw').appendChild(d); });
 $('sw').firstChild.classList.add('on');
 function start(){
-  me.cat = makeCat(ci); playing = true; go(null); applyUI();
+  if(me.cat) scene.remove(me.cat.o); me.cat = makeCat(ci); playing = true; go(null); applyUI();
   try{ const f = !FINE && document.documentElement.requestFullscreen; if(f) f.call(document.documentElement).then(() => screen.orientation && screen.orientation.lock && screen.orientation.lock('landscape').catch(() => {})).catch(() => {}); }catch(e){}
   $('hud').style.display = 'flex'; $('hr').style.display = 'flex'; joyEl.style.display = 'block';
   ['bRun', 'bSlide', 'bAct'].forEach(i => $(i).style.display = 'flex');
@@ -413,7 +447,7 @@ function connect(code, host){
     if(!rem){ rem = {cat:makeCat(q.c | 0), x:q.x, z:q.z, f:0, st:0, sp:0}; ban('Вы вместе!'); setTimeout(() => ban(''), 3000); }
     rem.tx = q.x; rem.tz = q.z; rem.tf = q.f; rem.st = q.s | 0;
   });
-  ch.on('broadcast', {event:'w'}, m => { if(role == 'g'){ const p = m.payload; W.coins = p.c; W.lv = p.Y|0; W.time = p.T; W.over = p.O; W.served = p.V; W.lost = p.L; W.st = p.t; W.held = p.e; W.cust = p.u; } });
+  ch.on('broadcast', {event:'w'}, m => { if(role == 'g'){ const p = m.payload; W.coins = p.c; W.lv = p.Y|0; W.time = p.T; W.over = p.O; W.served = p.V; W.lost = p.L; W.st = p.t; W.held = p.e; W.cust = p.u; guestSync(p); } });
   ch.on('broadcast', {event:'a'}, m => { if(role == 'h') applyAct('g', m.payload); });
   ch.on('presence', {event:'sync'}, () => {
     const was = peer; peer = Object.values(ch.presenceState()).flat().some(x => x.w != role);
@@ -434,13 +468,13 @@ const OPTS = [['vol','Звук',[['Выкл',0],['Тихо',.4],['Громко',
 function drawOpts(){ const o = $('opts'); o.innerHTML = ''; OPTS.forEach(q => { const r = document.createElement('div'); r.innerHTML = '<div class="ol">' + q[1] + '</div><div class="sg"></div>'; q[2].forEach(v => { const b = document.createElement('button'); b.textContent = v[0]; b.className = S[q[0]] == v[1] ? 'on' : ''; b.onclick = () => { S[q[0]] = v[1]; save(); applyUI(); drawOpts(); snd(600, .06); vib(15); }; r.lastChild.appendChild(b); }); o.appendChild(r); }); }
 function applyUI(){ document.documentElement.style.setProperty('--bs', S.btn); R.setPixelRatio(S.hq ? Math.min(devicePixelRatio, 2) : 1); resize(); $('hint').style.display = S.hints ? '' : 'none'; }
 async function showTop(){ const el = $('top'); el.textContent = 'Загружаю...'; const d = await loadTop().catch(() => null); const e = x => String(x).replace(/[&<>]/g, c => '&#' + c.charCodeAt(0) + ';'); el.innerHTML = d == null ? 'Рейтинг заработает после подключения Supabase: впиши SUPABASE_URL и SUPABASE_KEY в начале скрипта.' : d.length ? d.map((r, i) => (i + 1) + '. ' + e(r.name) + ': ' + r.coins + ' монет, звёзд: ' + r.stars).join('<br>') : 'Пока пусто. Сыграй первую смену!'; }
-function resetWorld(){ Object.assign(W, {coins:0, cust:[], st:{coffee:[0, 0], cake:[0, 0], soup:[0, 0]}, held:{h:null, g:null}, time:LV[S.lvl].t, lv:S.lvl, served:0, lost:0, combo:0, over:0}); SEATS.forEach(s => s.o = 0); spawnT = 2; shown = 0; lastCoins = 0; me.x = -1.5; me.z = 3; me.stam = 100; ban('Уровень ' + (W.lv + 1) + ': набери ' + LV[W.lv].goal + ' монет'); setTimeout(() => ban(''), 4000); }
-function endShift(){ shown = 1; const L = LV[W.lv], st = W.coins >= L.goal*1.8 ? 3 : W.coins >= L.goal*1.4 ? 2 : W.coins >= L.goal ? 1 : 0; if(W.coins > S.best) S.best = W.coins; S.stars[W.lv] = Math.max(S.stars[W.lv]|0, st); save();
-  $('stars').textContent = '★'.repeat(st) + '☆'.repeat(3 - st); $('sum').innerHTML = (st ? 'Уровень ' + (W.lv + 1) + ' пройден!' : 'Цель ' + L.goal + ' монет не достигнута.') + '<br>Монет: <b>' + W.coins + '</b>. Подано: ' + W.served + '. Ушли: ' + W.lost + '.';
-  $('bAgain').style.display = role == 'h' ? '' : 'none'; $('bNext').style.display = role == 'h' && st && W.lv < LV.length - 1 ? '' : 'none'; snd(st ? 784 : 300, .3); go('pEnd'); cooking && closeCook();
+function resetWorld(){ Object.assign(W, {coins:0, cust:[], st:{coffee:[0, 0], cake:[0, 0], soup:[0, 0]}, held:{h:null, g:null}, time:LV[S.lvl].t, lv:S.lvl, served:0, lost:0, combo:0, over:0}); applyCafe(); buildSeats(tabN); spawnT = 2; shown = 0; lastCoins = 0; me.x = -1.5; me.z = 3; me.stam = 100; ban(CF().n + ', ' + (S.g.day%2 ? 'вечер' : 'утро') + '. Уровень ' + (W.lv + 1) + ': набери ' + LV[W.lv].goal + ' монет'); setTimeout(() => ban(''), 4000); }
+function endShift(){ shown = 1; const L = LV[W.lv], st = W.coins >= L.goal*1.8 ? 3 : W.coins >= L.goal*1.4 ? 2 : W.coins >= L.goal ? 1 : 0; if(W.coins > S.best) S.best = W.coins; S.stars[W.lv] = Math.max(S.stars[W.lv]|0, st); const pd = role == 'h' ? payDay() : ''; save();
+  $('stars').innerHTML = star3(st, 56); $('sum').innerHTML = (st ? 'Уровень ' + (W.lv + 1) + ' пройден!' : 'Цель ' + L.goal + ' монет не достигнута.') + '<br>Монет: <b>' + W.coins + '</b>. Подано: ' + W.served + '. Ушли: ' + W.lost + '.' + pd;
+  $('bAgain').style.display = role == 'h' ? '' : 'none'; $('bNext').style.display = role == 'h' && st && W.lv < LV.length - 1 ? '' : 'none'; $('bTownE').style.display = role == 'h' && !ch ? '' : 'none'; snd(st ? 784 : 300, .3); go('pEnd'); cooking && closeCook();
   if(role == 'h') saveScore({name:S.name || 'Кот', coins:W.coins, served:W.served, stars:st, mode:(ch ? 'duo' : 'solo') + ':' + (W.lv + 1)}); }
 function labelLvl(){ $('bLvl').textContent = 'Уровень ' + (S.lvl + 1) + ': выбрать'; }
-function drawLv(){ const e = $('lv'); e.innerHTML = ''; LV.forEach((L, i) => { const ok = i == 0 || (S.stars[i - 1]|0) > 0, b = document.createElement('button'), n = S.stars[i]|0; b.className = (i == S.lvl ? '' : 'alt') + (ok ? '' : ' lk'); b.innerHTML = (ok ? i + 1 : 'Закрыт') + '<br>' + '★'.repeat(n) + '☆'.repeat(3 - n) + '<br>цель ' + L.goal; b.onclick = () => { if(!ok) return; S.lvl = i; save(); labelLvl(); go('menu'); }; e.appendChild(b); }); }
+function drawLv(){ const e = $('lv'); e.innerHTML = ''; LV.forEach((L, i) => { const ok = i == 0 || (S.stars[i - 1]|0) > 0, b = document.createElement('button'), n = S.stars[i]|0; b.className = (i == S.lvl ? '' : 'alt') + (ok ? '' : ' lk'); b.innerHTML = (ok ? i + 1 : 'Закрыт') + '<br>' + star3(n, 20) + '<br>цель ' + L.goal; b.onclick = () => { if(!ok) return; S.lvl = i; save(); labelLvl(); go('menu'); }; e.appendChild(b); }); }
 $('bNext').onclick = () => { S.lvl = W.lv + 1; save(); labelLvl(); resetWorld(); push(); go(null); };
 labelLvl();
 $('nm').value = S.name; $('nm').oninput = () => { S.name = $('nm').value; save(); };
@@ -480,7 +514,7 @@ const G = {
   soup(st, fin){
     st.innerHTML = '<div id="fs"></div><div id="pot"><i></i></div>';
     const fs = st.firstChild, pot = st.lastChild, t0 = Date.now(); let f = 0;
-    for(let i = 0; i < 3; i++){ const b = document.createElement('button'); b.className = 'bb alt'; b.textContent = '🐟'; b.onpointerdown = () => { b.remove(); snd(500 + i*80, .08); vib(15); hp(++f/6); if(f == 3){ $('ct').textContent = 'Мешай суп кругами пальцем'; stir(); } }; fs.appendChild(b); }
+    for(let i = 0; i < 3; i++){ const b = document.createElement('button'); b.className = 'bb alt'; b.innerHTML = svg('fish', '#6b8fb5'); b.onpointerdown = () => { b.remove(); snd(500 + i*80, .08); vib(15); hp(++f/6); if(f == 3){ $('ct').textContent = 'Мешай суп кругами пальцем'; stir(); } }; fs.appendChild(b); }
     function stir(){ let a = null, sum = 0; st.onpointerup = () => a = null;
       st.onpointermove = e => { if(!e.buttons) return; const r = pot.getBoundingClientRect(), th = Math.atan2(e.clientY - (r.top + r.height/2), e.clientX - (r.left + r.width/2));
         if(a != null){ let d = th - a; d = Math.atan2(Math.sin(d), Math.cos(d)); sum += Math.abs(d); pot.firstChild.style.transform = 'rotate(' + sum*57 + 'deg)'; hp(.5 + Math.min(.5, sum/(Math.PI*12)));
@@ -533,6 +567,181 @@ $('bRun').addEventListener('pointerdown', e => { runHeld = true; runPtr = e.poin
 $('bSlide').addEventListener('pointerdown', () => { hideHint(); trySlide(); });
 $('bAct').addEventListener('pointerdown', () => { hideHint(); doAct(); });
 
+// ---------- город, кафе, персонал ----------
+Object.assign(SV, {
+trash:'<path d="M14 18h36M26 18v-6h12v6M18 18l3 36h22l3-36" fill="none" stroke="@" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>',
+fish:'<path d="M6 32c10-14 26-16 38-6l12-8v28l-12-8C32 48 16 46 6 32z" fill="@"/><circle cx="20" cy="30" r="3" fill="#fff"/>',
+star:'<path d="M32 6l8.5 17.5 19 2.7-13.8 13.4 3.3 19L32 49.5 15 58.6l3.3-19L4.5 26.2l19-2.7z" fill="@"/>',
+arL:'<path d="M40 10L18 32l22 22" fill="none" stroke="@" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>',
+arR:'<path d="M24 10l22 22-22 22" fill="none" stroke="@" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>'});
+const star3 = (n, z) => [0, 1, 2].map(i => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="' + z + '" height="' + z + '" style="display:inline-block">' + SV.star.replace(/@/g, i < n ? '#f2b632' : '#e6d3bd') + '</svg>').join('');
+$('itr').innerHTML = svg('trash', '#6b3f24'); $('tic').innerHTML = svg('coin', '#f2b632'); $('aL').innerHTML = svg('arL', '#6b3f24'); $('aR').innerHTML = svg('arR', '#6b3f24');
+
+const TC = [
+ {n:'Классика', p:0, w:[0xf7dcc6, 0xf2d0b8], ch:0xe8a0b0, ru:[0xf5b8c4, 0xfde3e8], cu:0xff9fb8, fl:['#e2bb8c', '#d9b182'], r:0xc2724f},
+ {n:'Мята', p:120, w:[0xd6efe4, 0xc7e6d8], ch:0x8fc9b0, ru:[0xa8dcc8, 0xe4f6ee], cu:0x6fbf9f, fl:['#e7dcc0', '#dccfae'], r:0x6fbf9f},
+ {n:'Лаванда', p:180, w:[0xe6dcf5, 0xd9cced], ch:0xb9a3e3, ru:[0xcdb8f0, 0xece4fb], cu:0x9b86d6, fl:['#e8d9ca', '#ddc9b6'], r:0x9b86d6},
+ {n:'Какао', p:260, w:[0xd9b99b, 0xcba386], ch:0x8a5a3c, ru:[0xb98560, 0xe2c39f], cu:0xc2724f, fl:['#c49a6c', '#b88a5c'], r:0x8a5a3c}];
+const TK = [
+ {n:'Сталь', p:0, w:[0xe3ebef, 0xdfe9ee], st:0xb8c4d0, fl:['#f4f1ea', '#cfd8dc']},
+ {n:'Мятная', p:120, w:[0xd6efe4, 0xcce8dc], st:0x9fd3c0, fl:['#f4f1ea', '#bfe3d2']},
+ {n:'Тёмная', p:200, w:[0x6a6a7a, 0x5f5f6f], st:0x7a7a8c, fl:['#5a5a6a', '#44444f']},
+ {n:'Розовая', p:260, w:[0xf7d6e0, 0xefc9d6], st:0xe9a9bd, fl:['#ffffff', '#f4c2d3']}];
+const TM = {}, WANT = {w0:0xf7dcc6, w1:0xf2d0b8, ch:0xe8a0b0, r1:0xf5b8c4, r2:0xfde3e8, cu:0xff9fb8, k0:0xe3ebef, k1:0xdfe9ee, ks:0xb8c4d0};
+for(const k in WANT) TM[k] = [];
+scene.traverse(o => { if(o.isMesh && o.material.isMeshLambertMaterial && !o.material.map){ const h = o.material.color.getHex(); for(const k in WANT) if(WANT[k] == h) TM[k].push(o.material); } });
+const tint = (a, c) => a.forEach(m => m.color.setHex(c));
+function paintWood(a, b){ const g = wood.image.getContext('2d'); for(let i = 0; i < 8; i++){ g.fillStyle = i%2 ? a : b; g.fillRect(0, i*32, 256, 32); g.fillStyle = 'rgba(120,70,30,.25)'; g.fillRect(0, i*32, 256, 2); } wood.needsUpdate = true; }
+function paintKit(a, b){ const g = kt.image.getContext('2d'); for(let i = 0; i < 4; i++) for(let j = 0; j < 4; j++){ g.fillStyle = (i + j)%2 ? a : b; g.fillRect(i*32, j*32, 32, 32); } kt.needsUpdate = true; }
+let CL = 0, tabN = 3, hk = '';
+function theme(th, k, lv){
+  const a = TC[th] || TC[0], b = TK[k] || TK[0];
+  tint(TM.w0, a.w[0]); tint(TM.w1, a.w[1]); tint(TM.ch, a.ch); tint(TM.r1, a.ru[0]); tint(TM.r2, a.ru[1]); tint(TM.cu, a.cu); paintWood(a.fl[0], a.fl[1]);
+  tint(TM.k0, b.w[0]); tint(TM.k1, b.w[1]); tint(TM.ks, b.st); paintKit(b.fl[0], b.fl[1]);
+  tabN = lv >= 5 ? 5 : lv >= 3 ? 4 : 3; TG.forEach((g, i) => g.visible = i < tabN); CL = lv - 1;
+}
+const CF = () => S.g.cafes[S.g.cur] || S.g.cafes[0];
+const cafeAt = i => S.g.cafes.find(c => c.lot == i);
+const onSlot = q => q.sc == 2 || q.sc == S.g.day%2;
+function applyCafe(){ const c = CF(); theme(c.th, c.kt, c.lv); W.crew = c.staff.filter(onSlot); }
+function guestSync(p){ W.crew = (p.q || []).map(x => ({r:x[0], f:x[1]})); const h = (p.H || []).join(); if(h != hk && p.H){ hk = h; theme(p.H[0], p.H[1], p.H[2]); } }
+function payDay(){
+  const g = S.g, c = CF(); let w = 0; const gone = []; g.gold += W.coins;
+  c.staff = c.staff.filter(q => {
+    if(!onSlot(q)) return true;
+    if(g.gold < q.wage){ gone.push(q.n + ' (не хватило на зарплату)'); return false; }
+    if(q.wage < q.ask*.9 && Math.random() < .3){ gone.push(q.n + ' (мало платят)'); return false; }
+    g.gold -= q.wage; w += q.wage; return true; });
+  g.day++;
+  return '<br>В кассу: <b>' + W.coins + '</b>' + (w ? '. Зарплаты: -' + w : '') + (gone.length ? '<br>Ушли: ' + gone.join(', ') : '') + '<br>В казне: <b>' + g.gold + '</b>';
+}
+
+// коты-работники в кафе
+const cv = [], PAT = [[-1, 3.9], [-6.4, 3.9], [-1, 3.9], [-1, -3.5], [-1, 3.9], [6.4, 3.9], [-1, 3.9], [-1, -.4]];
+function syncCrew(dt, t){
+  const cr = playing ? (W.crew || []) : [];
+  while(cv.length > cr.length) scene.remove(cv.pop().c.o);
+  cr.forEach((q, i) => {
+    const k = q.f + q.r + i, wt = q.r == 'wait'; let v = cv[i];
+    if(!v || v.k != k){ if(v) scene.remove(v.c.o); const n0 = (i*3)%8; v = cv[i] = {c:makeCat(q.f), k, n:n0, w:0, f:Math.PI, x:wt ? PAT[n0][0] : STN[q.r].x + (cr.findIndex(z => z.r == q.r) == i ? 0 : .9), z:wt ? PAT[n0][1] : SZ + 1.1}; }
+    let mv = 0;
+    if(wt){
+      if(v.w > 0) v.w -= dt;
+      else { const p = PAT[v.n], dx = p[0] - v.x, dz = p[1] - v.z, d = Math.hypot(dx, dz);
+        if(d < 2.4*dt){ v.x = p[0]; v.z = p[1]; v.n = (v.n + 1)%8; v.w = .8; } else { v.x += dx/d*2.4*dt; v.z += dz/d*2.4*dt; v.f = Math.atan2(dx, dz); mv = 1; } }
+    } else { v.f = Math.PI; const s = W.st[q.r]; mv = s && s[0] == 1 ? .4 : 0; }
+    v.c.o.position.x = v.x; v.c.o.position.z = v.z; v.c.g.rotation.y = v.f; pose(v.c, mv ? 1 : 0, mv, t, dt, i*1.3);
+  });
+}
+
+// город
+const TZ = -80, LOTX = [0, 15, 30, 45, 60], PRICE = [0, 400, 900, 1600, 2800], UPC = [150, 350, 700, 1300];
+const town = new THREE.Group(); town.position.z = TZ; town.visible = false; scene.add(town);
+const tb = (w, h, d, c, x, y, z) => box(w, h, d, c, x, y, z, town), tcy = (a, b, h, c, x, y, z) => cyl(a, b, h, c, x, y, z, town), tsp = (r, c, x, y, z, sx, sy, sz) => sph(r, c, x, y, z, town, sx, sy, sz);
+let sd = 7; const rnd = () => (sd = (sd*9301 + 49297)%233280)/233280;
+const tree = (x, z, s) => { tcy(.2*s, .26*s, 1.2*s, 0x8a5a3c, x, .6*s, z); tsp(.95*s, 0x6fbf73, x, 1.7*s, z); tsp(.65*s, 0x8fd18a, x, 2.4*s, z); };
+tb(240, .2, 140, 0x9fd68a, 30, -.1, -30);
+[-7.5, 7.5, -15, -29, -43].forEach(z => tb(200, .06, z == -15 || z < -20 ? 4 : 5, 0x77778a, 30, .03, z));
+for(let i = 0; i <= 5; i++) tb(5, .07, 20, 0x77778a, -7.5 + i*15, .035, 0);
+for(let x = -30; x <= 90; x += 4) tb(1.8, .08, .22, 0xfff4d6, x, .07, 7.5);
+LOTX.forEach(x => { tb(10.6, .12, 10.6, 0xece4d6, x, .06, 0); [-1, 1].forEach(s => tree(x + s*4.4, 3.9, .6)); });
+for(let x = -26; x <= 86; x += 6) tree(x + rnd()*2, 13 + rnd()*2, .9 + rnd()*.4);
+const PAL = [0xffd6c9, 0xfff1c9, 0xd6efe4, 0xdfd3f5, 0xc9e4ff, 0xffe0ec], RF = [0xc2724f, 0x9aa3b5, 0x8a5a3c, 0xb98560];
+for(let r = 0; r < 3; r++) for(let x = -30; x <= 90; x += 8){
+  const z = -22 - r*14 + (rnd() - .5)*3, w = 4 + rnd()*2.5, h = 2.5 + rnd()*3.5 + r*.5, d = 4 + rnd()*2;
+  tb(w, h, d, PAL[rnd()*6|0], x, h/2, z);
+  const g = new THREE.ConeGeometry(w*.78, 1.4, 4); g.rotateY(Math.PI/4); const m = add(g, M(RF[rnd()*4|0]), x, h + .7, z, town); m.scale.z = d/w;
+  if(rnd() < .6) tree(x + 4, z + 3.5, .8);
+}
+[-20, 10, 40, 70, 100].forEach(x => tsp(16, 0x8fd18a, x, -4, -82, 1.5, .55, .8));
+[[-10, 12, -60], [30, 13, -75], [70, 12, -62]].forEach(q => { tsp(4, 0xffffff, q[0], q[1], q[2], 2, .5, 1); tsp(3, 0xffffff, q[0] + 4, q[1] - .4, q[2], 1.6, .5, 1); });
+const lg = LOTX.map(x => { const g = new THREE.Group(); g.position.x = x; town.add(g); return g; });
+const signT = (txt, bg, fg) => new THREE.MeshBasicMaterial({map:canvasTex(512, 128, g => { g.fillStyle = bg; g.fillRect(0, 0, 512, 128); g.fillStyle = fg; g.font = 'bold 64px system-ui,sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(txt, 256, 68); })});
+const sgn = (g, w, h, mat, x, y, z) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), mat); m.position.set(x, y, z); g.add(m); };
+function drawLot(i){
+  const g = lg[i], c = cafeAt(i); while(g.children.length) g.remove(g.children[0]);
+  const t = c ? TC[c.th] : null, fl = c ? 1 + (c.lv > 2) + (c.lv > 4) : 1, H = c ? fl*3 : 2.6;
+  box(7, H, 5.6, c ? t.w[0] : 0xd9d4cc, 0, H/2, -.4, g);
+  const rg = new THREE.ConeGeometry(5.6, 1.8, 4); rg.rotateY(Math.PI/4); const rf = add(rg, M(c ? t.r : 0x9aa3b5), 0, H + .9, -.4, g); rf.scale.z = .82;
+  if(c){
+    box(1.2, 1.7, .12, 0x8a5a3c, 0, .85, 2.46, g);
+    for(let k = 0; k < 7; k++) box(1, .15, 1.1, k%2 ? 0xffffff : t.cu, -3 + k, 1.95, 2.95, g);
+    for(let f = 0; f < fl; f++) [-2.2, 2.2].concat(f ? [0] : []).forEach(x => box(1.1, 1, .1, 0xbfe6ff, x, 1.2 + f*3, 2.45, g).material.emissive.set(0x6fa8d6));
+    sgn(g, 3.2, .7, signT(c.n.toUpperCase(), '#6b3f24', '#ffe9d6'), 0, 2.5, 2.47);
+    box(.7, 1.4, .7, 0xb98560, 2.4, H + 1.2, -1, g); cyl(.25, .2, .4, 0xc2724f, -3.4, .2, 3.2, g); sph(.35, 0x6fbf73, -3.4, .7, 3.2, g);
+  } else {
+    box(1.2, 1.7, .12, 0x6a6a7a, 0, .85, 2.46, g); box(1.1, 1, .1, 0xb8c4d0, -2.2, 1.2, 2.45, g); box(1.1, 1, .1, 0xb8c4d0, 2.2, 1.2, 2.45, g);
+    box(.12, 1.7, .12, 0x8a5a3c, 3.7, .85, 3.9, g); sgn(g, 2, .5, signT('ПРОДАЁТСЯ', '#e0678a', '#ffffff'), 3.7, 2.05, 3.97); sgn(g, 1.4, .6, signT(String(PRICE[i]), '#ffffff', '#6b3f24'), 3.7, 1.45, 3.97);
+  }
+}
+LOTX.forEach((x, i) => drawLot(i));
+
+let tmode = false, ti = 0, tcx = 0, MC = null, mt = 0, mm = '';
+function townCam(dt){ const tx = LOTX[ti], d = Math.abs(tx - tcx); tcx += (tx - tcx)*Math.min(1, dt*2.6); cam.position.set(tcx, 8 + Math.min(d, 16)*.4, TZ + 18); cam.lookAt(tcx, 2, TZ); }
+function openTown(){
+  hideHint(); tmode = true; go(null); $('town').style.display = 'block'; town.visible = true; scene.background.setHex(0xbfe6ff); cam.far = 400; cam.updateProjectionMatrix();
+  ti = CF().lot; tcx = LOTX[ti]; townInfo();
+}
+function closeTown(){ tmode = false; $('town').style.display = 'none'; town.visible = false; scene.background.setHex(0xffe9d6); cam.far = 100; cam.updateProjectionMatrix(); resize(); }
+function townInfo(){
+  const c = cafeAt(ti), g = S.g, el = $('tbn'); $('tg').textContent = g.gold; el.innerHTML = '';
+  $('tn').textContent = c ? c.n : 'Участок ' + (ti + 1) + ' продаётся';
+  $('td').textContent = c ? 'Уровень ' + c.lv + ' из 5. Столов: ' + (c.lv >= 5 ? 5 : c.lv >= 3 ? 4 : 3) + '. Места для персонала: ' + c.staff.length + ' из ' + c.lv : 'Цена: ' + PRICE[ti] + ' монет. Здесь будет твоё новое кафе';
+  const B = (t, f, alt, dis) => { const b = document.createElement('button'); b.textContent = t; if(alt) b.className = 'alt'; b.disabled = !!dis; b.onclick = f; el.appendChild(b); };
+  if(c){
+    B('Играть здесь', () => { S.g.cur = g.cafes.indexOf(c); save(); closeTown(); ch = null; role = 'h'; start(); });
+    B(c.lv < 5 ? 'Улучшить: ' + UPC[c.lv - 1] : 'Максимум', () => { g.gold -= UPC[c.lv - 1]; c.lv++; save(); snd(880, .15); drawLot(ti); townInfo(); }, 1, c.lv >= 5 || g.gold < UPC[c.lv - 1]);
+    B('Оформление', () => openMg(c, 0), 1); B('Персонал', () => openMg(c, 2), 1);
+  } else B('Купить: ' + PRICE[ti], () => { g.gold -= PRICE[ti]; g.cafes.push({lot:ti, lv:1, th:0, kt:0, n:'Мур-Кафе ' + (g.cafes.length + 1), staff:[]}); save(); snd(880, .15); drawLot(ti); townInfo(); }, 0, g.gold < PRICE[ti]);
+}
+$('aL').onclick = () => { ti = Math.max(0, ti - 1); snd(500, .05); townInfo(); };
+$('aR').onclick = () => { ti = Math.min(LOTX.length - 1, ti + 1); snd(500, .05); townInfo(); };
+$('bTB').onclick = () => { closeTown(); go('menu'); };
+$('bTown').onclick = openTown;
+$('bTownE').onclick = () => { S.ot = 1; save(); location.reload(); };
+$('bMgX').onclick = () => { go(null); townInfo(); };
+
+// оформление, персонал, наём
+const NM = ['Мурзик', 'Пушок', 'Барсик', 'Снежок', 'Рыжик', 'Багира', 'Симба', 'Кузя', 'Мотя', 'Персик', 'Зефир', 'Бублик', 'Лапка', 'Тучка', 'Ириска'];
+const RN = {wait:'Официант', coffee:'Бариста', cake:'Кондитер', soup:'Повар'}, RI = {wait:['paw', '#6b3f24'], coffee:['coffee', '#7a4a2a'], cake:['cake', '#e0678a'], soup:['soup', '#d98a3a']};
+const SCN = ['Утро', 'Вечер', 'Весь день'], PF = ['Любит работать утром.', 'Любит работать вечером.', 'Подойдёт любой график.'];
+const mk = q => { const b = document.createElement('button'); b.textContent = q[0]; if(q[2]) b.className = 'alt'; b.disabled = !!q[3]; b.onclick = q[1]; return b; };
+function card(h, btns){ const d = document.createElement('div'); d.className = 'it'; d.innerHTML = h; btns.forEach(q => { if(Array.isArray(q[0])){ const r = document.createElement('div'); r.className = 'row'; q.forEach(x => r.appendChild(mk(x))); d.appendChild(r); } else d.appendChild(mk(q)); }); $('mg').appendChild(d); }
+const sw = a => '<div class="sw">' + a.map(c => '<i style="background:' + hex(c) + '"></i>').join('') + '</div>';
+const role4 = r => '<div><span class="ic">' + svg(RI[r][0], RI[r][1]) + '</span> ' + RN[r] + '</div>';
+function openMg(c, t){ MC = c; mt = t; mm = ''; go('pMg'); mgDraw(); }
+function genCand(){ const r = pick(['wait', 'coffee', 'cake', 'soup']), ask = 8 + (Math.random()*10|0) + (r == 'wait' ? 0 : 4), pref = pick([0, 1, 2]); return {n:pick(NM), f:Math.random()*6|0, r, ask, pref, tries:0, o:{w:ask, sc:pref == 2 ? 0 : pref}}; }
+function offer(k){
+  const g = S.g, c = g.cand[k], o = c.o, need = c.ask*(o.sc == 2 ? 1.6 : 1), r = o.w/need, mis = c.pref != 2 && o.sc != 2 && o.sc != c.pref; c.tries++;
+  let p = r >= 1.2 ? .95 : r >= 1 ? .7 : r >= .85 ? .3 : r >= .7 ? .08 : 0; if(mis) p *= .15;
+  if(Math.random() < p){ MC.staff.push({n:c.n, f:c.f, r:c.r, sc:o.sc, wage:o.w, ask:c.ask}); g.cand.splice(k, 1); mm = c.n + ' согласился и выйдет на смену. Зарплата: ' + o.w + ' за смену.'; snd(880, .15); }
+  else { const why = mis ? 'Этот график не подходит.' : r < .85 ? 'Мало платите.' : 'Подумал и передумал.'; if(c.tries >= 2 || r < .7){ g.cand.splice(k, 1); mm = c.n + ' отказался и ушёл. ' + why; } else mm = c.n + ' отказывается. ' + why + ' Можно предложить ещё раз.'; snd(220, .2, 'triangle'); }
+  save(); mgDraw();
+}
+function mgDraw(){
+  const g = S.g; $('mg').innerHTML = ''; $('mgt').innerHTML = MC.n + '<span class="ic" style="margin-left:14px">' + svg('coin', '#f2b632') + '</span> ' + g.gold;
+  const tabs = $('mgtab'); tabs.innerHTML = ['Кафе', 'Кухня', 'Персонал', 'Наём'].map((n, i) => '<button class="' + (i == mt ? 'on' : '') + '" data-i="' + i + '">' + n + '</button>').join('');
+  [...tabs.children].forEach(b => b.onclick = () => { mt = +b.dataset.i; mm = ''; mgDraw(); });
+  $('mgm').textContent = mm || (mt == 3 ? 'Предложи зарплату и график. Кот может отказаться и уйти. Весь день: работает в обе смены, просит больше.' : mt == 2 ? 'Следующая смена: ' + (g.day%2 ? 'вечер' : 'утро') + '. ' + (MC.staff.length ? 'Зарплата списывается после смены, в которой кот работал. Если платить мало, он может уйти.' : 'Пока никого нет. Загляни во вкладку Наём.') : 'Оформление покупается один раз и подходит для любого твоего кафе.');
+  if(mt < 2){
+    const T = mt ? TK : TC, own = mt ? g.ok : g.oc, key = mt ? 'kt' : 'th';
+    T.forEach((t, i) => { const has = own.includes(i), sel = MC[key] == i;
+      card('<b>' + t.n + '</b>' + sw(mt ? [t.w[0], t.st, parseInt(t.fl[1].slice(1), 16)] : [t.w[0], t.ch, t.ru[0], t.cu]), [[sel ? 'Выбрано' : has ? 'Выбрать' : 'Купить: ' + t.p, () => { if(!has){ g.gold -= t.p; own.push(i); } MC[key] = i; save(); mgDraw(); drawLot(MC.lot); }, 0, sel || (!has && g.gold < t.p)]]); });
+  } else if(mt == 2){
+    MC.staff.forEach((q, i) => card('<b>' + q.n + '</b>' + sw([FUR[q.f]]) + role4(q.r) + '<div>График: ' + SCN[q.sc] + '</div><div>Зарплата за смену: ' + q.wage + '</div>', [['Прибавка +2', () => { q.wage += 2; save(); mgDraw(); }, 1], ['Уволить', () => { MC.staff.splice(i, 1); save(); mgDraw(); }, 1]]));
+  } else {
+    if(!g.cand || g.cd != g.day){ g.cd = g.day; g.cand = [genCand(), genCand(), genCand()]; save(); }
+    if(!g.cand.length) $('mgm').textContent = mm || 'Сегодня больше нет желающих. Приходи после следующей смены.';
+    g.cand.forEach((c, k) => { const o = c.o;
+      card('<b>' + c.n + '</b>' + sw([FUR[c.f]]) + role4(c.r) + '<div>Ожидает около ' + c.ask + ' за смену. ' + PF[c.pref] + '</div>', [
+        [['-2', () => { o.w = Math.max(2, o.w - 2); mgDraw(); }, 1], ['+2', () => { o.w += 2; mgDraw(); }, 1]],
+        ['График: ' + SCN[o.sc], () => { o.sc = (o.sc + 1)%3; mgDraw(); }, 1],
+        ['Предложить: ' + o.w, () => offer(k), 0, MC.staff.length >= MC.lv]]); });
+  }
+}
+applyCafe();
+if(S.ot){ S.ot = 0; save(); openTown(); }
+
 // ---------- игровой цикл ----------
 const love = $('love'), clock = new THREE.Clock(); let lastSend = 0, lastSnap = 0, tixKey = '', heldKey = '';
 R.setAnimationLoop(() => {
@@ -554,7 +763,7 @@ R.setAnimationLoop(() => {
     else { const sp = me.fall > 0 ? 0 : run ? 8.2 : 5, a = Math.min(1, dt*(me.fall > 0 ? 4 : 10)); me.vx += (x*sp - me.vx)*a; me.vz += (z*sp - me.vz)*a; }
     me.x = Math.max(-7.3, Math.min(14.3, me.x + me.vx*dt)); me.z = Math.max(-5.3, Math.min(5.3, me.z + me.vz*dt));
     cols.forEach(o => {
-      if(o.t && me.slide > 0) return;
+      if(o.t && me.slide > 0) return; if(o.tl != null && o.tl >= tabN) return;
       const dx = me.x - o.x, dz = me.z - o.z, d = Math.hypot(dx, dz), m = o.r + .45;
       if(d < m && d > 0){ me.x = o.x + dx/d*m; me.z = o.z + dz/d*m; }
     });
@@ -568,7 +777,7 @@ R.setAnimationLoop(() => {
     tgt = target(); const pr = $('prompt');
     if(tgt){ pr.style.display = 'flex'; $('ptx').textContent = tgt.l; } else pr.style.display = 'none';
   }
-  syncCust(dt, t);
+  syncCust(dt, t); syncCrew(dt, t); if(tmode) townCam(dt);
   for(const n in STN){
     const o = STN[n], s = W.st[n];
     if(s[0] == 1){ const q = Math.floor(s[1]*16); if(q != o.q){ o.q = q; ring(o, s[1]); } o.sp.material.map = o.tex; o.sp.material.needsUpdate = true; o.sp.visible = true; }
