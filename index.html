@@ -25,7 +25,10 @@ svg{display:block}
 #hint{bottom:calc(env(safe-area-inset-bottom,0px) + 10px);font-size:14px;transition:opacity 1s;padding:0 16px}
 #prompt{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 40px);transform:translateX(-50%);display:none;align-items:center;gap:8px;background:#fff;border:2px solid #d9b182;border-radius:20px;padding:8px 16px;font-weight:700;pointer-events:none;white-space:nowrap}
 #prompt svg{width:20px;height:20px}
-#rot{display:none;z-index:99}@media (orientation:portrait){#rot{display:flex}}
+#rot{display:none;z-index:99}@media (orientation:portrait) and (pointer:coarse){#rot{display:flex}}
+@media (pointer:fine){#joy{display:none!important}}
+#hold{cursor:pointer}
+#bDrop{right:calc(40px + 140px*var(--bs));bottom:calc(env(safe-area-inset-bottom,0px) + 40px + 100px*var(--bs));font-size:11px}
 :root{--bs:1}
 #hud{left:max(14px,env(safe-area-inset-left,0px))}
 #stam{width:150px;height:14px}.r2{font-size:20px}.r2 svg{width:28px;height:28px}
@@ -78,10 +81,10 @@ svg{display:block}
 <div id="tix"></div>
 <div id="hr"><span id="tm">2:00</span><span>Подано: <b id="srv">0</b></span><button id="bPause">II</button></div>
 <div class="tag" id="ban"></div><div class="tag" id="love"></div>
-<div class="tag" id="hint">Джойстик слева. Большая кнопка справа: взять заказ, готовить, подать. Молния — бег, стрелки — скольжение<br>ПК: WASD, E — действие, Shift — бег, Пробел — скольжение, Esc — пауза</div>
+<div class="tag" id="hint">Джойстик слева. Большая кнопка справа: взять заказ, готовить, подать. Молния — бег, стрелки — скольжение<br>ПК: WASD или стрелки, E — действие, Q — выбросить блюдо, Shift — бег, Пробел — скольжение, Esc — пауза</div>
 <div id="prompt"><span id="pic"></span><span id="ptx"></span></div>
 <div id="joy"><i></i></div>
-<button class="btn" id="bRun"><span id="ir"></span>бег</button><button class="btn" id="bSlide"><span id="is"></span>скольжение</button><button class="btn" id="bAct"><span id="ia"></span><b id="al">ДЕЙСТВИЕ</b></button>
+<button class="btn" id="bRun"><span id="ir"></span>бег</button><button class="btn" id="bSlide"><span id="is"></span>скольжение</button><button class="btn" id="bDrop"><span style="font-size:30px">🗑</span>выбросить</button><button class="btn" id="bAct"><span id="ia"></span><b id="al">ДЕЙСТВИЕ</b></button>
 <div id="cook"><div id="ch"><b id="ct"></b><div id="cp"><i></i></div></div><div id="cs"></div><button class="bb alt" id="bCx">Назад</button></div>
 <div class="ov on" id="menu"><div class="mc"><h1>Мур-Кафе</h1><p>Кошачье кафе на двоих. Выбери цвет кота:</p><div id="sw"></div><input id="nm" maxlength="12" placeholder="Твоё имя"></div>
 <div class="mc"><button id="bSolo">Играть одному</button><button data-go="pRoom">Играть вместе</button><button class="alt" id="bLvl" data-go="pLvl">Уровень 1</button><button class="alt" data-go="pTop">Рейтинг</button><button class="alt" data-go="pSet">Настройки</button><button class="alt" data-go="pHelp">Как играть</button></div></div>
@@ -394,7 +397,7 @@ FUR.forEach((c, i) => { const d = document.createElement('i'); d.style.backgroun
 $('sw').firstChild.classList.add('on');
 function start(){
   me.cat = makeCat(ci); playing = true; go(null); applyUI();
-  try{ const f = document.documentElement.requestFullscreen; if(f) f.call(document.documentElement).then(() => screen.orientation && screen.orientation.lock && screen.orientation.lock('landscape').catch(() => {})).catch(() => {}); }catch(e){}
+  try{ const f = !FINE && document.documentElement.requestFullscreen; if(f) f.call(document.documentElement).then(() => screen.orientation && screen.orientation.lock && screen.orientation.lock('landscape').catch(() => {})).catch(() => {}); }catch(e){}
   $('hud').style.display = 'flex'; $('hr').style.display = 'flex'; joyEl.style.display = 'block';
   ['bRun', 'bSlide', 'bAct'].forEach(i => $(i).style.display = 'flex');
   joyEl.firstElementChild.style.background = hex(FUR[ci]); $('ia').innerHTML = svg('paw', '#fff');
@@ -506,10 +509,13 @@ function target(){
   return best;
 }
 function doAct(){ if(!playing || paused || cooking || !tgt) return; snd(520, .06); vib(10); if(tgt.a.k == 's' && W.st[tgt.a.n][0] == 0) openCook(tgt.a.n); else act(tgt.a); }
-addEventListener('keydown', e => { key[e.code] = 1; hideHint(); if(!e.repeat){ if(e.code == 'Space' || e.code == 'KeyC') trySlide(); if(e.code == 'KeyE' || e.code == 'Enter') doAct(); } });
+const FINE = matchMedia('(pointer:fine)').matches;
+function dropHeld(){ if(!playing || paused || cooking || !W.held[role]) return; act({k:'d'}); snd(220, .15, 'triangle'); vib(20); }
+$('bDrop').addEventListener('pointerdown', dropHeld); $('hold').addEventListener('pointerdown', dropHeld);
+addEventListener('keydown', e => { if(e.target.tagName == 'INPUT') return; key[e.code] = 1; hideHint(); if(!e.repeat){ if(e.code == 'Space' || e.code == 'KeyC') trySlide(); if(e.code == 'KeyE' || e.code == 'Enter' || e.code == 'KeyF') doAct(); if(e.code == 'KeyQ' || e.code == 'KeyX' || e.code == 'Backspace') dropHeld(); } });
 addEventListener('keyup', e => key[e.code] = 0);
 addEventListener('pointerdown', e => {
-  if(!playing || cooking || paused || e.target.closest('.btn,.ov,input,button') || joy || e.clientX > innerWidth*.55) return;
+  if(!playing || cooking || paused || e.pointerType == 'mouse' || e.target.closest('.btn,.ov,input,button,#hold') || joy || e.clientX > innerWidth*.55) return;
   hideHint(); joy = {id:e.pointerId, x:e.clientX, y:e.clientY};
   joyEl.style.left = (e.clientX - 75) + 'px'; joyEl.style.top = (e.clientY - 75) + 'px'; joyEl.style.bottom = 'auto'; joyEl.firstElementChild.style.transform = '';
 });
@@ -571,7 +577,7 @@ R.setAnimationLoop(() => {
   const orders = W.cust.filter(c => c.s == 2).map(c => c.m);
   slots.forEach((m, i) => setSpr(m, orders[i]));
   const tk = orders.join(); if(tk != tixKey){ tixKey = tk; $('tix').innerHTML = orders.map(m => '<i>' + svg(m, IC[m]) + '</i>').join(''); }
-  const hk = String(W.held[role]); if(hk != heldKey){ heldKey = hk; const hd = $('hold'); hd.style.display = W.held[role] ? 'flex' : 'none'; hd.innerHTML = W.held[role] ? svg(W.held[role], IC[W.held[role]]) : ''; }
+  const hk = String(W.held[role]); if(hk != heldKey){ heldKey = hk; const hd = $('hold'); hd.style.display = W.held[role] ? 'flex' : 'none'; $('bDrop').style.display = W.held[role] ? 'flex' : 'none'; hd.innerHTML = W.held[role] ? svg(W.held[role], IC[W.held[role]]) : ''; }
   if(W.coins > lastCoins){ snd(880, .12); snd(1320, .15, 'sine', .6); vib(25); } lastCoins = W.coins; $('coins').textContent = W.coins;
   if(me.cat) setSpr(me.cat.hs, W.held[role]);
   if(rem && rem.tx !== undefined){
@@ -585,7 +591,7 @@ R.setAnimationLoop(() => {
   }
   love.style.opacity = playing && rem && Math.hypot(me.x - rem.x, me.z - rem.z) < 1.7 ? 1 : 0;
   const ts = Math.ceil(W.time); $('tm').textContent = (ts/60|0) + ':' + String(ts%60).padStart(2, '0'); $('tm').style.color = W.time < 15 ? '#d33' : ''; $('srv').textContent = W.served + '. Цель: ' + W.coins + '/' + LV[W.lv].goal;
-  $('al').textContent = tgt && playing ? tgt.l : 'ДЕЙСТВИЕ'; $('bAct').classList.toggle('rdy', !!(tgt && playing));
+  $('al').textContent = tgt && playing ? tgt.l + (FINE ? ' [E]' : '') : 'ДЕЙСТВИЕ'; $('bAct').classList.toggle('rdy', !!(tgt && playing));
   if(W.over && !shown && playing) endShift(); else if(!W.over && shown){ shown = 0; go(null); }
   R.render(scene, cam);
 });
