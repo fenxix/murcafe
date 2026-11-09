@@ -70,6 +70,7 @@ svg{display:block}
 #pot{width:170px;height:170px;border-radius:50%;background:#8a8a99;border:12px solid #5a5a6a;position:relative}
 #pot i{position:absolute;left:50%;top:10%;width:12px;height:42%;margin-left:-6px;background:#d9b182;border-radius:6px;transform-origin:50% 100%}
 #fs{display:flex;flex-direction:column;gap:8px}
+#lv{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.ov #lv button{min-width:130px;padding:12px;font-size:17px;line-height:1.3}.ov #lv button.lk{opacity:.35}
 </style>
 </head>
 <body>
@@ -83,13 +84,14 @@ svg{display:block}
 <button class="btn" id="bRun"><span id="ir"></span>бег</button><button class="btn" id="bSlide"><span id="is"></span>скольжение</button><button class="btn" id="bAct"><span id="ia"></span><b id="al">ДЕЙСТВИЕ</b></button>
 <div id="cook"><div id="ch"><b id="ct"></b><div id="cp"><i></i></div></div><div id="cs"></div><button class="bb alt" id="bCx">Назад</button></div>
 <div class="ov on" id="menu"><div class="mc"><h1>Мур-Кафе</h1><p>Кошачье кафе на двоих. Выбери цвет кота:</p><div id="sw"></div><input id="nm" maxlength="12" placeholder="Твоё имя"></div>
-<div class="mc"><button id="bSolo">Играть одному</button><button data-go="pRoom">Играть вместе</button><button class="alt" data-go="pTop">Рейтинг</button><button class="alt" data-go="pSet">Настройки</button><button class="alt" data-go="pHelp">Как играть</button></div></div>
+<div class="mc"><button id="bSolo">Играть одному</button><button data-go="pRoom">Играть вместе</button><button class="alt" id="bLvl" data-go="pLvl">Уровень 1</button><button class="alt" data-go="pTop">Рейтинг</button><button class="alt" data-go="pSet">Настройки</button><button class="alt" data-go="pHelp">Как играть</button></div></div>
 <div class="ov" id="pRoom"><h2>Играть вместе</h2><button id="bNew">Создать комнату</button><div class="row"><input id="code" maxlength="4" placeholder="КОД" autocapitalize="characters"><button id="bJoin">Войти</button></div><p id="msg"></p><button class="alt" data-go="menu">Назад</button></div>
 <div class="ov" id="pSet"><h2>Настройки</h2><div id="opts"></div><button data-go="back">Готово</button></div>
-<div class="ov" id="pHelp"><h2>Как играть</h2><p>1. Гость сел за стол: подойди и нажми розовую кнопку, чтобы взять заказ.<br>2. Иди на кухню к нужной станции: откроется стол. Наливай молоко, режь торт, мешай суп пальцем.<br>3. Забери готовое блюдо и подай нужному гостю.<br>4. Мигающий гость скоро уйдёт, поторопись. Смена длится 2 минуты.</p><button data-go="back">Понятно</button></div>
+<div class="ov" id="pHelp"><h2>Как играть</h2><p>1. Гость сел за стол: подойди и нажми розовую кнопку, чтобы взять заказ.<br>2. Иди на кухню к нужной станции: откроется стол. Наливай молоко, режь торт, мешай суп пальцем.<br>3. Забери готовое блюдо и подай нужному гостю.<br>4. Мигающий гость скоро уйдёт, поторопись. На каждом уровне набери цель по монетам до конца времени.</p><button data-go="back">Понятно</button></div>
+<div class="ov" id="pLvl"><h2>Выбери уровень</h2><div id="lv"></div><button class="alt" data-go="menu">Назад</button></div>
 <div class="ov" id="pTop"><h2>Рейтинг</h2><p id="top"></p><button class="alt" data-go="menu">Назад</button></div>
 <div class="ov" id="pPause"><h2>Пауза</h2><button id="bRes">Продолжить</button><button class="alt" data-go="pSet">Настройки</button><button class="alt" data-go="pHelp">Как играть</button><button class="alt" id="bQuit">В меню</button></div>
-<div class="ov" id="pEnd"><h2>Смена окончена</h2><div id="stars"></div><p id="sum"></p><button id="bAgain">Ещё смена</button><button class="alt" id="bMenu">В меню</button></div>
+<div class="ov" id="pEnd"><h2>Смена окончена</h2><div id="stars"></div><p id="sum"></p><button id="bNext">Следующий уровень</button><button class="alt" id="bAgain">Ещё раз</button><button class="alt" id="bMenu">В меню</button></div>
 <div class="ov" id="rot"><h2>Поверни телефон</h2><p>Мур-Кафе играется только горизонтально</p></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
@@ -176,19 +178,22 @@ plant(7, -5); plant(-7, 4.5); plant(7, 4.8);
 
 
 // ---------- настройки сети (впиши свои ключи Supabase) ----------
-const SUPABASE_URL = 'ВСТАВЬ_URL_ПРОЕКТА';
-const SUPABASE_KEY = 'ВСТАВЬ_ANON_KEY';
-/* Рейтинг (необязательно): выполни в Supabase, SQL Editor:
-create table scores(id bigint generated always as identity primary key, name text, coins int, served int, stars int, mode text, created_at timestamptz default now());
-alter table scores enable row level security;
-create policy "read" on scores for select using (true);
-create policy "add" on scores for insert with check (true); */
+const SUPABASE_URL = 'https://tmlkukyiljnwywozpnia.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRtbGt1a3lpbGpud3l3b3pwbmlhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQyMTkyOTAsImV4cCI6MjEwOTc5NTI5MH0.GvIMcuSNtHYQpIExFR2LqD6EZ3KsU861buZfGRyRLzQ'; // публичный anon-ключ, его можно держать в клиенте
+// Таблица scores уже создана в проекте mur-cafe (RLS включён).
 const SB_OK = () => !!window.supabase && SUPABASE_URL.indexOf('ВСТАВЬ') != 0;
 let sbc = null; const sb = () => sbc || (SB_OK() ? (sbc = supabase.createClient(SUPABASE_URL, SUPABASE_KEY)) : null);
 const saveScore = async r => { try{ const c = sb(); if(c) await c.from('scores').insert(r); }catch(e){} };
 const loadTop = async () => { const c = sb(); if(!c) return null; const q = await c.from('scores').select('name,coins,stars').order('coins', {ascending:false}).limit(10); return q.error ? null : q.data; };
 // ---------- настройки игрока ----------
-const SHIFT = 120, S = {vol:.4, vib:1, btn:1, hq:0, diff:1, hints:1, name:'', best:0, seen:0};
+const LV = [
+  {t:90, goal:40, gap:9, pat:75, max:2, items:['coffee']},
+  {t:100, goal:70, gap:8, pat:70, max:3, items:['coffee', 'cake']},
+  {t:110, goal:100, gap:7, pat:65, max:4, items:['coffee', 'cake', 'soup']},
+  {t:120, goal:140, gap:6, pat:60, max:5, items:['coffee', 'cake', 'soup']},
+  {t:120, goal:180, gap:5, pat:55, max:5, items:['coffee', 'cake', 'soup']},
+  {t:150, goal:250, gap:4.5, pat:50, max:6, items:['coffee', 'cake', 'soup']}];
+const S = {vol:.4, vib:1, btn:1, hq:0, diff:1, hints:1, name:'', best:0, seen:0, lvl:0, stars:[]};
 try{ Object.assign(S, JSON.parse(localStorage.getItem('murcafe') || '{}')); }catch(e){}
 const save = () => { try{ localStorage.setItem('murcafe', JSON.stringify(S)); }catch(e){} };
 let paused = false, cooking = null, shown = 0, lastCoins = 0, cur = 'menu', prev = 'menu', AC;
@@ -288,7 +293,7 @@ function syncCust(dt, t){
 }
 
 // ---------- мир (хозяин считает, гость получает) ----------
-const W = {coins:0, cust:[], st:{coffee:[0, 0], cake:[0, 0], soup:[0, 0]}, held:{h:null, g:null}, time:SHIFT, served:0, lost:0, combo:0, over:0};
+const W = {coins:0, cust:[], st:{coffee:[0, 0], cake:[0, 0], soup:[0, 0]}, held:{h:null, g:null}, time:LV[S.lvl].t, lv:S.lvl, served:0, lost:0, combo:0, over:0};
 const SEATS = [];
 TABLES.forEach(q => [-1, 1].forEach(s => SEATS.push({x:q[0] + s*1.4, z:q[1], f:-s*Math.PI/2, o:0})));
 let role = 'h', cid = 0, spawnT = 1, ch = null, peer = false, rem = null;
@@ -296,20 +301,20 @@ const pick = a => a[Math.random()*a.length|0];
 function spawn(){
   const free = SEATS.filter(s => !s.o); if(!free.length) return;
   const s = pick(free); s.o = 1;
-  W.cust.push({i:++cid, x:-7.9, z:4.3, s:0, m:pick(ITEMS), p:1, k:pick(SKIN.map((_, i) => i)), h:pick(SHIRT.map((_, i) => i)), r:pick(HAIR.map((_, i) => i)), f:s.f, seat:s, path:[[-6.5, 4.3], [s.x, 4.3], [s.x, s.z]], t:0});
+  W.cust.push({i:++cid, x:-7.9, z:4.3, s:0, m:pick(LV[W.lv].items), p:1, k:pick(SKIN.map((_, i) => i)), h:pick(SHIRT.map((_, i) => i)), r:pick(HAIR.map((_, i) => i)), f:s.f, seat:s, path:[[-6.5, 4.3], [s.x, 4.3], [s.x, s.z]], t:0});
 }
 function hostTick(dt){
   if(W.over) return;
   W.time -= dt; if(W.time <= 0){ W.time = 0; W.over = 1; push(); return; }
   spawnT -= dt;
-  if(spawnT <= 0 && W.cust.length < 5){ spawn(); spawnT = (6 + Math.random()*6)*S.diff; }
+  if(spawnT <= 0 && W.cust.length < LV[W.lv].max){ spawn(); spawnT = LV[W.lv].gap*(.8 + Math.random()*.4)*S.diff; }
   W.cust.forEach(c => {
     const go = sp => {
       const q = c.path[0], dx = q[0] - c.x, dz = q[1] - c.z, d = Math.hypot(dx, dz);
       if(d < sp*dt){ c.x = q[0]; c.z = q[1]; c.path.shift(); } else { c.x += dx/d*sp*dt; c.z += dz/d*sp*dt; }
     };
     if(c.s == 0){ if(c.path.length) go(2.4); else c.s = 1; }
-    else if(c.s == 1 || c.s == 2){ c.p = Math.max(0, c.p - dt/60); if(c.p <= 0){ c.s = 4; c.seat.o = 0; c.path = [[c.seat.x, 4.3], [-7.9, 4.3]]; W.lost++; W.combo = 0; } }
+    else if(c.s == 1 || c.s == 2){ c.p = Math.max(0, c.p - dt/LV[W.lv].pat); if(c.p <= 0){ c.s = 4; c.seat.o = 0; c.path = [[c.seat.x, 4.3], [-7.9, 4.3]]; W.lost++; W.combo = 0; } }
     else if(c.s == 3){ c.t -= dt; if(c.t <= 0){ c.s = 4; c.seat.o = 0; c.path = [[c.seat.x, 4.3], [-7.9, 4.3]]; } }
     else if(c.s == 4){ if(c.path.length) go(2.4); else c.del = 1; }
   });
@@ -329,7 +334,7 @@ function applyAct(who, a){
   }
   push();
 }
-const snap = () => ({T:W.time, O:W.over, V:W.served, L:W.lost, c:W.coins, t:W.st, e:W.held, u:W.cust.map(c => ({i:c.i, x:+c.x.toFixed(2), z:+c.z.toFixed(2), s:c.s, m:c.m, p:+c.p.toFixed(2), k:c.k, h:c.h, r:c.r, f:c.f}))});
+const snap = () => ({Y:W.lv, T:W.time, O:W.over, V:W.served, L:W.lost, c:W.coins, t:W.st, e:W.held, u:W.cust.map(c => ({i:c.i, x:+c.x.toFixed(2), z:+c.z.toFixed(2), s:c.s, m:c.m, p:+c.p.toFixed(2), k:c.k, h:c.h, r:c.r, f:c.f}))});
 function push(){ if(role == 'h' && ch && peer) ch.send({type:'broadcast', event:'w', payload:snap()}); }
 function act(a){ if(role == 'h') applyAct('h', a); else if(ch) ch.send({type:'broadcast', event:'a', payload:a}); }
 
@@ -405,7 +410,7 @@ function connect(code, host){
     if(!rem){ rem = {cat:makeCat(q.c | 0), x:q.x, z:q.z, f:0, st:0, sp:0}; ban('Вы вместе!'); setTimeout(() => ban(''), 3000); }
     rem.tx = q.x; rem.tz = q.z; rem.tf = q.f; rem.st = q.s | 0;
   });
-  ch.on('broadcast', {event:'w'}, m => { if(role == 'g'){ const p = m.payload; W.coins = p.c; W.time = p.T; W.over = p.O; W.served = p.V; W.lost = p.L; W.st = p.t; W.held = p.e; W.cust = p.u; } });
+  ch.on('broadcast', {event:'w'}, m => { if(role == 'g'){ const p = m.payload; W.coins = p.c; W.lv = p.Y|0; W.time = p.T; W.over = p.O; W.served = p.V; W.lost = p.L; W.st = p.t; W.held = p.e; W.cust = p.u; } });
   ch.on('broadcast', {event:'a'}, m => { if(role == 'h') applyAct('g', m.payload); });
   ch.on('presence', {event:'sync'}, () => {
     const was = peer; peer = Object.values(ch.presenceState()).flat().some(x => x.w != role);
@@ -420,17 +425,21 @@ function connect(code, host){
 $('bNew').onclick = () => connect(Array.from({length:4}, () => 'abcdefghjkmnpqrstuvwxyz'[Math.random()*23|0]).join(''), 1);
 $('bJoin').onclick = () => { const c = $('code').value.trim(); if(c.length == 4) connect(c, 0); else $('msg').textContent = 'Введи код из 4 букв'; };
 // ---------- интерфейс, настройки, готовка ----------
-function go(id){ if(id == 'back') id = prev; else prev = cur; cur = id; document.querySelectorAll('.ov').forEach(o => o.classList.toggle('on', o.id == id)); paused = playing && !!id && !ch; if(id == 'pSet') drawOpts(); if(id == 'pTop') showTop(); }
+function go(id){ if(id == 'back') id = prev; else prev = cur; cur = id; document.querySelectorAll('.ov').forEach(o => o.classList.toggle('on', o.id == id)); paused = playing && !!id && !ch; if(id == 'pSet') drawOpts(); if(id == 'pTop') showTop(); if(id == 'pLvl') drawLv(); }
 document.querySelectorAll('[data-go]').forEach(b => b.onclick = () => { snd(440, .05); go(b.dataset.go); });
 const OPTS = [['vol','Звук',[['Выкл',0],['Тихо',.4],['Громко',.8]]],['vib','Вибрация',[['Выкл',0],['Вкл',1]]],['btn','Кнопки',[['Мал.',.85],['Сред.',1],['Больш.',1.25]]],['hq','Графика',[['Экономная',0],['Красивая',1]]],['diff','Гости',[['Спокойные',1.4],['Обычные',1],['Быстрые',.7]]],['hints','Подсказки',[['Выкл',0],['Вкл',1]]]];
 function drawOpts(){ const o = $('opts'); o.innerHTML = ''; OPTS.forEach(q => { const r = document.createElement('div'); r.innerHTML = '<div class="ol">' + q[1] + '</div><div class="sg"></div>'; q[2].forEach(v => { const b = document.createElement('button'); b.textContent = v[0]; b.className = S[q[0]] == v[1] ? 'on' : ''; b.onclick = () => { S[q[0]] = v[1]; save(); applyUI(); drawOpts(); snd(600, .06); vib(15); }; r.lastChild.appendChild(b); }); o.appendChild(r); }); }
 function applyUI(){ document.documentElement.style.setProperty('--bs', S.btn); R.setPixelRatio(S.hq ? Math.min(devicePixelRatio, 2) : 1); resize(); $('hint').style.display = S.hints ? '' : 'none'; }
 async function showTop(){ const el = $('top'); el.textContent = 'Загружаю...'; const d = await loadTop().catch(() => null); const e = x => String(x).replace(/[&<>]/g, c => '&#' + c.charCodeAt(0) + ';'); el.innerHTML = d == null ? 'Рейтинг заработает после подключения Supabase: впиши SUPABASE_URL и SUPABASE_KEY в начале скрипта.' : d.length ? d.map((r, i) => (i + 1) + '. ' + e(r.name) + ': ' + r.coins + ' монет, звёзд: ' + r.stars).join('<br>') : 'Пока пусто. Сыграй первую смену!'; }
-function resetWorld(){ Object.assign(W, {coins:0, cust:[], st:{coffee:[0, 0], cake:[0, 0], soup:[0, 0]}, held:{h:null, g:null}, time:SHIFT, served:0, lost:0, combo:0, over:0}); SEATS.forEach(s => s.o = 0); spawnT = 2; shown = 0; lastCoins = 0; me.x = -1.5; me.z = 3; me.stam = 100; }
-function endShift(){ shown = 1; const st = W.coins >= 150 ? 3 : W.coins >= 90 ? 2 : W.coins >= 40 ? 1 : 0; if(W.coins > S.best){ S.best = W.coins; save(); }
-  $('stars').textContent = '★'.repeat(st) + '☆'.repeat(3 - st); $('sum').innerHTML = 'Монет: <b>' + W.coins + '</b>. Подано: ' + W.served + '. Ушли: ' + W.lost + '.<br>Рекорд: ' + S.best;
-  $('bAgain').style.display = role == 'h' ? '' : 'none'; snd(784, .3); go('pEnd'); cooking && closeCook();
-  if(role == 'h') saveScore({name:S.name || 'Кот', coins:W.coins, served:W.served, stars:st, mode:ch ? 'duo' : 'solo'}); }
+function resetWorld(){ Object.assign(W, {coins:0, cust:[], st:{coffee:[0, 0], cake:[0, 0], soup:[0, 0]}, held:{h:null, g:null}, time:LV[S.lvl].t, lv:S.lvl, served:0, lost:0, combo:0, over:0}); SEATS.forEach(s => s.o = 0); spawnT = 2; shown = 0; lastCoins = 0; me.x = -1.5; me.z = 3; me.stam = 100; ban('Уровень ' + (W.lv + 1) + ': набери ' + LV[W.lv].goal + ' монет'); setTimeout(() => ban(''), 4000); }
+function endShift(){ shown = 1; const L = LV[W.lv], st = W.coins >= L.goal*1.8 ? 3 : W.coins >= L.goal*1.4 ? 2 : W.coins >= L.goal ? 1 : 0; if(W.coins > S.best) S.best = W.coins; S.stars[W.lv] = Math.max(S.stars[W.lv]|0, st); save();
+  $('stars').textContent = '★'.repeat(st) + '☆'.repeat(3 - st); $('sum').innerHTML = (st ? 'Уровень ' + (W.lv + 1) + ' пройден!' : 'Цель ' + L.goal + ' монет не достигнута.') + '<br>Монет: <b>' + W.coins + '</b>. Подано: ' + W.served + '. Ушли: ' + W.lost + '.';
+  $('bAgain').style.display = role == 'h' ? '' : 'none'; $('bNext').style.display = role == 'h' && st && W.lv < LV.length - 1 ? '' : 'none'; snd(st ? 784 : 300, .3); go('pEnd'); cooking && closeCook();
+  if(role == 'h') saveScore({name:S.name || 'Кот', coins:W.coins, served:W.served, stars:st, mode:(ch ? 'duo' : 'solo') + ':' + (W.lv + 1)}); }
+function labelLvl(){ $('bLvl').textContent = 'Уровень ' + (S.lvl + 1) + ': выбрать'; }
+function drawLv(){ const e = $('lv'); e.innerHTML = ''; LV.forEach((L, i) => { const ok = i == 0 || (S.stars[i - 1]|0) > 0, b = document.createElement('button'), n = S.stars[i]|0; b.className = (i == S.lvl ? '' : 'alt') + (ok ? '' : ' lk'); b.innerHTML = (ok ? i + 1 : 'Закрыт') + '<br>' + '★'.repeat(n) + '☆'.repeat(3 - n) + '<br>цель ' + L.goal; b.onclick = () => { if(!ok) return; S.lvl = i; save(); labelLvl(); go('menu'); }; e.appendChild(b); }); }
+$('bNext').onclick = () => { S.lvl = W.lv + 1; save(); labelLvl(); resetWorld(); push(); go(null); };
+labelLvl();
 $('nm').value = S.name; $('nm').oninput = () => { S.name = $('nm').value; save(); };
 $('bSolo').onclick = () => { ch = null; role = 'h'; start(); };
 $('bPause').onclick = () => go('pPause'); $('bRes').onclick = () => go(null);
@@ -575,7 +584,7 @@ R.setAnimationLoop(() => {
     setSpr(rem.cat.hs, W.held[role == 'h' ? 'g' : 'h']);
   }
   love.style.opacity = playing && rem && Math.hypot(me.x - rem.x, me.z - rem.z) < 1.7 ? 1 : 0;
-  const ts = Math.ceil(W.time); $('tm').textContent = (ts/60|0) + ':' + String(ts%60).padStart(2, '0'); $('tm').style.color = W.time < 15 ? '#d33' : ''; $('srv').textContent = W.served;
+  const ts = Math.ceil(W.time); $('tm').textContent = (ts/60|0) + ':' + String(ts%60).padStart(2, '0'); $('tm').style.color = W.time < 15 ? '#d33' : ''; $('srv').textContent = W.served + '. Цель: ' + W.coins + '/' + LV[W.lv].goal;
   $('al').textContent = tgt && playing ? tgt.l : 'ДЕЙСТВИЕ'; $('bAct').classList.toggle('rdy', !!(tgt && playing));
   if(W.over && !shown && playing) endShift(); else if(!W.over && shown){ shown = 0; go(null); }
   R.render(scene, cam);
