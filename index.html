@@ -857,7 +857,7 @@ $('eic').innerHTML = svg('coin', '#f2b632');
 const fpt = e => { mv2.set(e.clientX/innerWidth*2 - 1, 1 - e.clientY/innerHeight*2); rc.setFromCamera(mv2, cam); return rc.ray.intersectPlane(pl, hit); };
 function edCam(){ const k = erm, a = cam.aspect, d = Math.max(k ? 13 : 15, (k ? 17 : 24)/(.828*a)), x = (k ? 11.5 : 0) + (EC && EC.v ? 0 : .828*d*a*.17); cam.position.set(x, d*.78, d*.62); cam.lookAt(x, .8, -.3); cam.updateProjectionMatrix(); }
 function saveLay(){ if(!EC || EC.v) return; EC.lay = {e:ED.map(o => [o.x, o.z, o.hid|0]), n:DYNE.map(o => [o.k, o.x, o.z, o.r|0])}; save(); }
-function pick(b){
+function selObj(b){
   esel = b; selR.visible = !!b; $('es').style.display = b ? 'flex' : 'none'; if(!b) return;
   selR.position.set(b.x, .06, b.z); selR.scale.setScalar(b.k == 'table' ? 2.2 : b.k == 'rug' ? 2.8 : 1.3);
   $('en').textContent = b.dy ? CAT[b.k][0] : {table:'Стол', plant:'Растение', rug:'Ковёр', isl:'Кухонный стол'}[b.k];
@@ -866,14 +866,14 @@ function pick(b){
 function openEd(c){
   hideHint(); EC = c; erm = 0; et = 0; tmode = false; $('town').style.display = 'none'; town.visible = false; scene.background.setHex(0xffe9d6);
   if(c.v) applyC(c); else { S.g.cur = S.g.cafes.indexOf(c); applyCafe(); }
-  $('ed').style.display = 'block'; $('ep').style.display = c.v ? 'none' : 'flex'; pick(null); edCam(); edDraw();
+  $('ed').style.display = 'block'; $('ep').style.display = c.v ? 'none' : 'flex'; selObj(null); edCam(); edDraw();
 }
 function edDraw(){
   const g = S.g, c = EC; $('eg').textContent = g.gold; $('eH').className = erm ? 'alt' : ''; $('eK').className = erm ? '' : 'alt';
   const T = $('et'); T.innerHTML = ''; ['Мебель', 'Цвета', 'Стили'].forEach((n, i) => T.appendChild(mk([n, () => { et = i; edDraw(); }, i != et])));
   const el = $('ec'); el.innerHTML = ''; const H = t => { const h = document.createElement('h4'); h.textContent = t; el.appendChild(h); };
   if(et == 0){
-    H(erm ? 'Кухня' : 'Зал'); for(const k in CAT){ const d = CAT[k]; el.appendChild(mk([d[0] + ': ' + d[1], () => { g.gold -= d[1]; pick(mkDyn([k, erm ? 11.5 : 0, erm ? -2 : -.8, 0])); saveLay(); snd(700, .08); edDraw(); }, 1, g.gold < d[1]])); }
+    H(erm ? 'Кухня' : 'Зал'); for(const k in CAT){ const d = CAT[k]; el.appendChild(mk([d[0] + ': ' + d[1], () => { g.gold -= d[1]; selObj(mkDyn([k, erm ? 11.5 : 0, erm ? -2 : -.8, 0])); saveLay(); snd(700, .08); edDraw(); }, 1, g.gold < d[1]])); }
     if(ED.some(o => o.hid)) el.appendChild(mk(['Вернуть убранное', () => { ED.forEach(o => o.hid && setPos(o, o.x, o.z, 0)); saveLay(); edDraw(); }, 1]));
   } else if(et == 1){
     (erm ? [['Стены', 'kw'], ['Плитка', 'kf'], ['Столы кухни', 'ks']] : [['Стены', 'w'], ['Пол', 'fl'], ['Стулья', 'ch'], ['Шторы и навес', 'cu'], ['Ковёр', 'ru'], ['Крыша', 'rf']]).forEach(([n, k]) => {
@@ -882,14 +882,14 @@ function edDraw(){
   } else [['Стиль зала', TC, g.oc, 'th', HK], ['Стиль кухни', TK, g.ok, 'kt', KK]].forEach(([h, T, own, key, ks]) => { H(h);
     T.forEach((t, i) => { const has = own.includes(i); el.appendChild(mk([t.n + (c[key] == i ? ' ✓' : has ? '' : ': ' + t.p), () => { if(!has){ g.gold -= t.p; own.push(i); } c[key] = i; c.cc = c.cc || {}; ks.forEach(q => delete c.cc[q]); theme(c.th, c.kt, c.lv, c.cc); saveLay(); edDraw(); }, c[key] != i, !has && g.gold < t.p])); }); });
 }
-$('eH').onclick = () => { erm = 0; pick(null); edCam(); edDraw(); }; $('eK').onclick = () => { erm = 1; pick(null); edCam(); edDraw(); };
+$('eH').onclick = () => { erm = 0; selObj(null); edCam(); edDraw(); }; $('eK').onclick = () => { erm = 1; selObj(null); edCam(); edDraw(); };
 $('eRot').onclick = () => { if(esel && esel.dy){ esel.r = (esel.r + 1)%4; esel.g.rotation.y = esel.r*Math.PI/2; saveLay(); } };
-$('eDel').onclick = () => { const o = esel; if(!o) return; if(o.dy){ S.g.gold += CAT[o.k][1] >> 1; scene.remove(o.g); cols.splice(cols.indexOf(o.cs[0]), 1); DYNE.splice(DYNE.indexOf(o), 1); } else setPos(o, o.x, o.z, 1); pick(null); saveLay(); edDraw(); };
-$('eX').onclick = () => { const c = EC; if(c.v) applyCafe(); else { saveLay(); drawLot(c.lot); } EC = null; pick(null); $('ed').style.display = 'none'; openTown(); ti = c.lot; tcx = LOTX[ti]; townInfo(); };
+$('eDel').onclick = () => { const o = esel; if(!o) return; if(o.dy){ S.g.gold += CAT[o.k][1] >> 1; scene.remove(o.g); cols.splice(cols.indexOf(o.cs[0]), 1); DYNE.splice(DYNE.indexOf(o), 1); } else setPos(o, o.x, o.z, 1); selObj(null); saveLay(); edDraw(); };
+$('eX').onclick = () => { const c = EC; if(c.v) applyCafe(); else { saveLay(); drawLot(c.lot); } EC = null; selObj(null); $('ed').style.display = 'none'; openTown(); ti = c.lot; tcx = LOTX[ti]; townInfo(); };
 addEventListener('pointerdown', e => {
   if(!EC || EC.v || e.target.closest('#ep,#eb,#es')) return; const p = fpt(e); if(!p) return; let b = null, bd = 1e9;
   ED.concat(DYNE).forEach(o => { if(!o.g.visible || (o.x >= 8) != !!erm) return; const d = Math.hypot(o.x - p.x, o.z - p.z), r = o.k == 'table' ? 1.9 : o.k == 'rug' ? 2.4 : Math.max(o.cs[0] ? o.cs[0].r : 0, .8) + .3; if(d < r && d < bd){ bd = d; b = o; } });
-  pick(b); if(b) edrag = {o:b, dx:b.x - p.x, dz:b.z - p.z};
+  selObj(b); if(b) edrag = {o:b, dx:b.x - p.x, dz:b.z - p.z};
 });
 addEventListener('pointermove', e => {
   if(!edrag || !EC) return; const p = fpt(e); if(!p) return; const o = edrag.o, k = o.x >= 8, sn = v => Math.round(v*4)/4;
