@@ -2,6 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
+<script>if(/[#&](type=signup|error_code=)/.test(location.hash)) location.replace("confirm.html" + location.hash);</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Мур-Кафе</title>
 <link rel="manifest" href="manifest.json">
@@ -157,6 +158,19 @@ body,.ov button,.bb,.btn,#bPause,.ar,#tbn button,#ed button,.ov input{font-famil
 
 body.rush #vig{background:radial-gradient(ellipse at 50% 45%,transparent 45%,rgba(255,150,40,.4) 100%);animation:rsh .8s infinite alternate}@keyframes rsh{to{opacity:.5}}
 #pAcc input{-webkit-user-select:text;user-select:text}#accm{min-height:1.4em}
+/* экраны с прокруткой: контент не обрезается сверху, листается пальцем */
+.ov{touch-action:pan-y;overscroll-behavior:contain;justify-content:safe center}
+#menu{align-items:safe center}
+#pCat{justify-content:flex-start;gap:8px;padding:calc(env(safe-area-inset-top,0px) + 8px) max(12px,env(safe-area-inset-right,0px)) calc(env(safe-area-inset-bottom,0px) + 8px) max(12px,env(safe-area-inset-left,0px))}
+#chd{display:flex;align-items:center;justify-content:center;gap:8px 14px;flex-wrap:wrap;width:100%;flex:none}
+#pCat #chd h2{font-size:24px;white-space:nowrap}
+.ov #chd button{min-width:0;padding:10px 20px;font-size:16px;border-radius:14px}
+#ck{flex:1 1 0;min-height:0;width:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;touch-action:pan-y;display:flex;flex-direction:column;align-items:center;padding:4px 0 14px;box-sizing:border-box}
+.tr{width:min(900px,100%);gap:10px 16px;justify-content:center}
+.tb{flex:1 1 300px;width:auto;min-width:0}
+.tn{min-width:0}.ov .tn button{flex:none;white-space:nowrap}
+.sks{width:min(900px,100%)}
+@media (max-height:500px){#pCat{gap:4px}#pCat #chd h2{font-size:20px}.ov #chd button{padding:7px 16px;font-size:14px}.tn{padding:6px 8px}.ti2{font-size:22px}.tb{gap:6px}}
 </style>
 </head>
 <body>
@@ -175,7 +189,7 @@ body.rush #vig{background:radial-gradient(ellipse at 50% 45%,transparent 45%,rgb
 <div class="ov" id="pAcc"><h2>Аккаунт</h2><p id="accm"></p><div id="aform" class="mc"><div class="row"><input id="aem" type="email" placeholder="Почта" autocomplete="email" style="width:220px"><input id="apw" type="password" placeholder="Пароль, от 6 знаков" autocomplete="current-password" style="width:220px"></div><div class="row"><button id="aIn">Войти</button><button class="alt" id="aUp">Создать аккаунт</button></div></div><button class="alt" id="aOut">Выйти</button><button class="alt" id="aBack">Назад</button></div>
 <div class="ov" id="pRoom"><h2>Играть вместе</h2><button id="bNew">Создать комнату</button><div class="row"><input id="code" maxlength="4" placeholder="КОД" autocapitalize="characters"><button id="bJoin">Войти</button></div><p id="msg"></p><button class="alt" data-go="menu">Назад</button></div>
 <div class="ov" id="pSet"><h2>Настройки</h2><div id="opts"></div><button data-go="back">Готово</button></div>
-<div class="ov" id="pHelp"><h2>Как играть</h2><p>1. Гость сел за стол: подойди и нажми розовую кнопку, чтобы взять заказ.<br>2. Иди на кухню к нужной станции: откроется стол. Наливай молоко, режь торт, мешай суп пальцем.<br>3. Забери готовое блюдо и подай нужному гостю. Значок «+1» над гостем значит комбо: подавай блюда по очереди, за комбо будет бонус. После еды стол грязный, протри его кнопкой ДЕЙСТВИЕ, иначе за него никто не сядет.<br>4. Мигающий гость скоро уйдёт, поторопись. На каждом уровне набери цель по монетам до конца времени.<br>5. Монеты за смену копятся в казне. В городе покупай новые кафе, улучшай их, меняй оформление и нанимай котов.<br>6. Прокачивай персонал в городе (кафе, Персонал): официанты 2 уровня сами носят готовые блюда гостям, повара и уборщики работают быстрее. С уровнем растёт и зарплата, которую они ждут.<br>7. Уборщики-коты сами подметают мусор гостей и вытирают разливы. Разливы появляются, когда бежишь и падаешь. На разливе можно поскользнуться, поэтому вытирай его кнопкой ДЕЙСТВИЕ или жди уборщика.</p><button data-go="back">Понятно</button></div>
+<div class="ov" id="pHelp"><h2>Как играть</h2><p>1. Гость сел за стол: подойди и нажми розовую кнопку, чтобы взять заказ.<br>2. Иди на кухню к нужной станции: откроется стол. Наливай молоко, режь торт, мешай суп пальцем. Готовое блюдо можно поставить на стол на кухне (кнопка ДЕЙСТВИЕ рядом со столом, до 4 штук): так готовишь заранее, а потом берёшь со стола и подаёшь.<br>3. Забери готовое блюдо и подай нужному гостю. Значок «+1» над гостем значит комбо: подавай блюда по очереди, за комбо будет бонус. После еды стол грязный, протри его кнопкой ДЕЙСТВИЕ, иначе за него никто не сядет.<br>4. Мигающий гость скоро уйдёт, поторопись. На каждом уровне набери цель по монетам до конца времени.<br>5. Монеты за смену копятся в казне. В городе покупай новые кафе, улучшай их, меняй оформление и нанимай котов.<br>6. Прокачивай персонал в городе (кафе, Персонал): официанты 2 уровня сами носят готовые блюда гостям, повара и уборщики работают быстрее. С уровнем растёт и зарплата, которую они ждут.<br>7. Уборщики-коты сами подметают мусор гостей и вытирают разливы. Разливы появляются, когда бежишь и падаешь. На разливе можно поскользнуться, поэтому вытирай его кнопкой ДЕЙСТВИЕ или жди уборщика.</p><button data-go="back">Понятно</button></div>
 <div class="ov" id="pLvl"><h2>Выбери уровень</h2><div id="lv"></div><button class="alt" data-go="menu">Назад</button></div>
 <div class="ov" id="pTop"><h2>Рейтинг</h2><p id="top"></p><button class="alt" data-go="menu">Назад</button></div>
 <div class="ov" id="pPause"><h2>Пауза</h2><button id="bRes">Продолжить</button><button class="alt" data-go="pSet">Настройки</button><button class="alt" data-go="pHelp">Как играть</button><button class="alt" id="bQuit">В меню</button></div>
@@ -183,7 +197,7 @@ body.rush #vig{background:radial-gradient(ellipse at 50% 45%,transparent 45%,rgb
 <div id="town"><div id="tt"><button class="bb alt" id="bTB">Назад</button><div class="r2"><span id="tic" class="ic"></span><b id="tg">0</b></div></div>
 <button class="ar" id="aL"></button><button class="ar" id="aR"></button>
 <div id="tp"><div id="ti"><b id="tn"></b><span id="td"></span></div><div id="tbn"></div></div></div>
-<div class="ov" id="pCat"><h2>Котик · <span id="cg"></span></h2><div class="sg" id="ctab"></div><div id="ck"></div><button class="alt" data-go="back">Готово</button></div>
+<div class="ov" id="pCat"><div id="chd"><h2>Котик · <span id="cg"></span></h2><div class="sg" id="ctab"></div><button class="alt" data-go="back">Готово</button></div><div id="ck"></div></div>
 <div class="ov" id="pGift"><h2>Подарок дня</h2><p id="gt"></p><button data-go="menu">Забрать</button></div>
 <div class="ov" id="pMg"><h2 id="mgt"></h2><div class="sg" id="mgtab"></div><p id="mgm"></p><div id="mg"></div><button class="alt" id="bMgX">Готово</button></div>
 <div id="ed"><div id="eb"><button class="alt" id="eX">Готово</button><button id="eH">Зал</button><button class="alt" id="eK">Кухня</button><div class="r2"><span class="ic" id="eic"></span><b id="eg">0</b></div></div><div id="ep"><div id="et"></div><div id="ec"></div></div><div id="es"><b id="en"></b><button class="alt" id="eRot">Повернуть</button><button class="alt" id="eDel">Убрать</button></div></div>
@@ -312,12 +326,12 @@ const saveScore = async r => { try{ const c = sb(); if(c) await c.from('scores')
 const loadTop = async () => { const c = sb(); if(!c) return null; const q = await c.from('scores').select('name,coins,stars').order('coins', {ascending:false}).limit(10); return q.error ? null : q.data; };
 // ---------- настройки игрока ----------
 const LV = [
-  {t:90, goal:40, gap:9, pat:75, max:2, items:['coffee']},
-  {t:100, goal:70, gap:8, pat:70, max:3, items:['coffee', 'cake']},
-  {t:110, goal:100, gap:7, pat:65, max:4, items:['coffee', 'cake', 'soup']},
-  {t:120, goal:140, gap:6, pat:60, max:5, items:['coffee', 'cake', 'soup']},
-  {t:120, goal:180, gap:5, pat:55, max:5, items:['coffee', 'cake', 'soup']},
-  {t:150, goal:250, gap:4.5, pat:50, max:6, items:['coffee', 'cake', 'soup']}];
+  {t:90, goal:40, gap:9, pat:150, max:2, items:['coffee']},
+  {t:100, goal:70, gap:8, pat:140, max:3, items:['coffee', 'cake']},
+  {t:110, goal:100, gap:7, pat:130, max:4, items:['coffee', 'cake', 'soup']},
+  {t:120, goal:140, gap:6, pat:120, max:5, items:['coffee', 'cake', 'soup']},
+  {t:120, goal:180, gap:5, pat:110, max:5, items:['coffee', 'cake', 'soup']},
+  {t:150, goal:250, gap:4.5, pat:100, max:6, items:['coffee', 'cake', 'soup']}];
 const S = {vol:.4, vib:1, btn:1, hq:0, diff:1, hints:1, name:'', best:0, seen:0, lvl:0, stars:[], g:null, ot:0, up:{}, sk:0, skn:[0], ach:{}, dl:'', ds:0};
 try{ Object.assign(S, JSON.parse(localStorage.getItem('murcafe') || '{}')); }catch(e){}
 // ---------- аккаунт и облачное сохранение (таблица saves, у каждого игрока своя строка) ----------
@@ -405,8 +419,9 @@ Object.keys(STN).forEach(n => box(1.9, 1.1, 1.2, 0xb8c4d0, STN[n].x, .55, SZ));
 box(.9, .9, .7, 0x5a5a6a, 10.2, 1.55, SZ); box(.6, .12, .6, 0xe05a5a, 10.2, 2.06, SZ); cyl(.14, .1, .25, 0xffffff, 10.9, 1.22, SZ + .3);
 box(1.5, .9, .9, 0xd8d8e0, 12.4, 1.55, SZ); box(1.1, .55, .05, 0x2a2a3a, 12.4, 1.5, SZ + .48); sph(.07, 0xe05a5a, 11.8, 1.9, SZ + .48); sph(.07, 0xe05a5a, 13, 1.9, SZ + .48);
 cyl(.55, .5, .6, 0x8a8a99, 14.2, 1.4, SZ); cyl(.6, .6, .06, 0x6a6a7a, 14.2, 1.72, SZ);
-{ const g = new THREE.Group(); scene.add(g); box(2.2, 1, 1.4, 0xb98560, 11.4, .5, 1.2, g); box(2.4, .12, 1.6, 0xf0d3ab, 11.4, 1.06, 1.2, g); const c = {x:11.4, z:1.2, r:1.2}; cols.push(c); reg('isl', g, 11.4, 1.2, [c]); }
+{ const g = new THREE.Group(); scene.add(g); box(2.2, 1, 1.4, 0xb98560, 11.4, .5, 1.2, g); box(2.4, .12, 1.6, 0xf0d3ab, 11.4, 1.06, 1.2, g); [-1.5, -.5, .5, 1.5].forEach(k => cyl(.27, .27, .03, 0xffffff, 11.4 + k*.62, 1.13, 1.2, g)); const c = {x:11.4, z:1.2, r:1.2}; cols.push(c); reg('isl', g, 11.4, 1.2, [c]); }
 box(3.6, 1.5, .1, 0x5b4636, 12.4, 3, -5.92); box(3.4, 1.3, .05, 0x2f3a35, 12.4, 3, -5.86);
+const ISL = () => ED.find(e => e.k == 'isl'), SHN = 4, shs = [0, 1, 2, 3].map(() => { const m = spr(.8, 1.65); scene.add(m); return m; });
 const slots = [0, 1, 2, 3].map(i => { const m = spr(.7, 3); m.position.set(11.1 + i*.75, 3, -5.78); scene.add(m); return m; });
 Object.keys(STN).forEach(n => {
   const o = STN[n]; o.sp = spr(1.2, 2.6); o.sp.position.set(o.x, 2.6, SZ + .2); scene.add(o.sp);
@@ -448,7 +463,7 @@ function syncCust(dt, t){
 }
 
 // ---------- мир (хозяин считает, гость получает) ----------
-const W = {coins:0, cust:[], st:{coffee:[0, 0], cake:[0, 0], soup:[0, 0]}, held:{h:null, g:null}, time:LV[S.lvl].t, lv:S.lvl, served:0, lost:0, combo:0, over:0, dirt:[], cln:[]};
+const W = {coins:0, cust:[], st:{coffee:[0, 0], cake:[0, 0], soup:[0, 0]}, held:{h:null, g:null}, shelf:[], time:LV[S.lvl].t, lv:S.lvl, served:0, lost:0, combo:0, over:0, dirt:[], cln:[]};
 const SEATS = [];
 function buildSeats(n){ SEATS.length = 0; TABLES.slice(0, n).forEach((q, tq) => [-1, 1].forEach(s => SEATS.push({x:q[0] + s*1.4, z:q[1], f:-s*Math.PI/2, o:0, t:tq}))); } buildSeats(3);
 let role = 'h', cid = 0, did = 0, spawnT = 1, ch = null, peer = false, rem = null;
@@ -458,6 +473,7 @@ function spawn(){
   const s = pick(free); s.o = 1;
   W.cust.push({i:++cid, x:-7.9, z:4.3, s:0, m:pick(LV[W.lv].items), q:comboQ(), p:1, v:W.lv >= 1 && Math.random() < .14 ? 1 : 0, k:pick(SKIN.map((_, i) => i)), h:pick(SHIRT.map((_, i) => i)), r:pick(HAIR.map((_, i) => i)), f:s.f, seat:s, path:[[-6.5, 4.3], [s.x, 4.3], [s.x, s.z]], t:0});
 }
+const inWork = m => !!((W.st[m] && W.st[m][0] > 0) || (W.shelf || []).includes(m) || W.held.h == m || W.held.g == m);
 function hostTick(dt){
   if(W.over) return;
   W.time -= dt; if(W.time <= 0){ W.time = 0; W.over = 1; push(); return; }
@@ -470,7 +486,7 @@ function hostTick(dt){
       if(d < sp*dt){ c.x = q[0]; c.z = q[1]; c.path.shift(); } else { c.x += dx/d*sp*dt; c.z += dz/d*sp*dt; }
     };
     if(c.s == 0){ if(c.path.length) go(2.4); else c.s = 1; }
-    else if(c.s == 1 || c.s == 2){ c.p = Math.max(0, c.p - dt*(c.v ? 1.35 : 1)/(LV[W.lv].pat*(1 + CL*.05)) - dt*.012*W.dirt.length); if(c.p <= 0){ c.s = 4; c.seat.o = 0; c.path = [[c.seat.x, 4.3], [-7.9, 4.3]]; W.lost++; W.combo = 0; W.dirt.push({i:++did, x:c.seat.x, z:c.seat.z, k:'trash'}); } }
+    else if(c.s == 1 || c.s == 2){ c.p = Math.max(0, c.p - dt*(c.v ? 1.25 : 1)*(c.s == 2 && inWork(c.m) ? .55 : 1)/(LV[W.lv].pat*(1 + CL*.05)) - dt*.004*Math.min(W.dirt.length, 4)); if(c.p <= 0){ c.s = 4; c.seat.o = 0; c.path = [[c.seat.x, 4.3], [-7.9, 4.3]]; W.lost++; W.combo = 0; W.dirt.push({i:++did, x:c.seat.x, z:c.seat.z, k:'trash'}); } }
     else if(c.s == 3){ c.t -= dt; if(c.t <= 0){ c.s = 4; c.seat.o = 0; dirtyTable(c.seat); W.dirt.push({i:++did, x:c.seat.x, z:c.seat.z, k:'trash'}); c.path = [[c.seat.x, 4.3], [-7.9, 4.3]]; } }
     else if(c.s == 4){ if(c.path.length) go(2.4); else c.del = 1; }
   });
@@ -489,7 +505,9 @@ function applyAct(who, a){
     const c = W.cust.find(q => q.i == a.id); if(!c) return;
     if(c.s == 1) c.s = 2;
     else if(c.s == 2 && h[who] == c.m){ h[who] = null; const pay = Math.round((10 + Math.round(c.p*8) + Math.min(W.combo, 5)*2)*(1 + CL*.08)*(c.v ? 2.5 : 1)*(W.rush > 0 ? 1.5 : 1)); if(c.q && c.q.length){ W.coins += Math.round(pay*.7); c.m = c.q.shift(); c.wt = 0; c.bn = (c.bn|0) + 1; c.p = Math.min(1, c.p + .3); } else { c.s = 3; c.t = 4.5; W.combo++; W.served++; W.coins += pay + 8*(c.bn|0); if(c.bn) W.cmb = (W.cmb|0) + 1; if(c.v) W.vips = (W.vips|0) + 1; } }
-  } else if(a.k == 'f'){ W.dirt.push({i:++did, x:a.x, z:a.z, k:'spill'}); }
+  } else if(a.k == 'p'){ W.shelf = W.shelf || []; if(h[who] && W.shelf.length < SHN){ W.shelf.push(h[who]); h[who] = null; } }
+  else if(a.k == 'g'){ W.shelf = W.shelf || []; const i = W.shelf.indexOf(a.n); if(i >= 0 && !h[who]){ h[who] = a.n; W.shelf.splice(i, 1); } }
+  else if(a.k == 'f'){ W.dirt.push({i:++did, x:a.x, z:a.z, k:'spill'}); }
   else if(a.k == 'x'){ const d = W.dirt.find(q => q.i == a.id); if(d && d.k == 'table' && who == 'h' || d && d.k == 'table' && who == 'g') W.wiped = (W.wiped|0) + 1; W.dirt = W.dirt.filter(q => q.i != a.id); }
   else if(a.k == 's'){
     const s = W.st[a.n]; if(!s) return;
@@ -497,7 +515,7 @@ function applyAct(who, a){
   }
   push();
 }
-const snap = () => ({q:(W.crew || []).map(x => [x.r, x.f, x.lv || 1]), H:[CF().th, CF().kt, CF().lv, JSON.stringify(CF().cc || {}), JSON.stringify(CF().lay || {})], Y:W.lv, R:Math.ceil(W.rush || 0), T:W.time, O:W.over, V:W.served, L:W.lost, c:W.coins, t:W.st, e:W.held, d:W.dirt.map(q => ({i:q.i, x:+q.x.toFixed(2), z:+q.z.toFixed(2), k:q.k})), cl:(W.cln || []).map(q => ({x:+q.x.toFixed(2), z:+q.z.toFixed(2), f:+q.f.toFixed(2), m:q.m, w:q.w})), wt:(W.wt || []).map(q => ({x:+q.x.toFixed(2), z:+q.z.toFixed(2), f:+q.f.toFixed(2), m:q.m|0, h:q.h})), u:W.cust.map(c => ({i:c.i, x:+c.x.toFixed(2), z:+c.z.toFixed(2), s:c.s, m:c.m, p:+c.p.toFixed(2), k:c.k, h:c.h, r:c.r, f:c.f, v:c.v|0, n:xn(c)}))});
+const snap = () => ({q:(W.crew || []).map(x => [x.r, x.f, x.lv || 1]), H:[CF().th, CF().kt, CF().lv, JSON.stringify(CF().cc || {}), JSON.stringify(CF().lay || {})], Y:W.lv, R:Math.ceil(W.rush || 0), T:W.time, O:W.over, V:W.served, L:W.lost, c:W.coins, t:W.st, e:W.held, sh:(W.shelf || []).slice(), d:W.dirt.map(q => ({i:q.i, x:+q.x.toFixed(2), z:+q.z.toFixed(2), k:q.k})), cl:(W.cln || []).map(q => ({x:+q.x.toFixed(2), z:+q.z.toFixed(2), f:+q.f.toFixed(2), m:q.m, w:q.w})), wt:(W.wt || []).map(q => ({x:+q.x.toFixed(2), z:+q.z.toFixed(2), f:+q.f.toFixed(2), m:q.m|0, h:q.h})), u:W.cust.map(c => ({i:c.i, x:+c.x.toFixed(2), z:+c.z.toFixed(2), s:c.s, m:c.m, p:+c.p.toFixed(2), k:c.k, h:c.h, r:c.r, f:c.f, v:c.v|0, n:xn(c)}))});
 function push(){ if(role == 'h' && ch && peer) ch.send({type:'broadcast', event:'w', payload:snap()}); }
 function act(a){ if(role == 'h') applyAct('h', a); else if(ch) ch.send({type:'broadcast', event:'a', payload:a}); }
 
@@ -595,8 +613,8 @@ function drawCat(){
       const col = document.createElement('div'); col.className = 'tb'; col.innerHTML = '<b>' + t + '</b>';
       TREE.filter(n => n.br == br).forEach(n => {
         const l = lv(n.id), r = n.rq, ok = !r || lv(r[0]) >= r[1], mx = l >= n.m, cost = n.b*(l + 1);
-        const c = card('tn' + (ok ? '' : ' lk') + (mx ? ' mx' : ''), '<span class="ti2 ic">' + icn(n.ic) + '</span><div class="tx"><b>' + n.n + '</b><div class="td2">' + n.d + '</div>' + (n.m > 1 ? '<div class="pp">' + '<i class="on"></i>'.repeat(l) + '<i></i>'.repeat(n.m - l) + '</div>' : '') + '</div>',
-          btn(mx ? '✓' : !ok ? 'Нужно: ' + TREE.find(q => q.id == r[0]).n : cost, mx || !ok || g.gold < cost, () => { g.gold -= cost; S.up[n.id] = l + 1; save(); snd(880, .12); vib(20); drawCat(); }));
+        const c = card('tn' + (ok ? '' : ' lk') + (mx ? ' mx' : ''), '<span class="ti2 ic">' + icn(n.ic) + '</span><div class="tx"><b>' + n.n + '</b><div class="td2">' + n.d + (ok ? '' : ' · нужно: ' + TREE.find(q => q.id == r[0]).n) + '</div>' + (n.m > 1 ? '<div class="pp">' + '<i class="on"></i>'.repeat(l) + '<i></i>'.repeat(n.m - l) + '</div>' : '') + '</div>',
+          btn(mx ? '✓' : !ok ? 'Закрыто' : cost, mx || !ok || g.gold < cost, () => { g.gold -= cost; S.up[n.id] = l + 1; save(); snd(880, .12); vib(20); drawCat(); }));
         c.style.marginLeft = n.dp*16 + 'px'; c.classList.add('d' + n.dp); col.appendChild(c);
       });
       w.appendChild(col);
@@ -659,7 +677,7 @@ function connect(code, host){
     if(!rem){ rem = {cat:makeCat(q.c | 0, q.k | 0), x:q.x, z:q.z, f:0, st:0, sp:0}; ban('Вы вместе!'); setTimeout(() => ban(''), 3000); }
     rem.tx = q.x; rem.tz = q.z; rem.tf = q.f; rem.st = q.s | 0;
   });
-  ch.on('broadcast', {event:'w'}, m => { if(role == 'g'){ const p = m.payload; W.coins = p.c; W.lv = p.Y|0; W.time = p.T; W.over = p.O; W.served = p.V; W.lost = p.L; W.st = p.t; W.held = p.e; W.cust = p.u; W.rush = p.R|0; guestSync(p); } });
+  ch.on('broadcast', {event:'w'}, m => { if(role == 'g'){ const p = m.payload; W.coins = p.c; W.lv = p.Y|0; W.time = p.T; W.over = p.O; W.served = p.V; W.lost = p.L; W.st = p.t; W.held = p.e; W.shelf = p.sh || []; W.cust = p.u; W.rush = p.R|0; guestSync(p); } });
   ch.on('broadcast', {event:'a'}, m => { if(role == 'h') applyAct('g', m.payload); });
   ch.on('presence', {event:'sync'}, () => {
     const was = peer; peer = Object.values(ch.presenceState()).flat().some(x => x.w != role);
@@ -690,7 +708,7 @@ function applyUI(){
   resize(); $('hint').style.display = S.hints ? '' : 'none';
 }
 async function showTop(){ const el = $('top'); el.textContent = 'Загружаю...'; const d = await loadTop().catch(() => null); const e = x => String(x).replace(/[&<>]/g, c => '&#' + c.charCodeAt(0) + ';'); el.innerHTML = d == null ? 'Рейтинг заработает после подключения Supabase: впиши SUPABASE_URL и SUPABASE_KEY в начале скрипта.' : d.length ? d.map((r, i) => (i + 1) + '. ' + e(r.name) + ': ' + r.coins + ' монет, звёзд: ' + r.stars).join('<br>') : 'Пока пусто. Сыграй первую смену!'; }
-function resetWorld(){ Object.assign(W, {coins:0, cust:[], st:{coffee:[0, 0], cake:[0, 0], soup:[0, 0]}, held:{h:null, g:null}, time:LV[S.lvl].t, lv:S.lvl, served:0, lost:0, combo:0, over:0, dirt:[], cln:[], rush:0, rushed:0, vips:0, cmb:0, wiped:0, wt:[]}); applyCafe(); applyDay(); buildSeats(tabN); spawnT = 2; shown = 0; lastCoins = 0; me.x = -1.5; me.z = 3; me.stam = 100; ban(CF().n + ', ' + (S.g.day%2 ? 'вечер' : 'утро') + '. Уровень ' + (W.lv + 1) + ': набери ' + LV[W.lv].goal + ' монет'); setTimeout(() => ban(''), 4000); }
+function resetWorld(){ Object.assign(W, {coins:0, cust:[], st:{coffee:[0, 0], cake:[0, 0], soup:[0, 0]}, held:{h:null, g:null}, shelf:[], time:LV[S.lvl].t, lv:S.lvl, served:0, lost:0, combo:0, over:0, dirt:[], cln:[], rush:0, rushed:0, vips:0, cmb:0, wiped:0, wt:[]}); applyCafe(); applyDay(); buildSeats(tabN); spawnT = 2; shown = 0; lastCoins = 0; me.x = -1.5; me.z = 3; me.stam = 100; ban(CF().n + ', ' + (S.g.day%2 ? 'вечер' : 'утро') + '. Уровень ' + (W.lv + 1) + ': набери ' + LV[W.lv].goal + ' монет'); setTimeout(() => ban(''), 4000); }
 function endShift(){ shown = 1; const L = LV[W.lv], st = W.coins >= L.goal*1.8 ? 3 : W.coins >= L.goal*1.4 ? 2 : W.coins >= L.goal ? 1 : 0; if(W.coins > S.best) S.best = W.coins; S.stars[W.lv] = Math.max(S.stars[W.lv]|0, st); const pd = (role == 'h' ? payDay() : '') + achCheck(st); save();
   $('stars').innerHTML = star3(st, 56); $('sum').innerHTML = (st ? 'Уровень ' + (W.lv + 1) + ' пройден!' : 'Цель ' + L.goal + ' монет не достигнута.') + '<br>Монет: <b>' + W.coins + '</b>. Подано: ' + W.served + '. Ушли: ' + W.lost + '.' + pd;
   $('bAgain').style.display = role == 'h' ? '' : 'none'; $('bNext').style.display = role == 'h' && st && W.lv < LV.length - 1 ? '' : 'none'; $('bTownE').style.display = role == 'h' && !ch ? '' : 'none'; snd(st ? 784 : 300, .3); go('pEnd'); cooking && closeCook();
@@ -762,6 +780,14 @@ function target(){
   for(const n in STN){
     const s = W.st[n]; if(s[0] == 1 || (s[0] == 2 && hold)) continue;
     const d = Math.hypot(me.x - STN[n].x, me.z - (SZ + .5)); if(d < 2.1 && d < bd){ bd = d; best = {a:{k:'s', n}, l:s[0] == 2 ? 'Забрать: ' + NAME[n] : 'Готовить: ' + NAME[n]}; }
+  }
+  const il = ISL(), sh = W.shelf || [];
+  if(il && !il.hid){
+    const d = Math.hypot(Math.max(Math.abs(me.x - il.x) - 1.2, 0), Math.max(Math.abs(me.z - il.z) - .8, 0));
+    if(d < 1.3 && d < bd){
+      if(hold){ if(sh.length < SHN){ bd = d; best = {a:{k:'p'}, l:'Положить на стол: ' + NAME[hold]}; } }
+      else if(sh.length){ const need = W.cust.filter(c => c.s == 1 || c.s == 2).sort((a, b) => a.p - b.p).map(c => c.m), it = need.find(m => sh.includes(m)) || sh[0]; bd = d; best = {a:{k:'g', n:it}, l:'Взять со стола: ' + NAME[it]}; }
+    }
   }
   return best;
 }
@@ -1192,9 +1218,9 @@ async function authDo(up){
   if(!/^\S+@\S+\.\S+$/.test(em) || pw.length < 6) return drawAcc('Нужна почта и пароль от 6 знаков');
   drawAcc('Подожди...');
   try{
-    const r = up ? await c.auth.signUp({email:em, password:pw}) : await c.auth.signInWithPassword({email:em, password:pw});
+    const r = up ? await c.auth.signUp({email:em, password:pw, options:{emailRedirectTo:/^https?:$/.test(location.protocol) ? new URL('confirm.html', location.href).href : undefined}}) : await c.auth.signInWithPassword({email:em, password:pw});
     if(r.error) return drawAcc(authErr(r.error.message));
-    if(!r.data.session) return drawAcc('Письмо отправлено на ' + em + '. Подтверди почту и нажми «Войти».');
+    if(!r.data.session) return drawAcc('Письмо отправлено на ' + em + '. Открой его, нажми на ссылку, потом вернись сюда и нажми «Войти».');
     await setAcct(r.data.session, !up);
   }catch(e){ drawAcc('Нет связи, попробуй ещё раз'); }
 }
@@ -1294,6 +1320,7 @@ R.setAnimationLoop(() => {
   }
   const orders = W.cust.filter(c => c.s == 2).map(c => c.m);
   slots.forEach((m, i) => setSpr(m, orders[i]));
+  { const il = ISL(), sh = W.shelf || []; shs.forEach((m, i) => { const it = playing && il && !il.hid ? sh[i] : null; if(it){ m.position.set(il.x + (i - 1.5)*.62, 1.65, il.z); if(m.userData.k != it){ m.userData.k = it; setSpr(m, it); } m.visible = true; } else m.visible = false; }); }
   const tk = orders.join(); if(tk != tixKey){ tixKey = tk; $('tix').innerHTML = orders.map(m => '<i>' + svg(m, IC[m]) + '</i>').join(''); }
   const hk = String(W.held[role]); if(hk != heldKey){ heldKey = hk; const hd = $('hold'); hd.style.display = W.held[role] ? 'flex' : 'none'; $('bDrop').style.display = W.held[role] ? 'flex' : 'none'; hd.innerHTML = W.held[role] ? svg(W.held[role], IC[W.held[role]]) : ''; }
   if(W.coins > lastCoins){ if(playing) floatTxt('+' + (W.coins - lastCoins)); snd(880, .12); snd(1320, .15, 'sine', .6); vib(25); } lastCoins = W.coins; $('coins').textContent = W.coins;
