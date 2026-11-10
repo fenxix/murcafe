@@ -171,6 +171,12 @@ body.rush #vig{background:radial-gradient(ellipse at 50% 45%,transparent 45%,rgb
 .tn{min-width:0}.ov .tn button{flex:none;white-space:nowrap}
 .sks{width:min(900px,100%)}
 @media (max-height:500px){#pCat{gap:4px}#pCat #chd h2{font-size:20px}.ov #chd button{padding:7px 16px;font-size:14px}.tn{padding:6px 8px}.ti2{font-size:22px}.tb{gap:6px}}
+#pSg{justify-content:flex-start}#sgb{margin:auto;display:flex;flex-direction:column;align-items:center;gap:10px;width:min(920px,100%)}
+.sgst{display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:center;font-weight:800;font-size:15px;align-items:center}
+.sgl,.sgc{background:#fff;border:2px solid #d9b182;border-radius:14px;padding:10px 14px;max-width:560px;text-align:left;font-size:15px;line-height:1.4}.sgc b{font-size:18px;display:block;margin-bottom:4px}.sgc p{margin:6px 0 0}
+.sgs{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;width:100%}
+#pSg button{min-width:0;padding:10px 12px;font-size:15px;line-height:1.25}#pSg .sgs button{display:flex;flex-direction:column;gap:2px;align-items:center;font-size:13px}#pSg .sgs button b{font-size:15px}#pSg button.lk{opacity:.4}
+.bar{display:inline-block;width:110px;height:10px;background:#0002;border-radius:6px;overflow:hidden;vertical-align:middle}.bar i{display:block;height:100%;background:#ff8fb1}
 </style>
 </head>
 <body>
@@ -184,13 +190,14 @@ body.rush #vig{background:radial-gradient(ellipse at 50% 45%,transparent 45%,rgb
 <div id="joy"><i></i></div>
 <button class="btn" id="bRun"><span id="ir"></span>бег</button><button class="btn" id="bSlide"><span id="is"></span>скольжение</button><button class="btn" id="bDrop"><span id="itr"></span>выбросить</button><button class="btn" id="bAct"><span id="ia"></span><b id="al">ДЕЙСТВИЕ</b></button>
 <div id="cook"><div id="ch"><b id="ct"></b><div id="cp"><i></i></div></div><div id="cs"></div><button class="bb alt" id="bCx">Назад</button></div>
-<div class="ov on" id="menu"><div class="mc"><h1>Мур-Кафе</h1><p>Кошачье кафе на двоих. Выбери цвет кота:</p><div id="sw"></div><input id="nm" maxlength="12" placeholder="Твоё имя"><button class="alt" data-go="pCat">Прокачка и скины</button><button class="alt" id="bTown">Город и кафе</button><button class="alt" id="bAcc">Войти в аккаунт</button></div>
+<div class="ov on" id="menu"><div class="mc"><h1>Мур-Кафе</h1><p>Кошачье кафе на двоих. Выбери цвет кота:</p><div id="sw"></div><input id="nm" maxlength="12" placeholder="Твоё имя"><button id="bStory">Сюжет: кафе с нуля</button><button class="alt" data-go="pCat">Прокачка и скины</button><button class="alt" id="bTown">Город и кафе</button><button class="alt" id="bAcc">Войти в аккаунт</button></div>
 <div class="mc"><button id="bSolo">Играть одному</button><button data-go="pRoom">Играть вместе</button><button class="alt" id="bLvl" data-go="pLvl">Уровень 1</button><button class="alt" data-go="pTop">Рейтинг</button><button class="alt" data-go="pSet">Настройки</button><button class="alt" data-go="pHelp">Как играть</button></div></div>
 <div class="ov" id="pAcc"><h2>Аккаунт</h2><p id="accm"></p><div id="aform" class="mc"><div class="row"><input id="aem" type="email" placeholder="Почта" autocomplete="email" style="width:220px"><input id="apw" type="password" placeholder="Пароль, от 6 знаков" autocomplete="current-password" style="width:220px"></div><div class="row"><button id="aIn">Войти</button><button class="alt" id="aUp">Создать аккаунт</button></div></div><button class="alt" id="aOut">Выйти</button><button class="alt" id="aBack">Назад</button></div>
 <div class="ov" id="pRoom"><h2>Играть вместе</h2><button id="bNew">Создать комнату</button><div class="row"><input id="code" maxlength="4" placeholder="КОД" autocapitalize="characters"><button id="bJoin">Войти</button></div><p id="msg"></p><button class="alt" data-go="menu">Назад</button></div>
 <div class="ov" id="pSet"><h2>Настройки</h2><div id="opts"></div><button data-go="back">Готово</button></div>
 <div class="ov" id="pHelp"><h2>Как играть</h2><p>1. Гость сел за стол: подойди и нажми розовую кнопку, чтобы взять заказ.<br>2. Иди на кухню к нужной станции: откроется стол. Наливай молоко, режь торт, мешай суп пальцем. Готовое блюдо можно поставить на стол на кухне (кнопка ДЕЙСТВИЕ рядом со столом, до 4 штук): так готовишь заранее, а потом берёшь со стола и подаёшь.<br>3. Забери готовое блюдо и подай нужному гостю. Значок «+1» над гостем значит комбо: подавай блюда по очереди, за комбо будет бонус. После еды стол грязный, протри его кнопкой ДЕЙСТВИЕ, иначе за него никто не сядет.<br>4. Мигающий гость скоро уйдёт, поторопись. На каждом уровне набери цель по монетам до конца времени.<br>5. Монеты за смену копятся в казне. В городе покупай новые кафе, улучшай их, меняй оформление и нанимай котов.<br>6. Прокачивай персонал в городе (кафе, Персонал): официанты 2 уровня сами носят готовые блюда гостям, повара и уборщики работают быстрее. С уровнем растёт и зарплата, которую они ждут.<br>7. Уборщики-коты сами подметают мусор гостей и вытирают разливы. Разливы появляются, когда бежишь и падаешь. На разливе можно поскользнуться, поэтому вытирай его кнопкой ДЕЙСТВИЕ или жди уборщика.</p><button data-go="back">Понятно</button></div>
 <div class="ov" id="pLvl"><h2>Выбери уровень</h2><div id="lv"></div><button class="alt" data-go="menu">Назад</button></div>
+<div class="ov" id="pSg"><div id="sgb"></div></div>
 <div class="ov" id="pTop"><h2>Рейтинг</h2><p id="top"></p><button class="alt" data-go="menu">Назад</button></div>
 <div class="ov" id="pPause"><h2>Пауза</h2><button id="bRes">Продолжить</button><button class="alt" data-go="pSet">Настройки</button><button class="alt" data-go="pHelp">Как играть</button><button class="alt" id="bQuit">В меню</button></div>
 <div class="ov" id="pEnd"><h2>Смена окончена</h2><div id="stars"></div><p id="sum"></p><button id="bNext">Следующий уровень</button><button class="alt" id="bAgain">Ещё раз</button><button class="alt" data-go="pCat">Прокачка и скины</button><button class="alt" id="bTownE">Город</button><button class="alt" id="bMenu">В меню</button></div>
@@ -331,9 +338,17 @@ const LV = [
   {t:110, goal:100, gap:7, pat:130, max:4, items:['coffee', 'cake', 'soup']},
   {t:120, goal:140, gap:6, pat:120, max:5, items:['coffee', 'cake', 'soup']},
   {t:120, goal:180, gap:5, pat:110, max:5, items:['coffee', 'cake', 'soup']},
-  {t:150, goal:250, gap:4.5, pat:100, max:6, items:['coffee', 'cake', 'soup']}];
-const S = {vol:.4, vib:1, btn:1, hq:0, diff:1, hints:1, name:'', best:0, seen:0, lvl:0, stars:[], g:null, ot:0, up:{}, sk:0, skn:[0], ach:{}, dl:'', ds:0};
+  {t:150, goal:250, gap:4.5, pat:100, max:6, items:['coffee', 'cake', 'soup']},
+  {t:150, goal:320, gap:4.2, pat:95, max:6, items:['coffee', 'cake', 'soup']},
+  {t:160, goal:400, gap:4, pat:90, max:7, items:['coffee', 'cake', 'soup']},
+  {t:170, goal:500, gap:3.8, pat:85, max:8, items:['coffee', 'cake', 'soup']},
+  {t:180, goal:620, gap:3.5, pat:80, max:8, items:['coffee', 'cake', 'soup']}];
+const NL = LV.length; LV.push({t:100, goal:10, gap:9, pat:120, max:2, items:['coffee']});
+const S = {vol:.4, vib:1, btn:1, hq:0, diff:1, hints:1, name:'', best:0, seen:0, lvl:0, stars:[], g:null, ot:0, up:{}, sk:0, skn:[0], ach:{}, dl:'', ds:0, sg:null};
+const SGnew = () => ({v:1, d:1, c:25, tb:0, rc:['coffee'], u:{sp:0, co:0, sn:0}, rep:5, vio:0, cl:0, ms:0, cool:0, crit:0, ad:0, rv:0, bk:0, ev:'', last:'', seen:{}});
+let SG = false; const CTR = [[-6.3, 3.1], [-6.3, 1.9], [-6.3, .7], [-6.3, -.5]];
 try{ Object.assign(S, JSON.parse(localStorage.getItem('murcafe') || '{}')); }catch(e){}
+if(!S.sg || !S.sg.v) S.sg = SGnew();
 // ---------- аккаунт и облачное сохранение (таблица saves, у каждого игрока своя строка) ----------
 const NOSYNC = ['vol', 'vib', 'btn', 'hq', 'hints', 'diff', 'ot'];
 let acct = null, cdt = null, csyn = 'ok', bootDone = 0;
@@ -450,14 +465,14 @@ function syncCust(dt, t){
   W.cust.forEach(c => {
     ids[c.i] = 1; let v = views[c.i];
     if(!v){ v = views[c.i] = makePerson(SKIN[c.k], SHIRT[c.h], HAIR[c.r]); v.x = c.x; v.z = c.z; v.f = c.f; }
-    if(c.v && !v.cr) v.cr = cyl(.2, .24, .13, 0xffd24a, 0, 1.9, 0, v.p);
+    if(c.v && !v.cr) v.cr = cyl(.2, .24, .13, 0xffd24a, 0, 1.9, 0, v.p); if(c.cr && !v.cr2) v.cr2 = cyl(.27, .27, .17, 0x1a1a1a, 0, 1.93, 0, v.p);
     const px = v.x, pz = v.z, a = Math.min(1, dt*10);
     v.x += (c.x - v.x)*a; v.z += (c.z - v.z)*a;
     const mv = Math.hypot(v.x - px, v.z - pz)/Math.max(dt, .001), seated = c.s >= 1 && c.s <= 3;
     if(seated) v.f = c.f; else if(mv > .3) v.f = Math.atan2(v.x - px, v.z - pz);
     v.g.position.set(v.x, 0, v.z); v.g.rotation.y = v.f;
-    v.p.position.y = seated ? -.32 : Math.abs(Math.sin(t*10))*.07*Math.min(1, mv/2);
-    if(c.s == 1) setSpr(v.b, c.m, 0, xn(c)); else if(c.s == 2) setSpr(v.b, c.m, 1, xn(c)); else if(c.s == 3) setSpr(v.b, 'heart'); else v.b.visible = false; v.b.material.opacity = (c.p < .3 && c.s < 3) ? .5 + .5*Math.abs(Math.sin(t*8)) : 1;
+    v.p.position.y = seated && !(c.seat && c.seat.st) ? -.32 : Math.abs(Math.sin(t*10))*.07*Math.min(1, mv/2);
+    if(c.s == 1) v.b.visible = false; else if(c.s == 2) setSpr(v.b, c.m, 1, xn(c)); else if(c.s == 3) setSpr(v.b, 'heart'); else v.b.visible = false; v.b.material.opacity = (c.p < .3 && c.s < 3) ? .5 + .5*Math.abs(Math.sin(t*8)) : 1;
   });
   for(const id in views) if(!ids[id]){ scene.remove(views[id].g); delete views[id]; }
 }
@@ -465,19 +480,19 @@ function syncCust(dt, t){
 // ---------- мир (хозяин считает, гость получает) ----------
 const W = {coins:0, cust:[], st:{coffee:[0, 0], cake:[0, 0], soup:[0, 0]}, held:{h:null, g:null}, shelf:[], time:LV[S.lvl].t, lv:S.lvl, served:0, lost:0, combo:0, over:0, dirt:[], cln:[]};
 const SEATS = [];
-function buildSeats(n){ SEATS.length = 0; TABLES.slice(0, n).forEach((q, tq) => [-1, 1].forEach(s => SEATS.push({x:q[0] + s*1.4, z:q[1], f:-s*Math.PI/2, o:0, t:tq}))); } buildSeats(3);
+function buildSeats(n){ SEATS.length = 0; TABLES.slice(0, n).forEach((q, tq) => [-1, 1].forEach(s => SEATS.push({x:q[0] + s*1.4, z:q[1], f:-s*Math.PI/2, o:0, t:tq}))); if(SG) CTR.forEach(q => SEATS.push({x:q[0], z:q[1], f:-Math.PI/2, o:0, t:null, st:1})); } buildSeats(3);
 let role = 'h', cid = 0, did = 0, spawnT = 1, ch = null, peer = false, rem = null;
 const pick = a => a[Math.random()*a.length|0];
 function spawn(){
   const free = SEATS.filter(s => !s.o && !W.dirt.some(d => d.k == 'table' && d.t == s.t)); if(!free.length) return;
-  const s = pick(free); s.o = 1;
-  W.cust.push({i:++cid, x:-7.9, z:4.3, s:0, m:pick(LV[W.lv].items), q:comboQ(), p:1, v:W.lv >= 1 && Math.random() < .14 ? 1 : 0, k:pick(SKIN.map((_, i) => i)), h:pick(SHIRT.map((_, i) => i)), r:pick(HAIR.map((_, i) => i)), f:s.f, seat:s, path:[[-6.5, 4.3], [s.x, 4.3], [s.x, s.z]], t:0});
+  const fs = free.filter(q => !q.st), s = pick(fs.length ? fs : free); s.o = 1;
+  const nc = ({i:++cid, x:-7.9, z:4.3, s:0, m:pick(LV[W.lv].items), q:comboQ(), p:1, v:W.lv >= 1 && Math.random() < .14 ? 1 : 0, k:pick(SKIN.map((_, i) => i)), h:pick(SHIRT.map((_, i) => i)), r:pick(HAIR.map((_, i) => i)), f:s.f, seat:s, path:[[-6.5, 4.3], [s.x, 4.3], [s.x, s.z]], t:0}); if(SG) sgGuest(nc); W.cust.push(nc);
 }
 const inWork = m => !!((W.st[m] && W.st[m][0] > 0) || (W.shelf || []).includes(m) || W.held.h == m || W.held.g == m);
 function hostTick(dt){
   if(W.over) return;
   W.time -= dt; if(W.time <= 0){ W.time = 0; W.over = 1; push(); return; }
-  if(W.rush > 0) W.rush = Math.max(0, W.rush - dt); else if(!W.rushed && W.lv >= 1 && W.time < LV[W.lv].t*.6 && W.time > LV[W.lv].t*.25 && Math.random() < dt*.05){ W.rush = 20; W.rushed = 1; }
+  if(SG) sgTick(dt); if(W.rush > 0) W.rush = Math.max(0, W.rush - dt); else if(!W.rushed && W.lv >= 1 && W.time < LV[W.lv].t*.6 && W.time > LV[W.lv].t*.25 && Math.random() < dt*.05){ W.rush = 20; W.rushed = 1; }
   spawnT -= dt;
   if(spawnT <= 0 && W.cust.length < Math.min(SEATS.length, LV[W.lv].max + CL)){ spawn(); spawnT = LV[W.lv].gap*(.8 + Math.random()*.4)*S.diff*(W.rush > 0 ? .55 : 1); }
   W.cust.forEach(c => {
@@ -486,7 +501,7 @@ function hostTick(dt){
       if(d < sp*dt){ c.x = q[0]; c.z = q[1]; c.path.shift(); } else { c.x += dx/d*sp*dt; c.z += dz/d*sp*dt; }
     };
     if(c.s == 0){ if(c.path.length) go(2.4); else c.s = 1; }
-    else if(c.s == 1 || c.s == 2){ c.p = Math.max(0, c.p - dt*(c.v ? 1.25 : 1)*(c.s == 2 && inWork(c.m) ? .55 : 1)/(LV[W.lv].pat*(1 + CL*.05)) - dt*.004*Math.min(W.dirt.length, 4)); if(c.p <= 0){ c.s = 4; c.seat.o = 0; c.path = [[c.seat.x, 4.3], [-7.9, 4.3]]; W.lost++; W.combo = 0; W.dirt.push({i:++did, x:c.seat.x, z:c.seat.z, k:'trash'}); } }
+    else if(c.s == 1 || c.s == 2){ c.p = Math.max(0, c.p - dt*(c.v ? 1.25 : 1)*(c.s == 2 && inWork(c.m) ? .55 : 1)/(LV[W.lv].pat*(1 + CL*.05)) - dt*.004*Math.min(W.dirt.length, 4)); if(c.p <= 0){ c.s = 4; c.seat.o = 0; c.path = [[c.seat.x, 4.3], [-7.9, 4.3]]; W.lost++; W.combo = 0; if(SG) sgDone(c, 0); W.dirt.push({i:++did, x:c.seat.x, z:c.seat.z, k:'trash'}); } }
     else if(c.s == 3){ c.t -= dt; if(c.t <= 0){ c.s = 4; c.seat.o = 0; dirtyTable(c.seat); W.dirt.push({i:++did, x:c.seat.x, z:c.seat.z, k:'trash'}); c.path = [[c.seat.x, 4.3], [-7.9, 4.3]]; } }
     else if(c.s == 4){ if(c.path.length) go(2.4); else c.del = 1; }
   });
@@ -495,7 +510,7 @@ function hostTick(dt){
   const cr = W.crew || [];
   if(cr.some(q => q.r == 'wait')) W.cust.forEach(c => { if(c.s == 1){ c.w = (c.w || 0) + dt; if(c.w > 2.5) c.s = 2; } });
   cr.forEach(q => { const s = W.st[q.r]; if(s && s[0] == 0 && W.cust.some(c => c.s == 2 && c.m == q.r)){ s[0] = 1; s[1] = 0; } });
-  const cm = n => { const q = cr.find(z => z.r == n); return q ? 1 + .25*((q.lv || 1) - 1) : 1; };
+  const cm = n => { if(SG) return 1 + .15*S.sg.u.sp; const q = cr.find(z => z.r == n); return q ? 1 + .25*((q.lv || 1) - 1) : 1; };
   for(const n in W.st){ const s = W.st[n]; if(s[0] == 1){ s[1] += dt/3*(1 + CL*.12)*cm(n); if(s[1] >= 1){ s[0] = 2; s[1] = 0; } } }
 }
 function applyAct(who, a){
@@ -504,7 +519,7 @@ function applyAct(who, a){
   else if(a.k == 'c'){
     const c = W.cust.find(q => q.i == a.id); if(!c) return;
     if(c.s == 1) c.s = 2;
-    else if(c.s == 2 && h[who] == c.m){ h[who] = null; const pay = Math.round((10 + Math.round(c.p*8) + Math.min(W.combo, 5)*2)*(1 + CL*.08)*(c.v ? 2.5 : 1)*(W.rush > 0 ? 1.5 : 1)); if(c.q && c.q.length){ W.coins += Math.round(pay*.7); c.m = c.q.shift(); c.wt = 0; c.bn = (c.bn|0) + 1; c.p = Math.min(1, c.p + .3); } else { c.s = 3; c.t = 4.5; W.combo++; W.served++; W.coins += pay + 8*(c.bn|0); if(c.bn) W.cmb = (W.cmb|0) + 1; if(c.v) W.vips = (W.vips|0) + 1; } }
+    else if(c.s == 2 && h[who] == c.m){ h[who] = null; let pay = Math.round((10 + Math.round(c.p*8) + Math.min(W.combo, 5)*2)*(1 + CL*.08)*(c.v ? 2.5 : 1)*(W.rush > 0 ? 1.5 : 1)); if(SG) pay = sgPay(pay, c); if(c.q && c.q.length){ W.coins += Math.round(pay*.7); c.m = c.q.shift(); c.wt = 0; c.bn = (c.bn|0) + 1; c.p = Math.min(1, c.p + .3); } else { c.s = 3; c.t = 4.5; W.combo++; W.served++; W.coins += pay + (SG ? 2 : 8)*(c.bn|0); if(c.bn) W.cmb = (W.cmb|0) + 1; if(c.v) W.vips = (W.vips|0) + 1; if(SG) sgDone(c, 1); } }
   } else if(a.k == 'p'){ W.shelf = W.shelf || []; if(h[who] && W.shelf.length < SHN){ W.shelf.push(h[who]); h[who] = null; } }
   else if(a.k == 'g'){ W.shelf = W.shelf || []; const i = W.shelf.indexOf(a.n); if(i >= 0 && !h[who]){ h[who] = a.n; W.shelf.splice(i, 1); } }
   else if(a.k == 'f'){ W.dirt.push({i:++did, x:a.x, z:a.z, k:'spill'}); }
@@ -708,13 +723,13 @@ function applyUI(){
   resize(); $('hint').style.display = S.hints ? '' : 'none';
 }
 async function showTop(){ const el = $('top'); el.textContent = 'Загружаю...'; const d = await loadTop().catch(() => null); const e = x => String(x).replace(/[&<>]/g, c => '&#' + c.charCodeAt(0) + ';'); el.innerHTML = d == null ? 'Рейтинг заработает после подключения Supabase: впиши SUPABASE_URL и SUPABASE_KEY в начале скрипта.' : d.length ? d.map((r, i) => (i + 1) + '. ' + e(r.name) + ': ' + r.coins + ' монет, звёзд: ' + r.stars).join('<br>') : 'Пока пусто. Сыграй первую смену!'; }
-function resetWorld(){ Object.assign(W, {coins:0, cust:[], st:{coffee:[0, 0], cake:[0, 0], soup:[0, 0]}, held:{h:null, g:null}, shelf:[], time:LV[S.lvl].t, lv:S.lvl, served:0, lost:0, combo:0, over:0, dirt:[], cln:[], rush:0, rushed:0, vips:0, cmb:0, wiped:0, wt:[]}); applyCafe(); applyDay(); buildSeats(tabN); spawnT = 2; shown = 0; lastCoins = 0; me.x = -1.5; me.z = 3; me.stam = 100; ban(CF().n + ', ' + (S.g.day%2 ? 'вечер' : 'утро') + '. Уровень ' + (W.lv + 1) + ': набери ' + LV[W.lv].goal + ' монет'); setTimeout(() => ban(''), 4000); }
-function endShift(){ shown = 1; const L = LV[W.lv], st = W.coins >= L.goal*1.8 ? 3 : W.coins >= L.goal*1.4 ? 2 : W.coins >= L.goal ? 1 : 0; if(W.coins > S.best) S.best = W.coins; S.stars[W.lv] = Math.max(S.stars[W.lv]|0, st); const pd = (role == 'h' ? payDay() : '') + achCheck(st); save();
+function resetWorld(){ if(SG) sgLv(); Object.assign(W, {coins:0, cust:[], st:{coffee:[0, 0], cake:[0, 0], soup:[0, 0]}, held:{h:null, g:null}, shelf:[], time:LV[SG ? NL : S.lvl].t, lv:SG ? NL : S.lvl, served:0, lost:0, combo:0, over:0, dirt:[], cln:[], rush:0, rushed:0, vips:0, cmb:0, wiped:0, wt:[]}); applyCafe(); if(SG) sgApply(); applyDay(); buildSeats(tabN); spawnT = 2; shown = 0; lastCoins = 0; me.x = -1.5; me.z = 3; me.stam = 100; ban(CF().n + ', ' + (S.g.day%2 ? 'вечер' : 'утро') + '. Уровень ' + (W.lv + 1) + ': набери ' + LV[W.lv].goal + ' монет'); setTimeout(() => ban(''), 4000); cnt.visible = SG; if(SG) sgDayInit(); }
+function endShift(){ if(SG) return sgEnd(); shown = 1; const L = LV[W.lv], st = W.coins >= L.goal*1.8 ? 3 : W.coins >= L.goal*1.4 ? 2 : W.coins >= L.goal ? 1 : 0; if(W.coins > S.best) S.best = W.coins; S.stars[W.lv] = Math.max(S.stars[W.lv]|0, st); const pd = (role == 'h' ? payDay() : '') + achCheck(st); save();
   $('stars').innerHTML = star3(st, 56); $('sum').innerHTML = (st ? 'Уровень ' + (W.lv + 1) + ' пройден!' : 'Цель ' + L.goal + ' монет не достигнута.') + '<br>Монет: <b>' + W.coins + '</b>. Подано: ' + W.served + '. Ушли: ' + W.lost + '.' + pd;
-  $('bAgain').style.display = role == 'h' ? '' : 'none'; $('bNext').style.display = role == 'h' && st && W.lv < LV.length - 1 ? '' : 'none'; $('bTownE').style.display = role == 'h' && !ch ? '' : 'none'; snd(st ? 784 : 300, .3); go('pEnd'); cooking && closeCook();
+  $('bAgain').style.display = role == 'h' ? '' : 'none'; $('bNext').style.display = role == 'h' && st && W.lv < NL - 1 ? '' : 'none'; $('bTownE').style.display = role == 'h' && !ch ? '' : 'none'; snd(st ? 784 : 300, .3); go('pEnd'); cooking && closeCook();
   if(role == 'h') saveScore({name:S.name || 'Кот', coins:W.coins, served:W.served, stars:st, mode:(ch ? 'duo' : 'solo') + ':' + (W.lv + 1)}); }
 function labelLvl(){ $('bLvl').textContent = 'Уровень ' + (S.lvl + 1) + ': выбрать'; }
-function drawLv(){ const e = $('lv'); e.innerHTML = ''; LV.forEach((L, i) => { const ok = i == 0 || (S.stars[i - 1]|0) > 0, b = document.createElement('button'), n = S.stars[i]|0; b.className = (i == S.lvl ? '' : 'alt') + (ok ? '' : ' lk'); b.innerHTML = (ok ? i + 1 : 'Закрыт') + '<br>' + star3(n, 20) + '<br>цель ' + L.goal; b.onclick = () => { if(!ok) return; S.lvl = i; save(); labelLvl(); go('menu'); }; e.appendChild(b); }); }
+function drawLv(){ const e = $('lv'); e.innerHTML = ''; LV.slice(0, NL).forEach((L, i) => { const ok = i == 0 || (S.stars[i - 1]|0) > 0, b = document.createElement('button'), n = S.stars[i]|0; b.className = (i == S.lvl ? '' : 'alt') + (ok ? '' : ' lk'); b.innerHTML = (ok ? i + 1 : 'Закрыт') + '<br>' + star3(n, 20) + '<br>цель ' + L.goal; b.onclick = () => { if(!ok) return; S.lvl = i; save(); labelLvl(); go('menu'); }; e.appendChild(b); }); }
 $('bNext').onclick = () => { S.lvl = W.lv + 1; save(); labelLvl(); resetWorld(); push(); go(null); };
 labelLvl();
 $('nm').value = S.name; $('nm').oninput = () => { S.name = $('nm').value; save(); };
@@ -722,7 +737,7 @@ $('bSolo').onclick = () => { ch = null; role = 'h'; start(); };
 $('bPause').onclick = () => go('pPause'); $('bRes').onclick = () => go(null);
 $('bQuit').onclick = $('bMenu').onclick = () => location.reload();
 $('bAgain').onclick = () => { resetWorld(); push(); go(null); };
-addEventListener('keydown', e => { if(e.code == 'Escape' && playing){ if(cooking) closeCook(); else go(cur ? null : 'pPause'); } });
+addEventListener('keydown', e => { if(e.code == 'Escape' && playing && cur != 'pSg'){ if(cooking) closeCook(); else go(cur ? null : 'pPause'); } });
 // стол: мини-игры готовки пальцем
 const hp = p => $('cp').firstChild.style.width = Math.min(100, p*100) + '%';
 const HELP = {coffee:'Зажми кнопку и налей молоко до розовой линии', cake:'Разрежь торт: проведи пальцем сверху вниз по каждому пунктиру', soup:'Нажми на рыбу, чтобы бросить её в кастрюлю'};
@@ -770,16 +785,18 @@ function trySlide(){
   const l = Math.hypot(me.dx, me.dz) || 1; me.sx = me.dx/l; me.sz = me.dz/l; me.slide = me.sl0 = .55 + .08*lv('sdi'); me.cd = 1.8 - .2*lv('scd'); me.stam -= 10;
 }
 let tgt = null;
+const aim = (x, z) => { const dx = x - me.x, dz = z - me.z, d = Math.hypot(dx, dz) || 1, al = (dx*Math.sin(me.face) + dz*Math.cos(me.face))/d; return d + (al < .4 ? .9 : 0); };
 function target(){
   let best = null, bd = 1e9; const hold = W.held[role];
   W.dirt.forEach(q => { const d = Math.hypot(me.x - q.x, me.z - q.z); if(d < (q.k == 'table' ? 2.3 : 1.3) && d < bd){ bd = d; best = {a:{k:'x', id:q.i}, l:q.k == 'table' ? 'Протереть стол' : q.k == 'spill' ? 'Вытереть' : 'Подмести'}; } });
   W.cust.forEach(c => {
     if(!(c.s == 1 || (c.s == 2 && hold == c.m))) return;
-    const d = Math.hypot(me.x - c.x, me.z - c.z); if(d < 1.8 && d < bd){ bd = d; best = {a:{k:'c', id:c.i}, l:c.s == 1 ? 'Взять заказ' : 'Подать'}; }
+    const r = Math.hypot(me.x - c.x, me.z - c.z), d = aim(c.x, c.z); if(r < 1.8 && d < bd){ bd = d; best = {a:{k:'c', id:c.i}, l:c.s == 1 ? 'Взять заказ' : 'Подать'}; }
   });
   for(const n in STN){
+    if(SG && !S.sg.rc.includes(n)){ const r0 = Math.hypot(me.x - STN[n].x, me.z - (SZ + .5)); if(r0 < 1.5 && r0 < bd){ bd = r0; best = {a:{k:'z'}, l:'Нет рецепта: купи в меню дня'}; } continue; }
     const s = W.st[n]; if(s[0] == 1 || (s[0] == 2 && hold)) continue;
-    const d = Math.hypot(me.x - STN[n].x, me.z - (SZ + .5)); if(d < 2.1 && d < bd){ bd = d; best = {a:{k:'s', n}, l:s[0] == 2 ? 'Забрать: ' + NAME[n] : 'Готовить: ' + NAME[n]}; }
+    const r = Math.hypot(me.x - STN[n].x, me.z - (SZ + .5)), d = aim(STN[n].x, SZ + .5); if(r < 1.7 && d < bd){ bd = d; best = {a:{k:'s', n}, l:s[0] == 2 ? 'Забрать: ' + NAME[n] : 'Готовить: ' + NAME[n]}; }
   }
   const il = ISL(), sh = W.shelf || [];
   if(il && !il.hid){
@@ -1250,7 +1267,7 @@ applyDay();
 
 // ---------- игровой цикл ----------
 function applyDay(){
-  const ev = S.g.day%2;
+  const ev = (SG ? S.sg.d : S.g.day)%2;
   hemi.color.setHex(ev ? 0xffd6b0 : 0xfff4e6); hemi.intensity = ev ? .62 : .82;
   sun.color.setHex(ev ? 0xffa766 : 0xffecd0); sun.intensity = ev ? .6 : .72; fill.intensity = ev ? .85 : .45;
   beam.material.color.setHex(ev ? 0xffb066 : 0xffffff); scene.background.setHex(ev ? 0xf3c9a6 : 0xffe9d6);
@@ -1273,6 +1290,120 @@ function pulseTick(){
   pul.style.opacity = (a*(.25 + .75*k)).toFixed(2); tm.style.transform = 'translateX(-50%) scale(' + (1 + .22*k).toFixed(3) + ')';
 }
 function floatTxt(s){ const e = $('coins'); if(!e) return; const r = e.getBoundingClientRect(), d = document.createElement('div'); d.className = 'fl'; d.textContent = s; d.style.left = (r.right + 8) + 'px'; d.style.top = r.top + 'px'; document.body.appendChild(d); setTimeout(() => d.remove(), 900); }
+// ---------- СЮЖЕТ: кафе с нуля ----------
+const cl01 = v => Math.max(0, Math.min(100, Math.round(v)));
+const STARS = ['Певица Мяуролина', 'Кот-актёр Мурзон', 'Блогер Пушистик', 'Спортсмен Лапкин', 'Шеф Усатый'];
+const SGR = {tb:[60, 90, 140, 220, 320], rc:{cake:90, soup:200}, ms:[120, 300, 700], up:{sp:[70, 130, 220, 340], co:[60, 120, 200, 320], sn:[80, 150, 260, 400]}};
+const SGU = {sp:['Быстрая плита', '+15% к скорости готовки'], co:['Уют: пледы и подушки', '+8% терпения гостей'], sn:['Уборочный набор', 'Инспектор терпимее к грязи']};
+const MSQ = [
+  [['Репутация 45+', g => g.rep >= 45], ['Столиков: 2+', g => g.tb >= 2], ['В меню 2+ блюда', g => g.rc.length >= 2], ['Нарушений не больше 1', g => g.vio <= 1]],
+  [['Репутация 70+', g => g.rep >= 70], ['Столиков: 4+', g => g.tb >= 4], ['В меню все 3 блюда', g => g.rc.length >= 3], ['Плита 2+ и Уборочный набор 2+', g => g.u.sp >= 2 && g.u.sn >= 2], ['Нарушений нет', g => g.vio == 0]],
+  [['Репутация 90+', g => g.rep >= 90], ['Все 5 столиков', g => g.tb >= 5], ['Все улучшения 3+', g => g.u.sp >= 3 && g.u.co >= 3 && g.u.sn >= 3], ['Нарушений нет', g => g.vio == 0]]];
+const SGB = [
+  {id:'intro', w:g => g.d == 1, t:'Ключи от лавки', x:(g, n) => '<p>Бабушка Мурка отдала тебе, ' + n + ', ключи от крошечной лавки на углу. Столиков нет: только касса, плита и старая кофемашина. Гости берут кофе с собой и уходят.</p><p>«Начни с малого, внучка. А однажды на двери засияет звезда Мишлен», сказала бабушка.</p><p>Каждый день нужна аренда, а что осталось, копится в Мурках: на столики, рецепты и улучшения. Подойди к гостю у кассы, возьми заказ, приготовь и подай.</p>'},
+  {id:'bank', w:g => g.d >= 2, t:'Банкир Барсик', x:() => '<p>«Аренда растёт вместе с кафе, милая. Уйдёшь в минус, и я начислю 5% долга в день. Если долг дойдёт до 80 Мурок, лавка станет моей».</p><p>Следи, чтобы выручка за день была не меньше аренды: счётчик «Аренда» вверху экрана.</p>'},
+  {id:'insp', w:g => g.d >= 4, t:'Инспектор Усач', x:() => '<p>В дверь заглянул строгий кот с блокнотом: «Каждый пятый день я проверяю чистоту. Мусор, лужи, грязные столы: не больше одного пятна, и я доволен. Много грязи: штраф. Третье нарушение: закрою кафе на четыре дня».</p><p>Подметай, вытирай лужи и протирай столы вовремя.</p>'},
+  {id:'table', w:g => g.tb >= 1, t:'Первый столик', x:() => '<p>Теперь у кафе есть столик! За столиком гости платят полную цену, у кассы только 75%. Протирай стол после каждого гостя: за грязный никто не сядет.</p>'},
+  {id:'cake', w:g => g.rc.includes('cake'), t:'Бабушкины пирожные', x:() => '<p>В сундуке нашёлся бабушкин рецепт пирожных с розовым кремом. В меню новые заказы, а с ними и комбо из нескольких блюд.</p>'},
+  {id:'rival', w:g => g.d >= 8, t:'Золотой Коготь', x:() => '<p>Через дорогу открылось роскошное кафе «Золотой Коготь». Хозяйка, мисс Пантера, громко сказала: «Через год у меня будет звезда, а ваша лавка закроется».</p><p>Пока она на подъёме, часть гостей уходит к ней. Подними репутацию до 60, и они вернутся.</p>'},
+  {id:'fest', w:g => g.d == 12, t:'Праздник города', x:() => '<p>Мэр Барсик объявил День города! Сегодня гостей заметно больше, и платят они щедрее. Это проверка на скорость.</p>'},
+  {id:'soup', w:g => g.rc.includes('soup'), t:'Рыбный суп', x:() => '<p>Рыбный суп из бабушкиной кастрюли. Теперь в меню все три блюда, и можно думать о настоящей звезде.</p>'},
+  {id:'rvend', w:g => g.rv, t:'Мисс Пантера сдалась', x:() => '<p>«Золотой Коготь» опустел: все ходят в Мур-Кафе. Мисс Пантера пришла сама, заказала кофе и тихо сказала: «Ты победила. Но критику Мишлен мы ещё покажем».</p><p>Гости теперь идут к тебе охотнее.</p>'},
+  {id:'s1', w:g => g.ms >= 1, t:'Первая звезда Мишлен!', x:() => '<p>На двери засияла звезда. Бабушка плакала от радости. Но звезду надо беречь: репутация и чистота теперь на виду у всего города.</p>'},
+  {id:'s2', w:g => g.ms >= 2, t:'Две звезды!', x:() => '<p>Очередь на улице, фото в газетах, знаменитости сами просят столик. Осталась последняя, самая трудная звезда.</p>'},
+  {id:'s3', w:g => g.ms >= 3, t:'Три звезды Мишлен!', x:(g, n) => '<p>' + n + ', ты сделала это: из крошечной лавки без столиков выросло кафе с тремя звёздами. Бабушка Мурка повесила над дверью новую вывеску: «Мур-Кафе. Здесь всегда рады».</p><p>Конец истории. Кафе живёт дальше: можно играть сколько захочется, держать репутацию и копить рекорды.</p>'}];
+const sgRent = () => { const g = S.sg; return 6 + g.tb*3 + (g.rc.length - 1)*3 + (g.d/4|0) + g.ms*10; };
+function sgLv(){
+  const g = S.sg, d = g.d, L = LV[NL], rv = d >= 8 && !g.rv ? 1.2 : g.rv ? .92 : 1;
+  L.t = 100 + Math.min(40, (d*1.5)|0);
+  L.gap = Math.max(4.2, 10.5 - d*.1 - g.rep*.03)*rv*(g.ev == 'rain' ? 1.25 : g.ev == 'fest' ? .6 : 1);
+  L.pat = Math.max(60, 120 - d*1.1)*(1 + .08*g.u.co);
+  L.max = Math.min(g.tb*2 + CTR.length, 2 + (d/4|0) + g.tb);
+  L.items = g.rc.slice(); L.goal = sgRent();
+}
+const cnt = new THREE.Group(); scene.add(cnt);
+box(.5, 1.1, 5.2, 0xb98560, -7.55, .55, 1, cnt); box(.8, .12, 5.4, 0xf0d3ab, -7.55, 1.14, 1, cnt); box(.5, .38, .5, 0x5a5a6a, -7.5, 1.4, .2, cnt); box(.4, .06, .4, 0x6fbf73, -7.5, 1.62, .2, cnt); cnt.visible = false;
+function sgApply(){ const g = S.sg; tabN = g.tb; CL = 0; W.crew = []; ED.forEach(e => { if(e.k == 'table') e.g.visible = !e.hid && e.i < tabN; }); TG.forEach((q, i) => { q.visible = i < tabN; }); }
+function sgDayInit(){
+  const g = S.sg; Object.assign(W, {critDone:0, starDone:0, insDone:0, fine:0, rt:6});
+  ban('День ' + g.d + '. Аренда ' + sgRent() + (g.ev == 'rain' ? '. Дождь: гости носят лужи!' : g.ev == 'fest' ? '. Праздник города: гостей больше!' : '') + (g.d%5 == 0 ? ' Сегодня санинспекция!' : '') + (g.crit ? ' Ждём критика.' : ''));
+}
+const sgPay = (pay, c) => Math.max(1, Math.round(pay*.25*(c.seat && c.seat.st ? .75 : 1)*(S.sg.ev == 'fest' ? 1.3 : 1)));
+function sgGuest(c){
+  const g = S.sg; c.v = 0;
+  if(g.crit && !W.critDone && W.time < LV[NL].t*.8 && W.time > LV[NL].t*.2 && !(c.seat.st && g.tb > 0)){ c.cr = 1; c.q = [pick(LV[NL].items), pick(LV[NL].items)]; c.p = 1; W.critDone = 1; ban('Вошёл гость в чёрной шляпе. Это критик Мишлен! Три блюда, и чтобы чисто.'); setTimeout(() => ban(''), 5000); return; }
+  if(!W.starDone && g.rep >= 15 && Math.random() < .05 + g.rep/900){ c.v = 1; c.star = pick(STARS); W.starDone = 1; ban('В кафе звезда: ' + c.star + '! Угоди ей.'); setTimeout(() => ban(''), 3500); }
+}
+function sgCrit(pass){
+  const g = S.sg; g.crit = 0;
+  if(pass){ g.ms++; g.rep = cl01(g.rep + 6); ban('Критик доволен! Звезда Мишлен!'); snd(784, .4); snd(1046, .4, 'sine', .6); }
+  else { g.rep = cl01(g.rep - 6); g.cool = 3; ban('Критик остался недоволен...'); snd(220, .4); }
+  setTimeout(() => ban(''), 4500); save();
+}
+function sgDone(c, ok){
+  const g = S.sg;
+  if(c.cr) sgCrit(ok && W.dirt.length < 3 + g.u.sn);
+  else if(c.star){ g.rep = cl01(g.rep + (ok ? 4 : -3)); ban(ok ? c.star + ' в восторге! Репутация растёт' : c.star + ' ушла недовольной...'); setTimeout(() => ban(''), 3000); }
+}
+function sgInspect(){
+  const g = S.sg, n = W.dirt.length, o = g.u.sn; let m;
+  if(n <= 1 + o){ g.rep = cl01(g.rep + 3); m = 'Санинспекция: всё чисто! Репутация +3'; }
+  else if(n <= 4 + o){ g.rep = cl01(g.rep - 3); m = 'Санинспекция: замечание, грязновато. Репутация -3'; }
+  else { g.vio++; g.rep = cl01(g.rep - 8); W.fine = 12 + g.d; m = 'Санинспекция: ШТРАФ ' + W.fine + '! Нарушений: ' + g.vio + '/3'; }
+  ban(m); snd(n > 4 + o ? 200 : 600, .3); setTimeout(() => ban(''), 5000); save();
+}
+function sgTick(dt){
+  const g = S.sg;
+  if(g.ev == 'rain'){ W.rt = (W.rt || 0) - dt; if(W.rt <= 0){ W.rt = 9 + Math.random()*6; W.dirt.push({i:++did, x:-6 + Math.random()*3.5, z:2.2 + Math.random()*2.6, k:'spill'}); } }
+  if(g.d%5 == 0 && !W.insDone && W.time < LV[NL].t*.5){ W.insDone = 1; sgInspect(); }
+}
+function sgEnd(){
+  shown = 1; cooking && closeCook();
+  const g = S.sg, rent = sgRent(), fine = W.fine|0, L = [];
+  if(g.crit && W.cust.some(c => c.cr && c.s < 3)) sgCrit(false);
+  g.c += W.coins - rent - fine;
+  L.push('День ' + g.d + ' окончен. Выручка: <b>' + W.coins + '</b>, аренда: -' + rent + (fine ? ', штраф: -' + fine : '') + '.');
+  L.push('Подано: ' + W.served + ', ушли недовольными: ' + W.lost + '.');
+  let dr = Math.max(-6, Math.min(4, Math.round((W.served - W.lost*1.5)/4))); if(W.dirt.length > 4) dr -= 2;
+  const r0 = g.rep; g.rep = cl01(g.rep + dr); L.push('Репутация за день: ' + (g.rep - r0 > 0 ? '+' : '') + (g.rep - r0));
+  if(g.c < 0){ const i = Math.ceil(-g.c*.05); g.c -= i; L.push('<b>Долг банку: ' + (-g.c) + '</b> (проценты ' + i + ')'); }
+  if(g.d >= 8 && !g.rv && g.rep >= 60) g.rv = 1;
+  if(g.d%7 == 0 && g.vio > 0 && !fine) g.vio--;
+  if(g.vio >= 3){ g.cl = 4; g.vio = 1; g.rep = cl01(g.rep - 12); L.push('<b>Санслужба закрыла кафе на 4 дня!</b>'); }
+  g.d++; if(g.cool > 0) g.cool--; if(g.ad > 0) g.ad--;
+  if(g.c < -80) return sgBust();
+  g.last = L.join('<br>'); save(); sgHub(); go('pSg');
+}
+function sgSkip(){
+  const g = S.sg, rent = Math.ceil(sgRent()/2); g.c -= rent; g.cl--; g.d++; if(g.c < 0) g.c -= Math.ceil(-g.c*.05); if(g.cool > 0) g.cool--; if(g.ad > 0) g.ad--;
+  if(g.c < -80) return sgBust();
+  g.last = 'Кафе закрыто. Аренда за простой: -' + rent + (g.cl ? '. Осталось закрытых дней: ' + g.cl : '. Завтра открываемся!'); save(); sgHub();
+}
+function sgBust(){ const b = (S.sg.bk|0) + 1, d = S.sg.d; S.sg = SGnew(); S.sg.bk = b; S.sg.last = '<b>Банкротство!</b> Барсик закрыл лавку за долги на дне ' + d + '. Бабушка снова дала ключи: начинай заново.'; save(); sgHub(); go('pSg'); }
+function sgStart(){ const g = S.sg; g.last = ''; g.ev = g.d == 12 ? 'fest' : Math.random() < .2 ? 'rain' : ''; save(); if(!playing) start(); else { resetWorld(); go(null); } }
+function sgHub(){
+  const g = S.sg, e = $('sgb'), rent = sgRent(), nm = S.name || 'Кот', it = [];
+  let h = '<h2>Мур-Кафе · день ' + g.d + (g.bk ? ' · попытка ' + (g.bk + 1) : '') + '</h2><div class="sgst"><span>Мурки: <b' + (g.c < 0 ? ' style="color:#c0392b"' : '') + '>' + g.c + '</b></span><span>Аренда: <b>' + rent + '</b>/день</span><span>Репутация: <b>' + g.rep + '</b> <span class="bar"><i style="width:' + g.rep + '%"></i></span></span><span>Нарушения: <b>' + g.vio + '/3</b></span><span>Мишлен: ' + star3(g.ms, 22) + '</span></div>';
+  if(g.last) h += '<div class="sgl">' + g.last + '</div>';
+  const b = SGB.find(q => !g.seen[q.id] && q.w(g));
+  if(b){ e.innerHTML = h + '<div class="sgc"><b>' + b.t + '</b>' + b.x(g, nm) + '</div><button id="sgOk">Дальше</button>'; $('sgOk').onclick = () => { g.seen[b.id] = 1; save(); sgHub(); }; return; }
+  if(g.cl > 0){ e.innerHTML = h + '<div class="sgc"><b>Кафе закрыто</b>Санитарная служба закрыла лавку. Осталось дней: ' + g.cl + '. За простой платишь половину аренды.</div><div class="row"><button id="sgGo">Переждать день</button><button class="alt" id="sgMn">В меню</button></div>'; $('sgGo').onclick = sgSkip; $('sgMn').onclick = () => location.reload(); return; }
+  if(g.tb < 5) it.push({n:'Столик ' + (g.tb + 1), d:'+2 места, полная цена за заказ', c:SGR.tb[g.tb], f:() => g.tb++});
+  ['cake', 'soup'].forEach(k => { if(!g.rc.includes(k) && (k == 'cake' || g.rc.includes('cake'))) it.push({n:'Рецепт: ' + NAME[k], d:'Новое блюдо в меню', c:SGR.rc[k], f:() => g.rc.push(k)}); });
+  for(const k in SGU) if(g.u[k] < 4) it.push({n:SGU[k][0] + ' ' + (g.u[k] + 1), d:SGU[k][1], c:SGR.up[k][g.u[k]], f:() => g.u[k]++});
+  if(!g.ad) it.push({n:'Реклама в газете', d:'+4 репутации, раз в 4 дня', c:40 + g.d*2, f:() => { g.rep = cl01(g.rep + 4); g.ad = 4; }});
+  if(g.ms < 3){
+    const q = MSQ[g.ms], all = q.every(r => r[1](g)), fee = SGR.ms[g.ms];
+    h += '<div class="sgc"><b>Звезда Мишлен ' + (g.ms + 1) + '</b>' + q.map(r => (r[1](g) ? '✔ ' : '✘ ') + r[0]).join('<br>') + '<br>Взнос за проверку: ' + fee + (g.crit ? '<br><b>Критик придёт в ближайший день</b>' : g.cool ? '<br>Новая заявка через ' + g.cool + ' дн.' : '') + '</div>';
+    if(!g.crit && !g.cool) it.push({n:'Заявка на звезду', d:'Придёт критик: 3 блюда и чистота', c:fee, ok:all, f:() => { g.crit = 1; }});
+  }
+  h += '<div class="sgs">' + it.map((q, i) => '<button class="alt' + (g.c < q.c || q.ok === false ? ' lk' : '') + '" data-i="' + i + '"><b>' + q.n + '</b><span>' + q.d + '</span><span>' + q.c + ' Мурок</span></button>').join('') + '</div>';
+  h += (g.d%5 == 0 ? '<p>Сегодня придёт санинспектор!</p>' : g.d%5 == 4 ? '<p>Завтра санитарная проверка: наведи чистоту.</p>' : '') + '<div class="row"><button id="sgGo">Начать день ' + g.d + '</button><button class="alt" id="sgMn">В меню</button></div>';
+  e.innerHTML = h;
+  e.querySelectorAll('.sgs button').forEach(bt => bt.onclick = () => { const q = it[+bt.dataset.i]; if(g.c < q.c || q.ok === false){ snd(200, .1); return; } g.c -= q.c; q.f(); snd(660, .1); vib(15); save(); sgHub(); });
+  $('sgGo').onclick = sgStart; $('sgMn').onclick = () => location.reload();
+}
+$('bStory').onclick = () => { ch = null; role = 'h'; SG = true; if(!S.sg || !S.sg.v) S.sg = SGnew(); sgHub(); go('pSg'); };
 const love = $('love'), clock = new THREE.Clock(); let lastSend = 0, lastSnap = 0, tixKey = '', heldKey = '';
 R.setAnimationLoop(() => {
   const dt = Math.min(clock.getDelta(), .05), t = clock.elapsedTime; perfTick(dt);
@@ -1335,7 +1466,7 @@ R.setAnimationLoop(() => {
     setSpr(rem.cat.hs, W.held[role == 'h' ? 'g' : 'h']);
   }
   love.style.opacity = playing && rem && Math.hypot(me.x - rem.x, me.z - rem.z) < 1.7 ? 1 : 0;
-  const ts = Math.ceil(W.time); $('tm').textContent = (ts/60|0) + ':' + String(ts%60).padStart(2, '0'); pulseTick(); dRushTick(); $('srv').textContent = W.served + '. Цель: ' + W.coins + '/' + LV[W.lv].goal;
+  const ts = Math.ceil(W.time); $('tm').textContent = (ts/60|0) + ':' + String(ts%60).padStart(2, '0'); pulseTick(); dRushTick(); $('srv').textContent = W.served + (SG ? '. Аренда: ' : '. Цель: ') + W.coins + '/' + LV[W.lv].goal;
   $('al').textContent = tgt && playing ? tgt.l + (FINE ? ' [E]' : '') : 'ДЕЙСТВИЕ'; $('bAct').classList.toggle('rdy', !!(tgt && playing));
   if(W.over && !shown && playing) endShift(); else if(!W.over && shown){ shown = 0; go(null); }
   R.render(scene, cam);
